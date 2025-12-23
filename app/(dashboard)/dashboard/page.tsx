@@ -20,13 +20,11 @@ export default async function DashboardPage() {
       { count: propertyCount },
       { count: userCount },
       { count: enrollmentCount },
-      { count: claimCount },
       { data: recentProperties }
     ] = await Promise.all([
       supabase.from('properties').select('*', { count: 'exact', head: true }),
       supabase.from('users').select('*', { count: 'exact', head: true }),
       supabase.from('enrollments').select('*', { count: 'exact', head: true }),
-      supabase.from('claims').select('*', { count: 'exact', head: true }),
       supabase.from('properties').select('*').order('created_at', { ascending: false }).limit(5)
     ])
 
@@ -268,12 +266,10 @@ export default async function DashboardPage() {
     const [
       { count: propertyCount },
       { count: enrollmentCount },
-      _claimsResult,
       { data: recentProperties }
     ] = await Promise.all([
       supabase.from('properties').select('*', { count: 'exact', head: true }),
       supabase.from('enrollments').select('*', { count: 'exact', head: true }),
-      supabase.from('claims').select('*', { count: 'exact', head: true }),
       supabase.from('properties').select('*').order('created_at', { ascending: false }).limit(5)
     ])
 

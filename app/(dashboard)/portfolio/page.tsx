@@ -89,7 +89,7 @@ export default async function PortfolioPage() {
       <h2 className="text-sm font-semibold text-beagle-dark mb-4">Your Properties</h2>
       {properties && properties.length > 0 ? (
         <div className="space-y-3 mb-8">
-          {properties.map((property: { id: string; name: string; address?: string; city?: string; state?: string; enrollments?: { count: number }[] }) => {
+          {properties.map((property: { id: string; name: string; address?: string; city?: string; state?: string; created_at: string; enrollments?: { count: number }[] }) => {
             const enrollmentCount = property.enrollments?.[0]?.count || 0
             
             return (
