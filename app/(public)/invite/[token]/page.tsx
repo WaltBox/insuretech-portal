@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
 import { Loader2 } from 'lucide-react'
 
 export default function InviteAcceptPage({
@@ -28,7 +27,7 @@ export default function InviteAcceptPage({
       setToken(p.token)
       loadInvitation(p.token)
     })
-  }, [])
+  }, [params])
 
   const loadInvitation = async (inviteToken: string) => {
     try {

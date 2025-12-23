@@ -242,15 +242,15 @@ export function ClaimsTable({ propertyId }: ClaimsTableProps) {
                       {/* Right Column */}
                       <div className="space-y-2">
                         <p className="text-xs font-semibold text-gray-500 uppercase">Details</p>
-                        {rawData.incident_date && (
+                        {rawData.incident_date && typeof rawData.incident_date === 'string' && (
                           <p className="text-gray-700">
                             <span className="text-gray-500">Incident:</span> {new Date(rawData.incident_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                           </p>
                         )}
-                        {rawData.description && (
+                        {rawData.description && typeof rawData.description === 'string' && (
                           <p className="text-gray-700 text-xs">{rawData.description}</p>
                         )}
-                        {rawData.rejection_reason && (
+                        {rawData.rejection_reason && typeof rawData.rejection_reason === 'string' && (
                           <p className="text-red-600 text-xs bg-red-50 p-2 rounded border border-red-200">
                             <span className="font-medium">Rejected:</span> {rawData.rejection_reason}
                           </p>
