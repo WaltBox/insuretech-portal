@@ -2,26 +2,6 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth'
 
-interface PropertyManagerData {
-  id: string
-  property_id: string
-  user_id: string
-  created_at: string
-  user: {
-    id: string
-    email: string
-    first_name: string
-    last_name: string
-    role: string
-  }
-  property: {
-    id: string
-    name: string
-    city?: string
-    state?: string
-  }
-}
-
 export async function GET() {
   try {
     const user = await getCurrentUser()
@@ -51,16 +31,17 @@ export async function GET() {
     // Group by user
     const managerMap = new Map()
     
-    data?.forEach((pm: PropertyManagerData) => {
+    data?.forEach((pm) => {
       const userId = pm.user_id
       if (!managerMap.has(userId)) {
         managerMap.set(userId, {
-          user: pm.user,
+          user: Array.isArray(pm.user) ? pm.user[0] : pm.user,
           properties: []
         })
       }
-      if (pm.property) {
-        managerMap.get(userId).properties.push(pm.property)
+      const property = Array.isArray(pm.property) ? pm.property[0] : pm.property
+      if (property) {
+        managerMap.get(userId).properties.push(property)
       }
     })
 
