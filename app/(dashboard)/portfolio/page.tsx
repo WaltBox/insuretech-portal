@@ -89,7 +89,7 @@ export default async function PortfolioPage() {
       <h2 className="text-sm font-semibold text-beagle-dark mb-4">Your Properties</h2>
       {properties && properties.length > 0 ? (
         <div className="space-y-3 mb-8">
-          {properties.map((property: any) => {
+          {properties.map((property: { id: string; name: string; city?: string; state?: string; enrollments?: { count: number }[] }) => {
             const enrollmentCount = property.enrollments?.[0]?.count || 0
             
             return (
@@ -143,7 +143,7 @@ export default async function PortfolioPage() {
           <h2 className="text-sm font-semibold text-beagle-dark mb-4">Recent Enrollments</h2>
           <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
             <div className="divide-y divide-gray-100">
-              {recentEnrollments.slice(0, 5).map((enrollment: any) => (
+              {recentEnrollments.slice(0, 5).map((enrollment: { id: string; first_name: string; last_name: string; coverage_name: string; created_at: string }) => (
                 <div key={enrollment.id} className="px-6 py-3 hover:bg-gray-50 transition-colors duration-150">
                   <div className="flex items-center justify-between">
                     <div>
