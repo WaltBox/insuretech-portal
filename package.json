@@ -1,26 +1,37 @@
 {
   "name": "ultra-genius-caf",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3006",
     "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "start": "next start -p 3006",
+    "lint": "next lint"
   },
   "dependencies": {
-    "next": "16.1.1",
-    "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.47.10",
+    "@tanstack/react-query": "^5.62.11",
+    "@tanstack/react-virtual": "^3.11.1",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^0.469.0",
+    "next": "15.1.4",
+    "papaparse": "^5.4.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.54.2",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^22",
+    "@types/papaparse": "^5.3.15",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.20",
     "eslint": "^9",
-    "eslint-config-next": "16.1.1",
-    "tailwindcss": "^4",
+    "eslint-config-next": "15.1.4",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5"
   }
 }
