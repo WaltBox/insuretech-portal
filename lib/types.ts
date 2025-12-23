@@ -37,6 +37,7 @@ export interface Enrollment {
   city?: string
   state?: string
   zip?: string
+  unit_number?: string
   coverage_name: string
   coverage_rate?: string
   effective_date?: string

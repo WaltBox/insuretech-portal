@@ -1,58 +1,170 @@
 import { createClient } from '@/lib/supabase/server'
 import { requireRole } from '@/lib/auth'
-import { PropertyCard } from '@/components/properties/property-card'
-import { Building2 } from 'lucide-react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { Building2, Users, FileText, ChevronRight, TrendingUp } from 'lucide-react'
 
 export default async function PortfolioPage() {
   await requireRole(['centralized_member', 'admin'])
   const supabase = await createClient()
 
-  const { data: properties } = await supabase
-    .from('properties')
-    .select('*')
-    .order('created_at', { ascending: false })
+  // Parallel queries for better performance
+  const [
+    { data: properties },
+    { count: totalEnrollments },
+    { count: totalClaims },
+    { data: recentEnrollments }
+  ] = await Promise.all([
+    supabase
+      .from('properties')
+      .select('*, enrollments(count)')
+      .order('created_at', { ascending: false }),
+    supabase
+      .from('enrollments')
+      .select('*', { count: 'exact', head: true }),
+    supabase
+      .from('claims')
+      .select('*', { count: 'exact', head: true }),
+    supabase
+      .from('enrollments')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(5)
+  ])
 
-  // Get total enrollments across all properties
-  const { count: totalEnrollments } = await supabase
-    .from('enrollments')
-    .select('*', { count: 'exact', head: true })
+  // Calculate stats
+  const totalDoors = (properties?.length || 0) * 100 // Assuming 100 doors per property
+  const avgEnrollmentRate = properties?.length 
+    ? Math.round((totalEnrollments || 0) / totalDoors * 100) 
+    : 0
 
   return (
     <div className="px-8 py-8">
       <div className="mb-8">
         <h1 className="text-5xl font-normal text-beagle-dark">Portfolio Overview</h1>
-        <p className="text-sm text-gray-600 mt-2">View all properties and enrollments across your portfolio</p>
+        <p className="text-sm text-gray-600 mt-2">Monitor performance across your entire portfolio</p>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200">
-          <div className="flex items-center gap-3 mb-3">
-            <Building2 className="h-8 w-8 text-beagle-orange" />
-            <p className="text-sm font-medium text-gray-600">Total Properties</p>
+      {/* Single Consolidated Stats Card */}
+      <div className="bg-orange-lighter rounded-lg p-6 border border-gray-200 shadow-sm mb-8">
+        <div className="flex items-center gap-3 mb-6">
+          <Image src="/images/star.svg" alt="" width={20} height={20} className="w-5 h-5" />
+          <h3 className="text-sm font-medium text-gray-700">Portfolio Metrics</h3>
+        </div>
+
+        <div className="flex items-center gap-8 flex-wrap">
+          <div className="flex items-center gap-2">
+            <Building2 className="w-5 h-5 text-beagle-orange" />
+            <span className="text-xs text-gray-600">Properties</span>
+            <span className="text-2xl font-bold text-beagle-dark">{properties?.length || 0}</span>
           </div>
-          <p className="text-4xl font-bold text-beagle-dark">{properties?.length || 0}</p>
-        </div>
-        <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200">
-          <p className="text-sm font-medium text-gray-600 mb-3">Total Enrollments</p>
-          <p className="text-4xl font-bold text-beagle-dark">{totalEnrollments || 0}</p>
+
+          <div className="h-8 w-px bg-gray-300"></div>
+
+          <div className="flex items-center gap-2">
+            <Users className="w-5 h-5 text-beagle-orange" />
+            <span className="text-xs text-gray-600">Total Enrollments</span>
+            <span className="text-2xl font-bold text-beagle-dark">{totalEnrollments || 0}</span>
+          </div>
+
+          <div className="h-8 w-px bg-gray-300"></div>
+
+          <div className="flex items-center gap-2">
+            <FileText className="w-5 h-5 text-beagle-orange" />
+            <span className="text-xs text-gray-600">Active Claims</span>
+            <span className="text-2xl font-bold text-beagle-dark">{totalClaims || 0}</span>
+          </div>
+
+          <div className="h-8 w-px bg-gray-300"></div>
+
+          <div className="flex items-center gap-2">
+            <TrendingUp className="w-5 h-5 text-beagle-orange" />
+            <span className="text-xs text-gray-600">Enrollment Rate</span>
+            <span className="text-2xl font-bold text-beagle-dark">{avgEnrollmentRate}%</span>
+          </div>
         </div>
       </div>
 
-      {/* Properties Grid */}
+      {/* Properties List - Compact */}
+      <h2 className="text-sm font-semibold text-beagle-dark mb-4">Your Properties</h2>
       {properties && properties.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {properties.map((property) => (
-            <PropertyCard
-              key={property.id}
-              property={property}
-              href={`/portfolio/${property.id}`}
-            />
-          ))}
+        <div className="space-y-3 mb-8">
+          {properties.map((property: any) => {
+            const enrollmentCount = property.enrollments?.[0]?.count || 0
+            
+            return (
+              <Link
+                key={property.id}
+                href={`/portfolio/${property.id}`}
+                className="group flex items-center justify-between px-6 py-4 bg-white rounded-lg border border-gray-200 hover:border-beagle-orange hover:shadow-md transition-all duration-200"
+              >
+                <div className="flex items-center gap-6 flex-1">
+                  <div className="flex-1">
+                    <p className="text-sm font-semibold text-beagle-dark mb-1">{property.name}</p>
+                    <p className="text-xs text-gray-500">
+                      {[property.address, property.city, property.state].filter(Boolean).join(', ')}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-8">
+                    <div className="text-center">
+                      <p className="text-xs text-gray-500 mb-1">Enrollments</p>
+                      <p className="text-lg font-bold text-beagle-dark">{enrollmentCount}</p>
+                    </div>
+
+                    <div className="text-center">
+                      <p className="text-xs text-gray-500 mb-1">Created</p>
+                      <p className="text-xs text-gray-700">
+                        {new Date(property.created_at).toLocaleDateString('en-US', { 
+                          month: 'short', 
+                          day: 'numeric',
+                          year: 'numeric'
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <ChevronRight className="w-5 h-5 text-beagle-dark group-hover:text-beagle-orange transition-colors duration-200" />
+              </Link>
+            )
+          })}
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow-sm p-12 text-center border border-gray-200">
+        <div className="bg-white rounded-lg shadow-sm p-12 text-center border border-gray-200">
+          <Building2 className="w-12 h-12 text-gray-300 mx-auto mb-4" />
           <p className="text-sm text-gray-600">No properties in portfolio yet.</p>
+        </div>
+      )}
+
+      {/* Recent Activity */}
+      {recentEnrollments && recentEnrollments.length > 0 && (
+        <div>
+          <h2 className="text-sm font-semibold text-beagle-dark mb-4">Recent Enrollments</h2>
+          <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+            <div className="divide-y divide-gray-100">
+              {recentEnrollments.slice(0, 5).map((enrollment: any) => (
+                <div key={enrollment.id} className="px-6 py-3 hover:bg-gray-50 transition-colors duration-150">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-beagle-dark">
+                        {enrollment.first_name} {enrollment.last_name}
+                      </p>
+                      <p className="text-xs text-gray-500">{enrollment.coverage_name}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-gray-600">
+                        {new Date(enrollment.created_at).toLocaleDateString('en-US', { 
+                          month: 'short', 
+                          day: 'numeric' 
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>

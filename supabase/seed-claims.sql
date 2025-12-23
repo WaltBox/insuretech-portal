@@ -59,6 +59,7 @@ INSERT INTO claims (
   'Pending',
   '2025-12-20',
   5000.00,
+  
   'Tenant',
   'Jessica',
   'Martinez',
