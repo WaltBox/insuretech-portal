@@ -26,12 +26,13 @@ export default function LoginPage() {
 
       if (error) throw error
 
+      // Keep loading state active until redirect completes
       router.push('/dashboard')
       router.refresh()
+      // Don't set loading to false - let the page redirect happen
     } catch (err: any) {
       setError(err.message)
-    } finally {
-      setLoading(false)
+      setLoading(false) // Only disable loading on error
     }
   }
 

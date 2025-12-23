@@ -34,7 +34,7 @@ export function UserFormModal({ user, onClose, onSuccess }: UserFormModalProps) 
       const response = await fetch('/api/properties')
       if (response.ok) {
         const data = await response.json()
-        setProperties(data)
+        setProperties(data.properties || [])
       }
     } catch (err) {
       console.error('Failed to fetch properties:', err)
