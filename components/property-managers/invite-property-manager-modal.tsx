@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { X, Loader2, Check, Copy, Building2 } from 'lucide-react'
+import { Property } from '@/lib/types'
 
 interface InvitePropertyManagerModalProps {
   onClose: () => void
@@ -63,8 +64,8 @@ export function InvitePropertyManagerModal({
       }
 
       setInviteLink(data.inviteLink)
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
       setLoading(false)
     }
@@ -262,7 +263,7 @@ export function InvitePropertyManagerModal({
                 </div>
               ) : (
                 <div className="border border-gray-200 rounded-lg max-h-60 overflow-y-auto">
-                  {properties.map((property: any) => (
+                  {properties.map((property: Property) => (
                     <label
                       key={property.id}
                       className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors duration-150"

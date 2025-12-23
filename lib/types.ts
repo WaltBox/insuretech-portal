@@ -70,7 +70,7 @@ export interface Claim {
   participant_email?: string
   participant_phone?: string
   participant_address?: string
-  raw_data?: any
+  raw_data?: Record<string, unknown>
   created_at: string
   updated_at: string
 }

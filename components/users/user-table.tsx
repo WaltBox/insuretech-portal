@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { User } from '@/lib/types'
-import { Edit, Trash2, PlusCircle, User as UserIcon } from 'lucide-react'
+import { Edit, Trash2, User as UserIcon } from 'lucide-react'
 import { UserFormModal } from './user-form-modal'
 
 interface UserTableProps {
@@ -30,8 +30,8 @@ export function UserTable({ initialUsers, currentUserId }: UserTableProps) {
       if (!response.ok) throw new Error('Failed to start impersonation')
 
       window.location.href = '/dashboard'
-    } catch (error: any) {
-      alert(error.message)
+    } catch (error: unknown) {
+      alert(error instanceof Error ? error.message : 'An error occurred')
       setImpersonating(false)
     }
   }
@@ -44,8 +44,8 @@ export function UserTable({ initialUsers, currentUserId }: UserTableProps) {
       if (!response.ok) throw new Error('Failed to delete user')
 
       setUsers(users.filter((u) => u.id !== userId))
-    } catch (error: any) {
-      alert(error.message)
+    } catch (error: unknown) {
+      alert(error instanceof Error ? error.message : 'An error occurred')
     }
   }
 

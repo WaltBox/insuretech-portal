@@ -2,7 +2,8 @@ import { createClient } from '@/lib/supabase/server'
 import { requireRole } from '@/lib/auth'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { Edit, Upload, FileText } from 'lucide-react'
+import Image from 'next/image'
+import { Edit, Upload, FileText, ArrowLeft } from 'lucide-react'
 import { CSVUploader } from '@/components/properties/csv-uploader'
 
 export default async function PropertyDetailPage({
@@ -37,39 +38,58 @@ export default async function PropertyDetailPage({
   return (
     <div className="px-8 py-8">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-start mb-8">
-          <div>
-            <h1 className="text-5xl font-normal text-beagle-dark">{property.name}</h1>
-            {property.address && (
-              <p className="text-sm text-gray-600 mt-2">
-                {[property.address, property.city, property.state, property.zip_code]
-                  .filter(Boolean)
-                  .join(', ')}
-              </p>
-            )}
-          </div>
+        <div className="mb-8">
           <Link
-            href={`/admin/properties/${id}/edit`}
-            className="flex items-center gap-2 px-4 py-2.5 border border-gray-200 rounded-lg font-medium text-sm hover:border-gray-300 hover:bg-gray-50 transition-all duration-200"
+            href="/admin/properties"
+            className="inline-flex items-center gap-2 text-beagle-orange hover:text-accent-orange transition-colors duration-200 mb-4"
           >
-            <Edit className="h-4 w-4" />
-            Edit
+            <ArrowLeft className="h-4 w-4" />
+            Back to Properties
           </Link>
+          <div className="flex justify-between items-start">
+            <div>
+              <h1 className="text-5xl font-normal text-beagle-dark">{property.name}</h1>
+              {property.address && (
+                <p className="text-sm text-gray-600 mt-2">
+                  {[property.address, property.city, property.state, property.zip_code]
+                    .filter(Boolean)
+                    .join(', ')}
+                </p>
+              )}
+            </div>
+            <Link
+              href={`/admin/properties/${id}/edit`}
+              className="flex items-center gap-2 px-4 py-2.5 border border-gray-200 rounded-lg font-medium text-sm hover:border-gray-300 hover:bg-gray-50 transition-all duration-200"
+            >
+              <Edit className="h-4 w-4" />
+              Edit
+            </Link>
+          </div>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-2xl shadow-sm p-8 border border-gray-200">
-            <p className="text-sm font-medium text-gray-600">Total Enrollments</p>
-            <p className="text-4xl font-bold text-beagle-dark mt-2">{enrollmentCount || 0}</p>
+        {/* Stats Card */}
+        <div className="bg-orange-lighter rounded-lg p-6 border border-gray-200 shadow-sm mb-8">
+          <div className="flex items-center gap-3 mb-6">
+            <Image src="/images/star.svg" alt="" width={20} height={20} className="w-5 h-5" />
+            <h3 className="text-sm font-medium text-gray-700">Enrollment Breakdown</h3>
           </div>
-          {stats &&
-            stats.map((stat: any) => (
-              <div key={stat.status} className="bg-white rounded-2xl shadow-sm p-6 border border-gray-200">
-                <p className="text-sm font-medium text-gray-600">{stat.status}</p>
-                <p className="text-3xl font-bold text-beagle-dark mt-2">{stat.count}</p>
-              </div>
+
+          <div className="flex items-center gap-8 flex-wrap">
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-600">Total Enrollments</span>
+              <span className="text-2xl font-bold text-beagle-dark">{enrollmentCount || 0}</span>
+            </div>
+
+            {stats && stats.map((stat: any) => (
+              <>
+                <div className="h-8 w-px bg-gray-300"></div>
+                <div key={stat.status} className="flex items-center gap-2">
+                  <span className="text-xs text-gray-600">{stat.status}</span>
+                  <span className="text-2xl font-bold text-beagle-dark">{stat.count}</span>
+                </div>
+              </>
             ))}
+          </div>
         </div>
 
         {/* CSV Upload */}

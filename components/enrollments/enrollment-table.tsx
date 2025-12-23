@@ -83,7 +83,7 @@ export function EnrollmentTable({ propertyId }: EnrollmentTableProps) {
     }
   }
 
-  const formatDate = (dateString: string | null) => {
+  const formatDate = (dateString: string | null | undefined) => {
     if (!dateString) return '-'
     try {
       const date = new Date(dateString)
