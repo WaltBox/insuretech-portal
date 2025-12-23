@@ -21,11 +21,12 @@ export function ClaimsTable({ propertyId }: ClaimsTableProps) {
     isLoading,
     error,
   } = useInfiniteQuery({
-    queryKey: ['claims', propertyId],
+    queryKey: ['claims', propertyId, timePeriod],
     queryFn: async ({ pageParam }) => {
       const params = new URLSearchParams()
       if (pageParam) params.append('cursor', pageParam)
       if (propertyId) params.append('property_id', propertyId)
+      if (timePeriod) params.append('time_period', timePeriod)
 
       const response = await fetch(`/api/claims?${params.toString()}`)
       
@@ -40,26 +41,7 @@ export function ClaimsTable({ propertyId }: ClaimsTableProps) {
   })
 
   const claims = data?.pages.flatMap((page) => page.claims) || []
-
-  // Filter claims by time period
-  const now = new Date()
-  const filteredClaims = claims.filter((claim: any) => {
-    if (!claim.submitted_date) return false
-    const submittedDate = new Date(claim.submitted_date)
-    const diffTime = Math.abs(now.getTime() - submittedDate.getTime())
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-    
-    switch (timePeriod) {
-      case 'week':
-        return diffDays <= 7
-      case 'month':
-        return diffDays <= 30
-      case 'year':
-        return diffDays <= 365
-      default:
-        return true
-    }
-  })
+  const totalCount = data?.pages[0]?.total || 0
 
   const getStatusColor = (status: string) => {
     switch (status?.toLowerCase()) {
@@ -138,18 +120,18 @@ export function ClaimsTable({ propertyId }: ClaimsTableProps) {
           This Year
         </button>
         <div className="ml-auto flex items-center text-sm text-gray-600">
-          <span className="font-semibold text-beagle-dark mr-1">{filteredClaims.length}</span> claims
+          <span className="font-semibold text-beagle-dark mr-1">{totalCount}</span> claims
         </div>
       </div>
 
-      {filteredClaims.length === 0 ? (
+      {claims.length === 0 ? (
         <div className="bg-white rounded-lg shadow-sm p-12 text-center border border-gray-200">
           <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
           <p className="text-sm text-gray-600">No claims found for this period</p>
         </div>
       ) : (
         <div className="space-y-3">
-          {filteredClaims.map((claim: any) => {
+          {claims.map((claim: any) => {
             const isExpanded = expandedClaim === claim.id
             const rawData = claim.raw_data || {}
             

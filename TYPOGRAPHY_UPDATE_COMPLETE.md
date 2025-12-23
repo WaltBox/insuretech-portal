@@ -136,3 +136,4 @@ The brown color now feels **intentional and special** rather than overused:
 *Updated: December 22, 2025*
 *All pages now follow Beagle typography standards*
 
+

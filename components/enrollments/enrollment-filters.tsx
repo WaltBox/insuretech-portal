@@ -1,7 +1,7 @@
 'use client'
 
 import { Search } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo, useCallback, useRef } from 'react'
 
 interface EnrollmentFiltersProps {
   filters: {
@@ -29,21 +29,36 @@ const COVERAGE_OPTIONS = [
   'TLL',
 ]
 
-export function EnrollmentFilters({
+export const EnrollmentFilters = memo(function EnrollmentFilters({
   filters,
   onFiltersChange,
   total,
 }: EnrollmentFiltersProps) {
   const [searchValue, setSearchValue] = useState(filters.search)
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
 
-  // Debounce search
+  // Optimized debounce search
   useEffect(() => {
-    const timer = setTimeout(() => {
-      onFiltersChange({ ...filters, search: searchValue })
-    }, 500)
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current)
+    }
+    
+    debounceTimerRef.current = setTimeout(() => {
+      if (searchValue !== filters.search) {
+        onFiltersChange({ ...filters, search: searchValue })
+      }
+    }, 300) // Reduced from 500ms to 300ms for better responsiveness
 
-    return () => clearTimeout(timer)
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current)
+      }
+    }
   }, [searchValue])
+
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value)
+  }, [])
 
   return (
     <div className="space-y-4">
@@ -59,7 +74,7 @@ export function EnrollmentFilters({
             type="text"
             placeholder="Search enrollments..."
             value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onChange={handleSearchChange}
             className="pl-10 w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
           />
         </div>
@@ -73,5 +88,5 @@ export function EnrollmentFilters({
       </div>
     </div>
   )
-}
+})
 

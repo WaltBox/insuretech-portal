@@ -29,3 +29,4 @@ public/
 - Use hyphens for spaces: `beagle-logo.png`
 - Include dimensions for multiple sizes: `logo-sm.png`, `logo-lg.png`
 
+

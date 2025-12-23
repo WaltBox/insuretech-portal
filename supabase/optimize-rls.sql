@@ -105,3 +105,4 @@ BEGIN
   RAISE NOTICE 'RLS policies optimized! Pages should now load 2-3x faster.';
 END $$;
 
+

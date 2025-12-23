@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useMemo, useCallback, memo } from 'react'
 import { 
   LayoutDashboard, 
   Building2, 
@@ -23,14 +23,14 @@ interface SidebarProps {
   user: User
 }
 
-export function Sidebar({ user }: SidebarProps) {
+export const Sidebar = memo(function Sidebar({ user }: SidebarProps) {
   const pathname = usePathname()
   const [showMenu, setShowMenu] = useState(false)
   const [loggingOut, setLoggingOut] = useState(false)
 
-  const isActive = (path: string) => pathname.startsWith(path)
+  const isActive = useCallback((path: string) => pathname.startsWith(path), [pathname])
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     setLoggingOut(true)
     try {
       const response = await fetch('/api/auth/logout', { method: 'POST' })
@@ -41,34 +41,35 @@ export function Sidebar({ user }: SidebarProps) {
       console.error('Logout failed:', error)
       setLoggingOut(false)
     }
-  }
+  }, [])
 
-  const adminLinks = [
-    { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/admin/properties', label: 'Properties', icon: Building2 },
-    { href: '/admin/users', label: 'Users', icon: Users },
-    { href: '/claims', label: 'Claims', icon: FileText },
-  ]
+  const links = useMemo(() => {
+    const adminLinks = [
+      { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+      { href: '/admin/properties', label: 'Properties', icon: Building2 },
+      { href: '/admin/users', label: 'Users', icon: Users },
+      { href: '/claims', label: 'Claims', icon: FileText },
+    ]
 
-  const centralizedMemberLinks = [
-    { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/portfolio', label: 'Portfolio', icon: Building2 },
-    { href: '/property-managers', label: 'Property Managers', icon: UserCog },
-    { href: '/claims', label: 'Claims', icon: FileText },
-  ]
+    const centralizedMemberLinks = [
+      { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+      { href: '/portfolio', label: 'Portfolio', icon: Building2 },
+      { href: '/property-managers', label: 'Property Managers', icon: UserCog },
+      { href: '/claims', label: 'Claims', icon: FileText },
+    ]
 
-  const propertyManagerLinks = [
-    { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/my-properties', label: 'My Properties', icon: Building2 },
-    { href: '/my-properties/claims', label: 'Claims', icon: FileText },
-  ]
+    const propertyManagerLinks = [
+      { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+      { href: '/my-properties', label: 'My Properties', icon: Building2 },
+      { href: '/my-properties/claims', label: 'Claims', icon: FileText },
+    ]
 
-  const links =
-    user.role === 'admin'
+    return user.role === 'admin'
       ? adminLinks
       : user.role === 'centralized_member'
       ? centralizedMemberLinks
       : propertyManagerLinks
+  }, [user.role])
 
   return (
     <aside className="w-[260px] bg-white border-r border-gray-200 min-h-screen flex flex-col">
@@ -167,5 +168,5 @@ export function Sidebar({ user }: SidebarProps) {
       </div>
     </aside>
   )
-}
+})
 

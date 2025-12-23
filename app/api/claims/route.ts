@@ -13,6 +13,7 @@ export async function GET(request: NextRequest) {
     const propertyId = searchParams.get('property_id')
     const limit = parseInt(searchParams.get('limit') || '50')
     const cursor = searchParams.get('cursor')
+    const timePeriod = searchParams.get('time_period') // 'week', 'month', or 'year'
 
     const supabase = await createClient()
     let query = supabase
@@ -24,6 +25,26 @@ export async function GET(request: NextRequest) {
     // Filter by property if specified
     if (propertyId) {
       query = query.eq('property_id', propertyId)
+    }
+
+    // Filter by time period (server-side for better performance)
+    if (timePeriod) {
+      const now = new Date()
+      let cutoffDate = new Date()
+      
+      switch (timePeriod) {
+        case 'week':
+          cutoffDate.setDate(now.getDate() - 7)
+          break
+        case 'month':
+          cutoffDate.setDate(now.getDate() - 30)
+          break
+        case 'year':
+          cutoffDate.setDate(now.getDate() - 365)
+          break
+      }
+      
+      query = query.gte('submitted_date', cutoffDate.toISOString())
     }
 
     // Cursor-based pagination
@@ -48,4 +69,5 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }
+
 

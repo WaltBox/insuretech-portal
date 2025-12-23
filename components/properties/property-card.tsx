@@ -1,12 +1,22 @@
 import Link from 'next/link'
 import { Property } from '@/lib/types'
+import { memo, useMemo } from 'react'
 
 interface PropertyCardProps {
   property: Property
   href: string
 }
 
-export function PropertyCard({ property, href }: PropertyCardProps) {
+export const PropertyCard = memo(function PropertyCard({ property, href }: PropertyCardProps) {
+  const formattedAddress = useMemo(() => {
+    return [property.address, property.city, property.state]
+      .filter(Boolean)
+      .join(', ')
+  }, [property.address, property.city, property.state])
+
+  const formattedDate = useMemo(() => {
+    return new Date(property.created_at).toLocaleDateString()
+  }, [property.created_at])
   return (
     <Link href={href}>
       <div className="bg-white rounded-xl p-6 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 cursor-pointer">
@@ -15,11 +25,9 @@ export function PropertyCard({ property, href }: PropertyCardProps) {
             <h3 className="text-lg font-semibold text-beagle-dark mb-1">
               {property.name}
             </h3>
-            {(property.address || property.city || property.state) && (
+            {formattedAddress && (
               <p className="text-sm text-gray-500">
-                {[property.address, property.city, property.state]
-                  .filter(Boolean)
-                  .join(', ')}
+                {formattedAddress}
               </p>
             )}
           </div>
@@ -29,12 +37,12 @@ export function PropertyCard({ property, href }: PropertyCardProps) {
           <div>
             <p className="text-xs text-gray-500 mb-1">Created</p>
             <p className="text-sm font-semibold text-beagle-dark">
-              {new Date(property.created_at).toLocaleDateString()}
+              {formattedDate}
             </p>
           </div>
         </div>
       </div>
     </Link>
   )
-}
+})
 
