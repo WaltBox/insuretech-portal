@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Plus, Building2, Mail, Loader2, Search } from 'lucide-react'
+import { Plus, Building2, Mail, Search, UserCog } from 'lucide-react'
 import { InvitePropertyManagerModal } from './invite-property-manager-modal'
+import { LoadingState } from '@/components/ui/loading-spinner'
 
 interface PropertyManager {
   user: {
@@ -87,9 +88,7 @@ export function PropertyManagersList() {
       </div>
 
       {isLoading ? (
-        <div className="flex justify-center items-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-beagle-orange" />
-        </div>
+        <LoadingState message="Loading property managers..." />
       ) : filteredManagers.length === 0 ? (
         <div className="bg-white rounded-lg shadow-sm p-12 text-center border border-gray-200">
           <UserCog className="w-12 h-12 text-gray-300 mx-auto mb-4" />

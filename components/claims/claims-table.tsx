@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { Claim } from '@/lib/types'
 import { Loader2, ChevronDown, ChevronUp, Building2, User, Calendar, FileText } from 'lucide-react'
+import { LoadingState } from '@/components/ui/loading-spinner'
 
 interface ClaimsTableProps {
   propertyId?: string
@@ -100,11 +100,7 @@ export function ClaimsTable({ propertyId }: ClaimsTableProps) {
   }
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-beagle-orange" />
-      </div>
-    )
+    return <LoadingState message="Loading claims..." />
   }
 
   return (

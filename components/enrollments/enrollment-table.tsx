@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Enrollment } from '@/lib/types'
-import { Loader2, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
 import { EnrollmentFilters } from './enrollment-filters'
+import { LoadingState } from '@/components/ui/loading-spinner'
 
 interface EnrollmentTableProps {
   propertyId: string
@@ -110,9 +111,7 @@ export function EnrollmentTable({ propertyId }: EnrollmentTableProps) {
       <EnrollmentFilters filters={filters} onFiltersChange={setFilters} total={total} />
 
       {isLoading ? (
-        <div className="flex justify-center items-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-beagle-orange" />
-        </div>
+        <LoadingState message="Loading enrollments..." />
       ) : enrollments.length === 0 ? (
         <div className="bg-white rounded-lg p-12 text-center border border-gray-200">
           <p className="text-sm text-gray-600">No data available</p>
