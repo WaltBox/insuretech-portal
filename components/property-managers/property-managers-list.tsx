@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Plus, Building2, Mail, Search, UserCog } from 'lucide-react'
+import { Plus, Building2, Mail, Search } from 'lucide-react'
 import { InvitePropertyManagerModal } from './invite-property-manager-modal'
 import { LoadingState } from '@/components/ui/loading-spinner'
 

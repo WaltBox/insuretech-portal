@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { Property } from '@/lib/types'
-import { Building2, MapPin } from 'lucide-react'
 
 interface PropertyCardProps {
   property: Property

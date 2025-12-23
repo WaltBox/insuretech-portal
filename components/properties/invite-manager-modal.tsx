@@ -48,8 +48,8 @@ export function InviteManagerModal({
       setTimeout(() => {
         onSuccess()
       }, 1500)
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
       setLoading(false)
     }

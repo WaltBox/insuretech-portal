@@ -62,9 +62,7 @@ export function EnrollmentTable({ propertyId }: EnrollmentTableProps) {
     return (
       <div className="space-y-6">
         <EnrollmentFilters filters={filters} onFiltersChange={setFilters} total={0} />
-        <div className="flex justify-center items-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-beagle-orange" />
-        </div>
+        <LoadingState message="Loading enrollments..." />
       </div>
     )
   }

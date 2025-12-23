@@ -62,8 +62,8 @@ export function CSVUploader({ propertyId }: CSVUploaderProps) {
       
       // Refresh the page to show updated stats
       router.refresh()
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
       setUploading(false)
     }
