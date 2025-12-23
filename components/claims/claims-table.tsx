@@ -4,9 +4,16 @@ import { useState } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { Loader2, ChevronDown, ChevronUp, Building2, User, Calendar, FileText } from 'lucide-react'
 import { LoadingState } from '@/components/ui/loading-spinner'
+import { Claim } from '@/lib/types'
 
 interface ClaimsTableProps {
   propertyId?: string
+}
+
+interface ClaimWithProperty extends Claim {
+  property?: {
+    name: string
+  }
 }
 
 export function ClaimsTable({ propertyId }: ClaimsTableProps) {
@@ -131,7 +138,7 @@ export function ClaimsTable({ propertyId }: ClaimsTableProps) {
         </div>
       ) : (
         <div className="space-y-3">
-          {claims.map((claim: any) => {
+          {claims.map((claim: ClaimWithProperty) => {
             const isExpanded = expandedClaim === claim.id
             const rawData = claim.raw_data || {}
             

@@ -9,8 +9,6 @@ import {
   Building2, 
   Users, 
   FileText, 
-  ClipboardList,
-  Settings,
   UserCog,
   ChevronDown,
   ChevronUp,

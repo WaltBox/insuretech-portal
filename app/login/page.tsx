@@ -30,53 +30,53 @@ export default function LoginPage() {
       router.push('/dashboard')
       router.refresh()
       // Don't set loading to false - let the page redirect happen
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred')
       setLoading(false) // Only disable loading on error
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-beagle-light relative">
+    <div className="min-h-screen flex items-center justify-center bg-beagle-light relative px-4 py-8">
         {/* Beagle Logo Top Left */}
-        <div className="absolute top-8 left-8">
+        <div className="absolute top-4 left-4 sm:top-8 sm:left-8">
           <Image
             src="/images/beagle-text-logo.webp"
             alt="Beagle"
             width={100}
             height={32}
             priority
-            className="h-8 w-auto"
+            className="h-6 sm:h-8 w-auto"
           />
         </div>
 
-        <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-2xl shadow-sm border-2 border-beagle-dark">
+        <div className="max-w-md w-full space-y-4 sm:space-y-6 p-4 sm:p-8 bg-white rounded-2xl shadow-sm border-2 border-beagle-dark">
         <div className="text-center">
-          <div className="mb-6 flex justify-center">
+          <div className="mb-4 sm:mb-6 flex justify-center">
             <Image
               src="/images/caf.jpg"
               alt="Beagle CAF"
               width={120}
               height={120}
-              className="rounded-lg"
+              className="rounded-lg w-20 h-20 sm:w-[120px] sm:h-[120px]"
             />
           </div>
-          <h2 className="text-3xl font-semibold text-beagle-dark">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-beagle-dark">
             Beagle CAF Management Portal
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-2 text-xs sm:text-sm text-gray-600">
             Sign in to your account
           </p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+        <form className="mt-4 sm:mt-6 space-y-4 sm:space-y-6" onSubmit={handleLogin}>
           {error && (
-            <div className="rounded-lg bg-red-50 border-l-4 border-error p-4">
-              <p className="text-sm font-medium text-red-800">{error}</p>
+            <div className="rounded-lg bg-red-50 border-l-4 border-error p-3 sm:p-4">
+              <p className="text-xs sm:text-sm font-medium text-red-800">{error}</p>
             </div>
           )}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-beagle-dark mb-1.5">
+              <label htmlFor="email" className="block text-xs sm:text-sm font-medium text-beagle-dark mb-1.5">
                 Email address
               </label>
                   <input
@@ -88,12 +88,12 @@ export default function LoginPage() {
                     disabled={loading}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200 disabled:bg-gray-50 disabled:cursor-not-allowed"
+                    className="block w-full px-3 py-2 sm:px-4 sm:py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200 disabled:bg-gray-50 disabled:cursor-not-allowed"
                     placeholder="you@example.com"
                   />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-beagle-dark mb-1.5">
+              <label htmlFor="password" className="block text-xs sm:text-sm font-medium text-beagle-dark mb-1.5">
                 Password
               </label>
                   <input
@@ -105,7 +105,7 @@ export default function LoginPage() {
                     disabled={loading}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200 disabled:bg-gray-50 disabled:cursor-not-allowed"
+                    className="block w-full px-3 py-2 sm:px-4 sm:py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200 disabled:bg-gray-50 disabled:cursor-not-allowed"
                     placeholder="Enter your password"
                   />
             </div>
@@ -114,7 +114,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex justify-center items-center gap-2 py-2.5 px-6 rounded-lg text-sm font-semibold text-beagle-dark bg-white border-2 border-beagle-dark hover:bg-beagle-dark hover:text-white focus:outline-none focus:ring-2 focus:ring-beagle-dark focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-200"
+            className="w-full flex justify-center items-center gap-2 py-2.5 px-4 sm:px-6 rounded-lg text-sm font-semibold text-beagle-dark bg-white border-2 border-beagle-dark hover:bg-beagle-dark hover:text-white focus:outline-none focus:ring-2 focus:ring-beagle-dark focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-200"
           >
             {loading ? (
               <>

@@ -3,36 +3,21 @@
 import { Search } from 'lucide-react'
 import { useState, useEffect, memo, useCallback, useRef } from 'react'
 
-interface EnrollmentFiltersProps {
-  filters: {
-    status: string
-    search: string
-    coverage_type: string
-  }
-  onFiltersChange: (filters: any) => void
-  total: number
+interface EnrollmentFilters {
+  status: string
+  search: string
+  coverage_type: string
 }
 
-const STATUS_OPTIONS = [
-  'Premium Paying',
-  'Issued, Not Paid',
-  'Lapsed',
-  'Cancelled',
-]
-
-const COVERAGE_OPTIONS = [
-  'SDI',
-  'SDD',
-  'Renters Kit',
-  'HO4',
-  'Pet Liability',
-  'TLL',
-]
+interface EnrollmentFiltersProps {
+  filters: EnrollmentFilters
+  onFiltersChange: (filters: EnrollmentFilters) => void
+  total: number
+}
 
 export const EnrollmentFilters = memo(function EnrollmentFilters({
   filters,
   onFiltersChange,
-  total,
 }: EnrollmentFiltersProps) {
   const [searchValue, setSearchValue] = useState(filters.search)
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
@@ -54,7 +39,7 @@ export const EnrollmentFilters = memo(function EnrollmentFilters({
         clearTimeout(debounceTimerRef.current)
       }
     }
-  }, [searchValue])
+  }, [searchValue, filters, onFiltersChange])
 
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value)
