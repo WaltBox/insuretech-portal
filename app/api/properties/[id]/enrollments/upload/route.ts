@@ -87,10 +87,11 @@ export async function POST(
       count: result,
       message: `Successfully uploaded ${result} enrollments`,
     })
-  } catch (error: any) {
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Upload failed'
     console.error('Upload error:', error)
     return NextResponse.json(
-      { error: error.message || 'Upload failed' },
+      { error: errorMessage },
       { status: 500 }
     )
   }

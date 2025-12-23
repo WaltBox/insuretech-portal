@@ -2,7 +2,27 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth'
 
-export async function GET(request: NextRequest) {
+interface PropertyManagerData {
+  id: string
+  property_id: string
+  user_id: string
+  created_at: string
+  user: {
+    id: string
+    email: string
+    first_name: string
+    last_name: string
+    role: string
+  }
+  property: {
+    id: string
+    name: string
+    city?: string
+    state?: string
+  }
+}
+
+export async function GET() {
   try {
     const user = await getCurrentUser()
     
@@ -31,7 +51,7 @@ export async function GET(request: NextRequest) {
     // Group by user
     const managerMap = new Map()
     
-    data?.forEach((pm: any) => {
+    data?.forEach((pm: PropertyManagerData) => {
       const userId = pm.user_id
       if (!managerMap.has(userId)) {
         managerMap.set(userId, {
@@ -47,9 +67,10 @@ export async function GET(request: NextRequest) {
     const managers = Array.from(managerMap.values())
 
     return NextResponse.json({ managers })
-  } catch (error: any) {
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'An error occurred'
     console.error('Property managers error:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }
 

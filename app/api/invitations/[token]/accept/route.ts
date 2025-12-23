@@ -123,9 +123,10 @@ export async function POST(
       message: 'Account created successfully',
       user: newUser,
     })
-  } catch (error: any) {
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'An error occurred'
     console.error('Accept invitation error:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }
 

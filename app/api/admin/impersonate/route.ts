@@ -45,9 +45,10 @@ export async function POST(request: NextRequest) {
       message: 'Impersonation started',
       targetUser,
     })
-  } catch (error: any) {
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'An error occurred'
     console.error('Impersonation error:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }
 
@@ -68,9 +69,10 @@ export async function DELETE(request: NextRequest) {
       success: true,
       message: 'Impersonation stopped',
     })
-  } catch (error: any) {
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'An error occurred'
     console.error('Stop impersonation error:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }
 

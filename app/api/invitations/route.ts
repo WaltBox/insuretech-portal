@@ -72,7 +72,15 @@ export async function POST(request: NextRequest) {
     expiresAt.setDate(expiresAt.getDate() + 7) // 7 days
 
     // Store invitation data (including properties for property managers)
-    const invitationData: any = {
+    const invitationData: {
+      email: string
+      role: string
+      invited_by: string
+      token: string
+      expires_at: string
+      metadata: { first_name: string; last_name: string; property_ids: string[] }
+      property_id?: string
+    } = {
       email,
       role,
       invited_by: user.id,
@@ -123,9 +131,10 @@ export async function POST(request: NextRequest) {
       invitation,
       inviteLink,
     })
-  } catch (error: any) {
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'An error occurred'
     console.error('Invitation error:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }
 
