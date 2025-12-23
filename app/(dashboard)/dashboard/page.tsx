@@ -149,22 +149,18 @@ export default async function DashboardPage() {
     
     let enrollmentCount = 0
     let enrollmentStats: any[] = []
-    let claimCount = 0
     
     if (propertyIds.length > 0) {
       const [
         { count: totalEnrollments },
         { data: stats },
-        { count: claims }
       ] = await Promise.all([
         supabase.from('enrollments').select('*', { count: 'exact', head: true }).in('property_id', propertyIds),
         supabase.rpc('get_enrollment_stats', { p_property_id: propertyIds[0] }).then(res => res.data || []),
-        supabase.from('claims').select('*', { count: 'exact', head: true }).in('property_id', propertyIds)
       ])
       
       enrollmentCount = totalEnrollments || 0
       enrollmentStats = stats || []
-      claimCount = claims || 0
     }
 
     const premiumPaying = enrollmentStats.find((s: any) => s.status === 'Premium Paying')?.count || 0
@@ -272,7 +268,7 @@ export default async function DashboardPage() {
     const [
       { count: propertyCount },
       { count: enrollmentCount },
-      { count: claimCount },
+      _claimsResult,
       { data: recentProperties }
     ] = await Promise.all([
       supabase.from('properties').select('*', { count: 'exact', head: true }),
