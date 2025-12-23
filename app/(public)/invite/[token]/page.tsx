@@ -14,7 +14,11 @@ export default function InviteAcceptPage({
   const [token, setToken] = useState<string>('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [invitation, setInvitation] = useState<any>(null)
+  const [invitation, setInvitation] = useState<{
+    email: string
+    role: string
+    metadata: { first_name: string; last_name: string }
+  } | null>(null)
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [accepting, setAccepting] = useState(false)
@@ -36,8 +40,8 @@ export default function InviteAcceptPage({
       }
 
       setInvitation(data)
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
       setLoading(false)
     }
@@ -74,8 +78,8 @@ export default function InviteAcceptPage({
 
       // Redirect to login
       router.push('/login?message=Account created successfully. Please login.')
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
       setAccepting(false)
     }
@@ -113,7 +117,7 @@ export default function InviteAcceptPage({
       <div className="max-w-md w-full bg-white rounded-2xl shadow-sm p-8 border border-gray-200">
         <h2 className="text-3xl font-semibold text-beagle-dark mb-2">Accept Invitation</h2>
         <p className="text-sm text-gray-600 mb-6">
-          You've been invited to join Beagle Portal as <strong className="capitalize">{invitation?.role?.replace('_', ' ')}</strong>
+          You&apos;ve been invited to join Beagle Portal as <strong className="capitalize">{invitation?.role?.replace('_', ' ')}</strong>
         </p>
 
         <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">

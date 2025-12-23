@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
     // Filter by time period (server-side for better performance)
     if (timePeriod) {
       const now = new Date()
-      let cutoffDate = new Date()
+      const cutoffDate = new Date()
       
       switch (timePeriod) {
         case 'week':

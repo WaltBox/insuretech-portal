@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function DELETE(request: NextRequest) {
+export async function DELETE() {
   try {
     // Use getActualUser to check the real authenticated user, not the impersonated one
     const actualUser = await getActualUser()
