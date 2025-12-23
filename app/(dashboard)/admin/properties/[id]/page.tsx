@@ -36,7 +36,7 @@ export default async function PropertyDetailPage({
   const enrollmentCount = stats?.reduce((sum: number, stat: any) => sum + Number(stat.count), 0) || 0
 
   return (
-    <div className="px-8 py-8">
+    <div className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <Link
@@ -48,7 +48,7 @@ export default async function PropertyDetailPage({
           </Link>
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-5xl font-normal text-beagle-dark">{property.name}</h1>
+              <h1 className="text-2xl sm:text-3xl lg:text-5xl font-normal text-beagle-dark">{property.name}</h1>
               {property.address && (
                 <p className="text-sm text-gray-600 mt-2">
                   {[property.address, property.city, property.state, property.zip_code]

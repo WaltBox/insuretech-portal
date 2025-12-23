@@ -27,10 +27,10 @@ export default async function PropertiesPage() {
   ])
 
   return (
-    <div className="px-8 py-8">
+    <div className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-5xl font-normal text-beagle-dark">Properties</h1>
+          <h1 className="text-2xl sm:text-3xl lg:text-5xl font-normal text-beagle-dark">Properties</h1>
           <p className="text-sm text-gray-600 mt-2">Manage all properties in the system</p>
         </div>
         <Link
@@ -99,55 +99,50 @@ export default async function PropertiesPage() {
           {properties.map((property: any) => {
             const enrollmentCount = property.enrollments?.[0]?.count || 0
             const claimCount = property.claims?.[0]?.count || 0
-            
             return (
               <Link
                 key={property.id}
                 href={`/admin/properties/${property.id}`}
-                className="group flex items-center justify-between px-6 py-4 bg-white rounded-lg border border-gray-200 hover:border-beagle-orange hover:shadow-md transition-all duration-200"
+                className="group flex flex-col gap-2 px-3 py-3 bg-white rounded-lg border border-gray-200 hover:border-beagle-orange hover:shadow-md transition-all duration-200"
               >
-                <div className="flex items-center gap-6 flex-1">
-                  {/* Property Name & Address */}
-                  <div className="w-64 flex-shrink-0">
-                    <p className="text-sm font-semibold text-beagle-dark mb-1">{property.name}</p>
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-semibold text-beagle-dark mb-0">{property.name}</p>
                     <div className="flex items-center gap-1.5 text-xs text-gray-500">
                       <MapPin className="w-3 h-3" />
-                      <span className="truncate">
+                      <span className="truncate w-40 block">
                         {[property.city, property.state].filter(Boolean).join(', ') || 'No address'}
                       </span>
                     </div>
                   </div>
+                  <ChevronRight className="w-5 h-5 text-beagle-dark group-hover:text-beagle-orange transition-colors duration-200" />
+                </div>
 
-                  <div className="h-10 w-px bg-gray-200"></div>
-
-                  {/* Full Address */}
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs text-gray-500">Address</p>
-                    <p className="text-sm text-gray-700 truncate">
+                <div className="hidden sm:flex items-center gap-6 flex-wrap">
+                  <div className="text-center">
+                    <p className="text-xs text-gray-500 mb-1">Address</p>
+                    <p className="text-sm text-gray-700 truncate w-36">
                       {property.address || 'N/A'}
                     </p>
                   </div>
 
                   <div className="h-10 w-px bg-gray-200"></div>
 
-                  {/* Enrollments */}
-                  <div className="w-28 flex-shrink-0 text-center">
+                  <div className="text-center">
                     <p className="text-xs text-gray-500 mb-1">Enrollments</p>
                     <p className="text-lg font-bold text-beagle-dark">{enrollmentCount}</p>
                   </div>
 
                   <div className="h-10 w-px bg-gray-200"></div>
 
-                  {/* Claims */}
-                  <div className="w-24 flex-shrink-0 text-center">
+                  <div className="text-center">
                     <p className="text-xs text-gray-500 mb-1">Claims</p>
                     <p className="text-lg font-bold text-beagle-dark">{claimCount}</p>
                   </div>
 
                   <div className="h-10 w-px bg-gray-200"></div>
 
-                  {/* Created Date */}
-                  <div className="w-24 flex-shrink-0 text-center">
+                  <div className="text-center">
                     <p className="text-xs text-gray-500 mb-1">Created</p>
                     <p className="text-xs text-gray-700">
                       {new Date(property.created_at).toLocaleDateString('en-US', { 
@@ -158,8 +153,6 @@ export default async function PropertiesPage() {
                     </p>
                   </div>
                 </div>
-
-                <ChevronRight className="w-5 h-5 text-beagle-dark group-hover:text-beagle-orange transition-colors duration-200 flex-shrink-0 ml-4" />
               </Link>
             )
           })}

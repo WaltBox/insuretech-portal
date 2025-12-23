@@ -13,15 +13,19 @@ import {
   ChevronDown,
   ChevronUp,
   User as UserIcon,
-  LogOut
+  LogOut,
+  Menu,
+  X
 } from 'lucide-react'
 import { User } from '@/lib/types'
 
 interface SidebarProps {
   user: User
+  isOpen: boolean
+  onToggle: () => void
 }
 
-export const Sidebar = memo(function Sidebar({ user }: SidebarProps) {
+export const Sidebar = memo(function Sidebar({ user, isOpen, onToggle }: SidebarProps) {
   const pathname = usePathname()
   const [showMenu, setShowMenu] = useState(false)
   const [loggingOut, setLoggingOut] = useState(false)
@@ -70,14 +74,37 @@ export const Sidebar = memo(function Sidebar({ user }: SidebarProps) {
   }, [user.role])
 
   return (
-    <aside className="w-[260px] bg-white border-r border-gray-200 min-h-screen flex flex-col">
-      {/* Logo Section */}
-      <div className="px-6 py-6 border-b border-gray-200">
-        <Link href="/dashboard" className="block">
-          <Image
-            src="/images/beagle-text-logo.webp"
-            alt="Beagle"
-            width={100}
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={onToggle}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside className={`
+        fixed lg:static inset-y-0 left-0 z-50
+        w-[260px] bg-white border-r border-gray-200 
+        flex flex-col transition-transform duration-300 ease-in-out
+        ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+      `}>
+        {/* Close button for mobile */}
+        <button
+          onClick={onToggle}
+          className="lg:hidden absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-100"
+        >
+          <X className="w-5 h-5 text-gray-600" />
+        </button>
+
+        {/* Logo Section */}
+        <div className="px-6 py-6 border-b border-gray-200">
+          <Link href="/dashboard" className="block" onClick={() => onToggle()}>
+            <Image
+              src="/images/beagle-text-logo.webp"
+              alt="Beagle"
+              width={100}
             height={32}
             priority
             className="h-8 w-auto"
@@ -95,6 +122,7 @@ export const Sidebar = memo(function Sidebar({ user }: SidebarProps) {
               <Link
                 key={link.href}
                 href={link.href}
+                onClick={() => onToggle()}
                 className={`
                   flex items-center gap-3 
                   px-3 py-2.5 
@@ -165,6 +193,7 @@ export const Sidebar = memo(function Sidebar({ user }: SidebarProps) {
         )}
       </div>
     </aside>
+    </>
   )
 })
 
