@@ -50,7 +50,7 @@ export function DashboardLayoutClient({ user, children }: DashboardLayoutClientP
           <Menu className="w-6 h-6 text-gray-600" />
         </button>
         
-        <div className="pt-16 lg:pt-0">
+        <div>
           {children}
         </div>
       </main>

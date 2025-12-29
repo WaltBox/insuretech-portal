@@ -95,7 +95,7 @@ export default async function PropertiesPage() {
 
       {/* Properties List */}
       {properties && properties.length > 0 ? (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {properties.map((property: any) => {
             const enrollmentCount = property.enrollments?.[0]?.count || 0
             const claimCount = property.claims?.[0]?.count || 0
@@ -103,46 +103,50 @@ export default async function PropertiesPage() {
               <Link
                 key={property.id}
                 href={`/admin/properties/${property.id}`}
-                className="group flex flex-col gap-2 px-3 py-3 bg-white rounded-lg border border-gray-200 hover:border-beagle-orange hover:shadow-md transition-all duration-200"
+                className="group flex items-center justify-between gap-4 px-6 py-4 bg-white rounded-lg border border-gray-200 hover:border-beagle-orange hover:shadow-md transition-all duration-200"
               >
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="text-sm font-semibold text-beagle-dark mb-0">{property.name}</p>
+                <div className="flex items-center gap-6 flex-1 min-w-0">
+                  {/* Property Name & Location */}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-beagle-dark mb-1 truncate">{property.name}</p>
                     <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                      <MapPin className="w-3 h-3" />
-                      <span className="truncate w-40 block">
-                        {[property.city, property.state].filter(Boolean).join(', ') || 'No address'}
+                      <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
+                      <span className="truncate">
+                        {[property.address, property.city, property.state].filter(Boolean).join(', ') || 'No address'}
                       </span>
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-beagle-dark group-hover:text-beagle-orange transition-colors duration-200" />
-                </div>
 
-                <div className="hidden sm:flex items-center gap-6 flex-wrap">
-                  <div className="text-center">
+                  <div className="h-10 w-px bg-gray-200 hidden sm:block"></div>
+
+                  {/* Address */}
+                  <div className="hidden md:block w-48 flex-shrink-0">
                     <p className="text-xs text-gray-500 mb-1">Address</p>
-                    <p className="text-sm text-gray-700 truncate w-36">
+                    <p className="text-sm text-gray-700 truncate">
                       {property.address || 'N/A'}
                     </p>
                   </div>
 
-                  <div className="h-10 w-px bg-gray-200"></div>
+                  <div className="h-10 w-px bg-gray-200 hidden sm:block"></div>
 
-                  <div className="text-center">
+                  {/* Enrollments */}
+                  <div className="w-24 flex-shrink-0 text-center">
                     <p className="text-xs text-gray-500 mb-1">Enrollments</p>
                     <p className="text-lg font-bold text-beagle-dark">{enrollmentCount}</p>
                   </div>
 
-                  <div className="h-10 w-px bg-gray-200"></div>
+                  <div className="h-10 w-px bg-gray-200 hidden sm:block"></div>
 
-                  <div className="text-center">
+                  {/* Claims */}
+                  <div className="w-20 flex-shrink-0 text-center">
                     <p className="text-xs text-gray-500 mb-1">Claims</p>
                     <p className="text-lg font-bold text-beagle-dark">{claimCount}</p>
                   </div>
 
-                  <div className="h-10 w-px bg-gray-200"></div>
+                  <div className="h-10 w-px bg-gray-200 hidden sm:block"></div>
 
-                  <div className="text-center">
+                  {/* Created Date */}
+                  <div className="hidden lg:block w-28 flex-shrink-0 text-center">
                     <p className="text-xs text-gray-500 mb-1">Created</p>
                     <p className="text-xs text-gray-700">
                       {new Date(property.created_at).toLocaleDateString('en-US', { 
@@ -153,6 +157,8 @@ export default async function PropertiesPage() {
                     </p>
                   </div>
                 </div>
+
+                <ChevronRight className="w-5 h-5 text-beagle-dark group-hover:text-beagle-orange transition-colors duration-200 flex-shrink-0" />
               </Link>
             )
           })}

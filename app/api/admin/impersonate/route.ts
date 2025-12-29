@@ -40,6 +40,14 @@ export async function POST(request: NextRequest) {
       path: '/',
     })
 
+    // Set impersonation context in database for RLS
+    try {
+      await supabase.rpc('set_impersonation_context', { user_id: userId })
+    } catch (error) {
+      console.warn('Could not set impersonation context in database:', error)
+      // Continue anyway - cookie-based impersonation will still work for UI
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Impersonation started',
@@ -64,6 +72,14 @@ export async function DELETE() {
     // Remove impersonation cookie
     const cookieStore = await cookies()
     cookieStore.delete('impersonate_user_id')
+
+    // Clear impersonation context in database
+    const supabase = await createClient()
+    try {
+      await supabase.rpc('clear_impersonation_context')
+    } catch (error) {
+      console.warn('Could not clear impersonation context in database:', error)
+    }
 
     return NextResponse.json({
       success: true,

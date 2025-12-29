@@ -1,8 +1,9 @@
-import { requireRole } from '@/lib/auth'
+import { requireRole, getCurrentUser } from '@/lib/auth'
 import { ClaimsTable } from '@/components/claims/claims-table'
 
 export default async function MyPropertiesClaimsPage() {
   await requireRole(['property_manager'])
+  const user = await getCurrentUser()
 
   return (
     <div className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
@@ -11,7 +12,7 @@ export default async function MyPropertiesClaimsPage() {
         <p className="text-sm text-gray-600 mt-2">View claims for your assigned properties</p>
       </div>
 
-      <ClaimsTable />
+      <ClaimsTable userEmail={user?.email} />
     </div>
   )
 }

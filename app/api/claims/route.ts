@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth'
+import { cookies } from 'next/headers'
 
 export async function GET(request: NextRequest) {
   try {
@@ -11,11 +12,52 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url)
     const propertyId = searchParams.get('property_id')
+    const filedByEmail = searchParams.get('filed_by_email') // Filter by who filed the claim
     const limit = parseInt(searchParams.get('limit') || '50')
     const cursor = searchParams.get('cursor')
     const timePeriod = searchParams.get('time_period') // 'week', 'month', or 'year'
 
+    const cookieStore = await cookies()
+    const impersonateUserId = cookieStore.get('impersonate_user_id')?.value
+    
     const supabase = await createClient()
+    
+    // Set impersonation context for RLS BEFORE the query
+    // This ensures the context is set in the same connection as the query
+    // If this fails, the query will still run but RLS won't respect impersonation
+    if (impersonateUserId) {
+      try {
+        const { data, error: contextError } = await supabase.rpc('set_impersonation_context', { 
+          user_id: impersonateUserId 
+        })
+        if (contextError) {
+          console.error('❌ Failed to set impersonation context:', contextError.message)
+          console.error('Context error details:', JSON.stringify(contextError, null, 2))
+        } else {
+          console.log('✅ Impersonation context set for user:', impersonateUserId)
+        }
+        
+        // Verify the context was set by checking the effective user
+        const { data: effectiveId } = await supabase.rpc('get_effective_user_id', {})
+        const { data: effectiveRole } = await supabase.rpc('get_effective_user_role', {})
+        const { data: effectiveEmail } = await supabase.rpc('get_effective_user_email', {})
+        console.log('🔍 Effective user check:', {
+          effectiveId,
+          effectiveRole,
+          effectiveEmail,
+          impersonateUserId
+        })
+      } catch (error) {
+        // Non-blocking - if function doesn't exist, query will still work
+        console.error('❌ Impersonation context error:', error instanceof Error ? error.message : error)
+      }
+    }
+    
+    // Note: RLS policies automatically filter claims based on user role:
+    // - Centralized Members: See ALL claims
+    // - Property Managers: See ONLY claims where filed_by_email matches their email
+    //   (filed_by_email is the email of the PM/CM who filed the claim from Beagle API)
+    
     let query = supabase
       .from('claims')
       .select('*, property:properties(name)', { count: 'exact' })
@@ -25,6 +67,11 @@ export async function GET(request: NextRequest) {
     // Filter by property if specified
     if (propertyId) {
       query = query.eq('property_id', propertyId)
+    }
+
+    // Filter by who filed the claim (email of PM or CM who filed it)
+    if (filedByEmail) {
+      query = query.eq('filed_by_email', filedByEmail)
     }
 
     // Filter by time period (server-side for better performance)
@@ -54,16 +101,49 @@ export async function GET(request: NextRequest) {
 
     const { data: claims, error, count } = await query
 
-    if (error) throw error
+    if (error) {
+      console.error('Claims query error:', error)
+      // If it's a function not found error, provide helpful message
+      if (error.message?.includes('function') || error.message?.includes('does not exist')) {
+        console.error('RLS functions may not exist. Run supabase/impersonation-rls-support.sql first.')
+      }
+      throw error
+    }
 
-    const hasMore = claims && claims.length === limit
-    const nextCursor = hasMore && claims.length > 0 ? claims[claims.length - 1].submitted_date : null
+    // Apply application-level filtering for impersonation (RLS fallback)
+    // Since RLS doesn't work reliably with connection pooling, we filter here
+    let filteredClaims = claims || []
+    let filteredCount = count || 0
+    
+    if (impersonateUserId) {
+      // Get the effective user info to determine filtering
+      const { data: effectiveRole } = await supabase.rpc('get_effective_user_role', {})
+      const { data: effectiveEmail } = await supabase.rpc('get_effective_user_email', {})
+      
+      // If impersonating a Property Manager, filter to only their claims
+      if (effectiveRole === 'property_manager' && effectiveEmail) {
+        const beforeFilter = filteredClaims.length
+        filteredClaims = filteredClaims.filter(claim => {
+          // PMs only see claims where filed_by_email matches their email
+          if (!claim.filed_by_email || claim.filed_by_email.trim() === '') {
+            return false // Hide claims with no filed_by_email from PMs
+          }
+          return claim.filed_by_email.toLowerCase().trim() === effectiveEmail.toLowerCase().trim()
+        })
+        filteredCount = filteredClaims.length
+        console.log(`🔒 Filtered claims for PM: ${beforeFilter} → ${filteredCount} (email: ${effectiveEmail})`)
+      }
+      // If impersonating Admin or Centralized Member, show all claims (no filtering needed)
+    }
+
+    const hasMore = filteredClaims && filteredClaims.length === limit
+    const nextCursor = hasMore && filteredClaims.length > 0 ? filteredClaims[filteredClaims.length - 1].submitted_date : null
 
     return NextResponse.json({
-      claims,
+      claims: filteredClaims,
       nextCursor,
       hasMore,
-      total: count,
+      total: filteredCount,
     })
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'An error occurred'

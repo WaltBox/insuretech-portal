@@ -3,8 +3,9 @@ import { cookies } from 'next/headers'
 
 export async function createClient() {
   const cookieStore = await cookies()
+  const impersonateUserId = cookieStore.get('impersonate_user_id')?.value
 
-  return createServerClient(
+  const client = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -26,5 +27,23 @@ export async function createClient() {
       },
     }
   )
+
+  // Set impersonation context for RLS if impersonating
+  // This stores the impersonated user ID in a table that RLS functions can check
+  if (impersonateUserId) {
+    try {
+      // Call the function to set the impersonation context
+      // This stores it in _impersonation_context table for this connection
+      await client.rpc('set_impersonation_context', { 
+        user_id: impersonateUserId 
+      })
+    } catch (error) {
+      // Function might not exist yet - that's okay, run the SQL script first
+      // RLS will fall back to using auth.uid() if the function fails
+      console.warn('Could not set impersonation context. Run supabase/impersonation-rls-support.sql first.')
+    }
+  }
+
+  return client
 }
 

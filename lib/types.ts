@@ -71,6 +71,7 @@ export interface Claim {
   participant_email?: string
   participant_phone?: string
   participant_address?: string
+  filed_by_email?: string // Email of the PM or CM who filed this claim
   raw_data?: Record<string, unknown>
   created_at: string
   updated_at: string

@@ -2,12 +2,14 @@
 
 import { useState } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import Image from 'next/image'
 import { Loader2, ChevronDown, ChevronUp, Building2, User, Calendar, FileText } from 'lucide-react'
 import { LoadingState } from '@/components/ui/loading-spinner'
 import { Claim } from '@/lib/types'
 
 interface ClaimsTableProps {
   propertyId?: string
+  userEmail?: string // Email of the logged-in user
 }
 
 interface ClaimWithProperty extends Claim {
@@ -16,7 +18,7 @@ interface ClaimWithProperty extends Claim {
   }
 }
 
-export function ClaimsTable({ propertyId }: ClaimsTableProps) {
+export function ClaimsTable({ propertyId, userEmail }: ClaimsTableProps) {
   const [expandedClaim, setExpandedClaim] = useState<string | null>(null)
   const [timePeriod, setTimePeriod] = useState<'week' | 'month' | 'year'>('month')
 
@@ -132,9 +134,27 @@ export function ClaimsTable({ propertyId }: ClaimsTableProps) {
       </div>
 
       {claims.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-sm p-12 text-center border border-gray-200">
-          <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-          <p className="text-sm text-gray-600">No claims found for this period</p>
+        <div className="bg-white rounded-lg shadow-sm p-16 text-center border border-gray-200">
+          <div className="max-w-md mx-auto">
+            <div className="w-32 h-32 mx-auto mb-6 flex items-center justify-center bg-orange-lighter rounded-full p-4">
+              <Image 
+                src="/beagle-bubbles.png" 
+                alt="Beagle with bubbles" 
+                width={120} 
+                height={120} 
+                className="object-contain"
+              />
+            </div>
+            <h3 className="text-lg font-semibold text-beagle-dark mb-2">No Claims Found</h3>
+            <p className="text-sm text-gray-600 mb-1">
+              {timePeriod === 'week' && "No claims have been submitted this week."}
+              {timePeriod === 'month' && "No claims have been submitted this month."}
+              {timePeriod === 'year' && "No claims have been submitted this year."}
+            </p>
+            <p className="text-xs text-gray-500 mt-4">
+              Try selecting a different time period or check back later for new claims.
+            </p>
+          </div>
         </div>
       ) : (
         <div className="space-y-3">
@@ -224,20 +244,20 @@ export function ClaimsTable({ propertyId }: ClaimsTableProps) {
                 {/* Expanded Details */}
                 {isExpanded && (
                   <div className="border-t border-gray-200 bg-gray-50 px-4 py-3">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                      {/* Left Column */}
-                      <div className="space-y-2">
-                        <p className="text-xs font-semibold text-gray-500 uppercase">Contact</p>
-                        {claim.participant_email && (
+                    <div className={`grid gap-4 text-sm ${claim.participant_email && userEmail && claim.participant_email.toLowerCase() === userEmail.toLowerCase() ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
+                      {/* Left Column - Only show contact if participant email matches user email */}
+                      {claim.participant_email && userEmail && claim.participant_email.toLowerCase() === userEmail.toLowerCase() && (
+                        <div className="space-y-2">
+                          <p className="text-xs font-semibold text-gray-500 uppercase">Contact</p>
                           <p className="text-gray-700">{claim.participant_email}</p>
-                        )}
-                        {claim.participant_phone && (
-                          <p className="text-gray-700">{claim.participant_phone}</p>
-                        )}
-                        {claim.participant_address && (
-                          <p className="text-gray-700 text-xs">{claim.participant_address}</p>
-                        )}
-                      </div>
+                          {claim.participant_phone && (
+                            <p className="text-gray-700">{claim.participant_phone}</p>
+                          )}
+                          {claim.participant_address && (
+                            <p className="text-gray-700 text-xs">{claim.participant_address}</p>
+                          )}
+                        </div>
+                      )}
 
                       {/* Right Column */}
                       <div className="space-y-2">
