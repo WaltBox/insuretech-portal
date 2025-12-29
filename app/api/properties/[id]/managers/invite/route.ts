@@ -156,8 +156,8 @@ async function sendInvitationEmail({
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://beagle-caf.com'
   const dogImageUrl = supabaseUrl
-    ? `${supabaseUrl}/storage/v1/object/public/email-assets/new-dog.png`
-    : `${baseUrl}/new-dog.png`
+    ? `${supabaseUrl}/storage/v1/object/public/email-assets/realbeagle.png`
+    : `${baseUrl}/realbeagle.png`
 
   const html = `
     <!DOCTYPE html>
@@ -175,8 +175,8 @@ async function sendInvitationEmail({
                 <!-- Header -->
                 <tr>
                   <td style="padding: 50px 40px 30px; text-align: center; background-color: #ffffff;">
-                    <div style="margin-bottom: 30px;">
-                      <img src="${dogImageUrl}" alt="Beagle" style="width: 120px; height: 120px; border-radius: 8px; display: block; margin: 0 auto;">
+                    <div style="margin-bottom: 30px; background-color: #ffffff; padding: 20px; border-radius: 8px;">
+                      <img src="${dogImageUrl}" alt="Beagle" style="width: 120px; height: 120px; border-radius: 8px; display: block; margin: 0 auto; background-color: #ffffff;">
                     </div>
                   </td>
                 </tr>
