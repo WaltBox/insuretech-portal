@@ -6,6 +6,7 @@ export interface User {
   role: UserRole
   first_name: string
   last_name: string
+  phone?: string
   created_at: string
   updated_at: string
 }

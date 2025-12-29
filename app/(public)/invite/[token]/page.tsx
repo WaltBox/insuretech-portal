@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
+import Image from 'next/image'
 
 export default function InviteAcceptPage({
   params,
@@ -18,9 +19,23 @@ export default function InviteAcceptPage({
     role: string
     metadata: { first_name: string; last_name: string }
   } | null>(null)
+  const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [accepting, setAccepting] = useState(false)
+
+  // Format phone number as user types
+  const formatPhone = (value: string) => {
+    const digits = value.replace(/\D/g, '')
+    if (digits.length <= 3) return digits
+    if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`
+  }
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhone(e.target.value)
+    setPhone(formatted)
+  }
 
   useEffect(() => {
     params.then(p => {
@@ -50,6 +65,13 @@ export default function InviteAcceptPage({
     e.preventDefault()
     setError(null)
 
+    // Validate phone number (basic validation - at least 10 digits)
+    const phoneDigits = phone.replace(/\D/g, '')
+    if (!phone || phoneDigits.length < 10) {
+      setError('Please enter a valid phone number')
+      return
+    }
+
     if (password !== confirmPassword) {
       setError('Passwords do not match')
       return
@@ -66,7 +88,7 @@ export default function InviteAcceptPage({
       const response = await fetch(`/api/invitations/${token}/accept`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ password, phone }),
       })
 
       const data = await response.json()
@@ -86,7 +108,7 @@ export default function InviteAcceptPage({
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-beagle-light">
+      <div className="min-h-screen flex items-center justify-center bg-beagle-light relative px-4 py-8">
         <Loader2 className="h-8 w-8 animate-spin text-beagle-orange" />
       </div>
     )
@@ -94,8 +116,20 @@ export default function InviteAcceptPage({
 
   if (error && !invitation) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-beagle-light">
-        <div className="max-w-md w-full bg-white rounded-2xl shadow-sm p-8 border border-error">
+      <div className="min-h-screen flex items-center justify-center bg-beagle-light relative px-4 py-8">
+        {/* Beagle Logo Top Left */}
+        <div className="absolute top-4 left-4 sm:top-8 sm:left-8">
+          <Image
+            src="/images/beagle-text-logo.webp"
+            alt="Beagle"
+            width={100}
+            height={32}
+            priority
+            className="h-6 sm:h-8 w-auto"
+          />
+        </div>
+        
+        <div className="max-w-md w-full bg-white rounded-2xl shadow-sm p-4 sm:p-8 border-2 border-error">
           <div className="text-center">
             <h2 className="text-2xl font-bold text-error mb-4">Invalid Invitation</h2>
             <p className="text-sm text-gray-600 mb-6">{error}</p>
@@ -112,14 +146,39 @@ export default function InviteAcceptPage({
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-beagle-light">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-sm p-8 border border-gray-200">
-        <h2 className="text-3xl font-semibold text-beagle-dark mb-2">Accept Invitation</h2>
-        <p className="text-sm text-gray-600 mb-6">
-          You&apos;ve been invited to join Beagle Portal as <strong className="capitalize">{invitation?.role?.replace('_', ' ')}</strong>
-        </p>
+    <div className="min-h-screen flex items-center justify-center bg-beagle-light relative px-4 py-8">
+      {/* Beagle Logo Top Left */}
+      <div className="absolute top-4 left-4 sm:top-8 sm:left-8">
+        <Image
+          src="/images/beagle-text-logo.webp"
+          alt="Beagle"
+          width={100}
+          height={32}
+          priority
+          className="h-6 sm:h-8 w-auto"
+        />
+      </div>
 
-        <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+      <div className="max-w-md w-full space-y-4 sm:space-y-6 p-4 sm:p-8 bg-white rounded-2xl shadow-sm border-2 border-beagle-dark">
+        <div className="text-center">
+          <div className="mb-4 sm:mb-6 flex justify-center">
+            <Image
+              src="/beagledog.png"
+              alt="Beagle"
+              width={120}
+              height={120}
+              className="rounded-lg w-20 h-20 sm:w-[120px] sm:h-[120px]"
+            />
+          </div>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-beagle-dark">
+            Accept Invitation
+          </h2>
+          <p className="mt-2 text-xs sm:text-sm text-gray-600">
+            You&apos;ve been invited to join Beagle Portal as <strong className="capitalize">{invitation?.role?.replace('_', ' ')}</strong>
+          </p>
+        </div>
+
+        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-200">
           <p className="text-xs text-gray-500 mb-1">Email</p>
           <p className="text-sm font-semibold text-beagle-dark">{invitation?.email}</p>
           <p className="text-xs text-gray-500 mt-3 mb-1">Name</p>
@@ -128,50 +187,76 @@ export default function InviteAcceptPage({
           </p>
         </div>
 
-        <form onSubmit={handleAccept} className="space-y-4">
+        <form onSubmit={handleAccept} className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
           {error && (
-            <div className="rounded-lg bg-red-50 border-l-4 border-error p-4">
-              <p className="text-sm font-medium text-red-800">{error}</p>
+            <div className="rounded-lg bg-red-50 border-l-4 border-error p-3 sm:p-4">
+              <p className="text-xs sm:text-sm font-medium text-red-800">{error}</p>
             </div>
           )}
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-beagle-dark mb-1.5">
-              Create Password *
-            </label>
-            <input
-              type="password"
-              id="password"
-              required
-              minLength={8}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
-              placeholder="At least 8 characters"
-            />
-          </div>
+          <div className="space-y-3 sm:space-y-4">
+            <div>
+              <label htmlFor="phone" className="block text-xs sm:text-sm font-medium text-beagle-dark mb-1.5">
+                Phone Number *
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                required
+                value={phone}
+                onChange={handlePhoneChange}
+                maxLength={14}
+                className="block w-full px-3 py-2 sm:px-4 sm:py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+                placeholder="(555) 123-4567"
+              />
+              <p className="text-xs text-gray-500 mt-1">We'll use this to contact you when needed</p>
+            </div>
 
-          <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-beagle-dark mb-1.5">
-              Confirm Password *
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              required
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
-              placeholder="Confirm your password"
-            />
+            <div>
+              <label htmlFor="password" className="block text-xs sm:text-sm font-medium text-beagle-dark mb-1.5">
+                Create Password *
+              </label>
+              <input
+                type="password"
+                id="password"
+                required
+                minLength={8}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="block w-full px-3 py-2 sm:px-4 sm:py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+                placeholder="At least 8 characters"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="confirmPassword" className="block text-xs sm:text-sm font-medium text-beagle-dark mb-1.5">
+                Confirm Password *
+              </label>
+              <input
+                type="password"
+                id="confirmPassword"
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="block w-full px-3 py-2 sm:px-4 sm:py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+                placeholder="Confirm your password"
+              />
+            </div>
           </div>
 
           <button
             type="submit"
             disabled={accepting}
-            className="w-full bg-beagle-orange text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-accent-orange active:bg-[#e66d00] disabled:bg-gray-300 disabled:cursor-not-allowed shadow-sm hover:shadow-md transition-all duration-200"
+            className="w-full flex justify-center items-center gap-2 py-2.5 px-4 sm:px-6 rounded-lg text-sm font-semibold text-beagle-dark bg-white border-2 border-beagle-dark hover:bg-beagle-dark hover:text-white focus:outline-none focus:ring-2 focus:ring-beagle-dark focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-200"
           >
-            {accepting ? 'Creating Account...' : 'Create Account & Accept'}
+            {accepting ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin text-beagle-orange" />
+                Creating Account...
+              </>
+            ) : (
+              'Create Account & Accept'
+            )}
           </button>
         </form>
       </div>

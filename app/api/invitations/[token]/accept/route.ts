@@ -7,7 +7,14 @@ export async function POST(
 ) {
   try {
     const { token } = await params
-    const { password } = await request.json()
+    const { password, phone } = await request.json()
+
+    if (!phone || phone.replace(/\D/g, '').length < 10) {
+      return NextResponse.json(
+        { error: 'Please enter a valid phone number' },
+        { status: 400 }
+      )
+    }
 
     if (!password || password.length < 8) {
       return NextResponse.json(
@@ -84,6 +91,7 @@ export async function POST(
         role: invitation.role,
         first_name: metadata.first_name || 'User',
         last_name: metadata.last_name || 'Name',
+        phone: phone.trim(),
       })
       .select()
       .single()
