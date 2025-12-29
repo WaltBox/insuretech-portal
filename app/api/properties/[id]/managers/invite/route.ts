@@ -227,14 +227,29 @@ async function sendInvitationEmail({
         'Authorization': `Bearer ${resendApiKey}`,
       },
       body: JSON.stringify({
-        from: 'Beagle Portal <noreply@beagleforpm.com>',
+        from: 'Beagle Portal <noreply@beagle-caf.com>',
         to: [email],
         subject: `You've been invited to Beagle Portal`,
         html,
       }),
     })
 
-    return response.ok
+    const data = await response.json()
+
+    if (!response.ok) {
+      console.error('Resend API error:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: data,
+      })
+      return false
+    }
+
+    console.log('Invitation email sent successfully:', {
+      email,
+      messageId: data.id,
+    })
+    return true
   } catch (error) {
     console.error('Invitation email error:', error)
     return false
