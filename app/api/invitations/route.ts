@@ -122,7 +122,8 @@ export async function POST(request: NextRequest) {
     if (inviteError) throw inviteError
 
     // Send invitation email
-    const inviteLink = `${process.env.NEXT_PUBLIC_APP_URL}/invite/${token}`
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://beagle-caf.com'
+    const inviteLink = `${baseUrl}/invite/${token}`
     const emailSent = await sendInvitationEmail({
       email,
       firstName: first_name,
@@ -172,9 +173,10 @@ async function sendInvitationEmail({
 
   // Get Supabase storage URL for email image
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://beagle-caf.com'
   const dogImageUrl = supabaseUrl
-    ? `${supabaseUrl}/storage/v1/object/public/email-assets/beagledog.png`
-    : `${process.env.NEXT_PUBLIC_APP_URL}/beagledog.png`
+    ? `${supabaseUrl}/storage/v1/object/public/email-assets/new-dog.png`
+    : `${baseUrl}/new-dog.png`
 
   const html = `
     <!DOCTYPE html>
