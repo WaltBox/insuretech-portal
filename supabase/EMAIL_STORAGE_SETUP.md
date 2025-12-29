@@ -24,7 +24,7 @@ node scripts/upload-email-images.js
 
 This will upload:
 - `beagle-text-logo.webp` → `email-assets/beagle-text-logo.webp`
-- `beagledog.png` → `email-assets/beagledog.png`
+- `realbeagle.png` → `email-assets/realbeagle.png`
 
 **Note:** Make sure your `.env.local` has:
 - `NEXT_PUBLIC_SUPABASE_URL`
@@ -36,7 +36,7 @@ After uploading, test the URLs in your browser:
 
 ```
 https://YOUR_PROJECT.supabase.co/storage/v1/object/public/email-assets/beagle-text-logo.webp
-https://YOUR_PROJECT.supabase.co/storage/v1/object/public/email-assets/beagledog.png
+https://YOUR_PROJECT.supabase.co/storage/v1/object/public/email-assets/realbeagle.png
 ```
 
 Both should display the images.
@@ -56,7 +56,7 @@ If the script doesn't work, you can upload manually:
 2. Click on **email-assets** bucket (or create it if it doesn't exist)
 3. Click **Upload file**
 4. Upload `public/images/beagle-text-logo.webp` as `beagle-text-logo.webp`
-5. Upload `public/beagledog.png` as `beagledog.png`
+5. Upload `public/realbeagle.png` as `realbeagle.png`
 6. Make sure both files are set to **Public**
 
 ## Troubleshooting
