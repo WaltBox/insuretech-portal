@@ -5,3 +5,4 @@ ALTER TABLE invitations ADD COLUMN IF NOT EXISTS metadata JSONB;
 ALTER TABLE invitations ALTER COLUMN property_id DROP NOT NULL;
 
 
+

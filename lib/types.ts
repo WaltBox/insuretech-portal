@@ -100,3 +100,37 @@ export interface EnrollmentStats {
   count: number
 }
 
+export type TicketStatus = 'open' | 'resolved' | 'closed'
+export type MessageSenderType = 'user' | 'admin' | 'system'
+
+export interface SupportMessage {
+  id: string
+  ticket_id: string
+  sender_id: string
+  sender_type: MessageSenderType
+  content: string
+  created_at: string
+  sender?: {
+    id: string
+    email: string
+    first_name: string
+    last_name: string
+  }
+}
+
+export interface SupportTicket {
+  id: string
+  user_id: string
+  subject?: string
+  status: TicketStatus
+  created_at: string
+  updated_at: string
+  user?: {
+    id: string
+    email: string
+    first_name: string
+    last_name: string
+  }
+  messages?: SupportMessage[]
+}
+

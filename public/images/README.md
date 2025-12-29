@@ -30,3 +30,4 @@ public/
 - Include dimensions for multiple sizes: `logo-sm.png`, `logo-lg.png`
 
 
+
