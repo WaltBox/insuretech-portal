@@ -175,8 +175,8 @@ async function sendInvitationEmail({
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://beagle-caf.com'
   const logoUrl = supabaseUrl
-    ? `${supabaseUrl}/storage/v1/object/public/email-assets/beagle-text-logo.webp`
-    : `${baseUrl}/images/beagle-text-logo.webp`
+    ? `${supabaseUrl}/storage/v1/object/public/email-assets/newbeaglelogo.png`
+    : `${baseUrl}/images/newbeaglelogo.png`
   const dogImageUrl = supabaseUrl
     ? `${supabaseUrl}/storage/v1/object/public/email-assets/realbeagle.png`
     : `${baseUrl}/realbeagle.png`
@@ -198,7 +198,7 @@ async function sendInvitationEmail({
                 <tr>
                   <td style="padding: 40px 40px 30px; text-align: center; background-color: #ffffff;">
                     <div style="margin-bottom: 30px;">
-                      <img src="${logoUrl}" alt="Beagle" style="height: 32px; width: auto; max-width: 200px; display: block; margin: 0 auto;">
+                      <img src="${logoUrl}" alt="Beagle" style="height: 32px; width: auto; max-width: 200px; display: block; margin: 0 auto;" onerror="this.style.display='none';">
                     </div>
                     <div style="margin-bottom: 20px; background-color: #ffffff; padding: 20px; border-radius: 8px;">
                       <img src="${dogImageUrl}" alt="Beagle" style="width: 120px; height: 120px; border-radius: 8px; display: block; margin: 0 auto; background-color: #ffffff;">

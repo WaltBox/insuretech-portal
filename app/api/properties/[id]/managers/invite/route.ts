@@ -156,8 +156,8 @@ async function sendInvitationEmail({
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://beagle-caf.com'
   const logoUrl = supabaseUrl
-    ? `${supabaseUrl}/storage/v1/object/public/email-assets/beagle-text-logo.webp`
-    : `${baseUrl}/images/beagle-text-logo.webp`
+    ? `${supabaseUrl}/storage/v1/object/public/email-assets/newbeaglelogo.png`
+    : `${baseUrl}/images/newbeaglelogo.png`
   const dogImageUrl = supabaseUrl
     ? `${supabaseUrl}/storage/v1/object/public/email-assets/realbeagle.png`
     : `${baseUrl}/realbeagle.png`
