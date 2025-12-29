@@ -151,6 +151,15 @@ async function sendInvitationEmail({
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ')
 
+  // Get Supabase storage URLs for email images
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const logoUrl = supabaseUrl 
+    ? `${supabaseUrl}/storage/v1/object/public/email-assets/beagle-text-logo.webp`
+    : `${process.env.NEXT_PUBLIC_APP_URL}/images/beagle-text-logo.webp`
+  const dogImageUrl = supabaseUrl
+    ? `${supabaseUrl}/storage/v1/object/public/email-assets/beagledog.png`
+    : `${process.env.NEXT_PUBLIC_APP_URL}/beagledog.png`
+
   const html = `
     <!DOCTYPE html>
     <html>
@@ -168,10 +177,10 @@ async function sendInvitationEmail({
                 <tr>
                   <td style="padding: 40px 40px 30px; text-align: center; background-color: #ffffff;">
                     <div style="margin-bottom: 30px;">
-                      <img src="${process.env.NEXT_PUBLIC_APP_URL}/images/beagle-text-logo.webp" alt="Beagle" style="height: 32px; width: auto; max-width: 200px;">
+                      <img src="${logoUrl}" alt="Beagle" style="height: 32px; width: auto; max-width: 200px;">
                     </div>
                     <div style="margin-bottom: 20px;">
-                      <img src="${process.env.NEXT_PUBLIC_APP_URL}/beagledog.png" alt="Beagle" style="width: 120px; height: 120px; border-radius: 8px;">
+                      <img src="${dogImageUrl}" alt="Beagle" style="width: 120px; height: 120px; border-radius: 8px;">
                     </div>
                   </td>
                 </tr>
