@@ -16,33 +16,55 @@ export function SupportTicketsPanel({ isOpen, onClose }: SupportTicketsPanelProp
   const [replyMessage, setReplyMessage] = useState('')
   const [replying, setReplying] = useState(false)
   const typingTimeoutRef = React.useRef<NodeJS.Timeout | null>(null)
+  const initialLoadRef = React.useRef(true)
 
   const fetchTickets = useCallback(async () => {
-    setLoading(true)
+    // Only show loading on initial load
+    const isInitialLoad = initialLoadRef.current
+    if (isInitialLoad) {
+      setLoading(true)
+      initialLoadRef.current = false
+    }
+    
     try {
       const res = await fetch('/api/support/tickets')
       if (res.ok) {
         const data = await res.json()
-        setTickets(data)
-        // Update selected ticket if it exists
-        if (selectedTicket) {
-          const updated = data.find((t: SupportTicket) => t.id === selectedTicket.id)
-          if (updated) setSelectedTicket(updated)
-        }
+        // Only update if data actually changed (prevents flashing)
+        setTickets(prev => {
+          const prevJson = JSON.stringify(prev.map(t => ({ id: t.id, updated_at: t.updated_at, status: t.status, messages: t.messages?.length })))
+          const newJson = JSON.stringify(data.map((t: SupportTicket) => ({ id: t.id, updated_at: t.updated_at, status: t.status, messages: t.messages?.length })))
+          if (prevJson !== newJson) {
+            // Update selected ticket if it exists
+            if (selectedTicket) {
+              const updated = data.find((t: SupportTicket) => t.id === selectedTicket.id)
+              if (updated) {
+                setSelectedTicket(updated)
+              }
+            }
+            return data
+          }
+          return prev
+        })
       }
     } catch (error) {
       console.error('Failed to fetch tickets:', error)
     } finally {
-      setLoading(false)
+      if (isInitialLoad) {
+        setLoading(false)
+      }
     }
   }, [selectedTicket])
 
   useEffect(() => {
     if (isOpen) {
+      initialLoadRef.current = true
       fetchTickets()
       // Poll for new messages every 10 seconds
       const interval = setInterval(fetchTickets, 10000)
       return () => clearInterval(interval)
+    } else {
+      initialLoadRef.current = true
     }
   }, [isOpen, fetchTickets])
 
@@ -117,10 +139,21 @@ export function SupportTicketsPanel({ isOpen, onClose }: SupportTicketsPanelProp
       })
 
       if (res.ok) {
+        const updatedTicket = await res.json()
+        // Update selected ticket immediately
+        if (selectedTicket && selectedTicket.id === ticketId) {
+          setSelectedTicket({ ...selectedTicket, status: updatedTicket.status })
+        }
+        // Refresh tickets list
         fetchTickets()
+      } else {
+        const errorData = await res.json().catch(() => ({}))
+        console.error('Failed to update status:', errorData)
+        alert('Failed to update ticket status. Please try again.')
       }
     } catch (error) {
       console.error('Failed to update status:', error)
+      alert('Failed to update ticket status. Please try again.')
     }
   }
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState, useEffect, useCallback } from 'react'
+import { useMemo, useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { FileText, Layers, Headphones, FileCheck, ChevronRight, MessageCircle, CheckCircle2, Clock, Download, Mail, Loader2 } from 'lucide-react'
@@ -39,6 +39,7 @@ export function DashboardShell({
   const [replyStatus, setReplyStatus] = useState<'idle' | 'sending'>('idle')
   const [showTypingIndicator, setShowTypingIndicator] = useState(false)
   const [adminTyping, setAdminTyping] = useState(false)
+  const initialLoadRef = useRef(true)
 
   const visibleProperties = useMemo(
     () => recentProperties.slice(0, visibleCount),
@@ -55,17 +56,33 @@ export function DashboardShell({
 
   // Fetch tickets when contact panel opens
   const fetchTickets = useCallback(async () => {
-    setTicketsLoading(true)
+    // Only show loading on initial fetch
+    const isInitialLoad = initialLoadRef.current
+    if (isInitialLoad) {
+      setTicketsLoading(true)
+      initialLoadRef.current = false
+    }
+    
     try {
       const res = await fetch('/api/support/tickets')
       if (res.ok) {
         const data = await res.json()
-        setTickets(data)
+        // Only update if data actually changed (prevents flashing)
+        setTickets(prev => {
+          const prevJson = JSON.stringify(prev.map(t => ({ id: t.id, updated_at: t.updated_at, messages: t.messages?.length })))
+          const newJson = JSON.stringify(data.map((t: SupportTicket) => ({ id: t.id, updated_at: t.updated_at, messages: t.messages?.length })))
+          if (prevJson !== newJson) {
+            return data
+          }
+          return prev
+        })
       }
     } catch (error) {
       console.error('Failed to fetch tickets:', error)
     } finally {
-      setTicketsLoading(false)
+      if (isInitialLoad) {
+        setTicketsLoading(false)
+      }
     }
   }, [])
 
@@ -120,6 +137,7 @@ export function DashboardShell({
     setSelectedTicketId(null)
     setReplyMessage('')
     setAdminTyping(false)
+    initialLoadRef.current = true
   }
 
   // Create new ticket
