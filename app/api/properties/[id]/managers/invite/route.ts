@@ -152,9 +152,12 @@ async function sendInvitationEmail({
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ')
 
-  // Get Supabase storage URL for email image
+  // Get Supabase storage URLs for email images
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://beagle-caf.com'
+  const logoUrl = supabaseUrl
+    ? `${supabaseUrl}/storage/v1/object/public/email-assets/beagle-text-logo.webp`
+    : `${baseUrl}/images/beagle-text-logo.webp`
   const dogImageUrl = supabaseUrl
     ? `${supabaseUrl}/storage/v1/object/public/email-assets/realbeagle.png`
     : `${baseUrl}/realbeagle.png`
@@ -174,8 +177,11 @@ async function sendInvitationEmail({
               <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; border: 2px solid #1A1A1A; overflow: hidden;">
                 <!-- Header -->
                 <tr>
-                  <td style="padding: 50px 40px 30px; text-align: center; background-color: #ffffff;">
-                    <div style="margin-bottom: 30px; background-color: #ffffff; padding: 20px; border-radius: 8px;">
+                  <td style="padding: 40px 40px 30px; text-align: center; background-color: #ffffff;">
+                    <div style="margin-bottom: 30px;">
+                      <img src="${logoUrl}" alt="Beagle" style="height: 32px; width: auto; max-width: 200px; display: block; margin: 0 auto;">
+                    </div>
+                    <div style="margin-bottom: 20px; background-color: #ffffff; padding: 20px; border-radius: 8px;">
                       <img src="${dogImageUrl}" alt="Beagle" style="width: 120px; height: 120px; border-radius: 8px; display: block; margin: 0 auto; background-color: #ffffff;">
                     </div>
                   </td>
