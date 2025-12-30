@@ -44,7 +44,7 @@ export async function PUT(
     }
 
     const body = await request.json()
-    const { name, address, city, state, zip_code } = body
+    const { name, address, city, state, zip_code, door_count } = body
 
     const supabase = await createClient()
     const { data: property, error } = await supabase
@@ -55,6 +55,7 @@ export async function PUT(
         city,
         state,
         zip_code,
+        door_count: door_count !== undefined && door_count !== null && door_count !== '' ? (typeof door_count === 'number' ? door_count : parseInt(String(door_count), 10)) : null,
       })
       .eq('id', id)
       .select()

@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { name, address, city, state, zip_code } = body
+    const { name, address, city, state, zip_code, door_count } = body
 
     if (!name) {
       return NextResponse.json({ error: 'Name is required' }, { status: 400 })
@@ -53,6 +53,7 @@ export async function POST(request: NextRequest) {
         city,
         state,
         zip_code,
+        door_count: door_count !== undefined && door_count !== null && door_count !== '' ? (typeof door_count === 'number' ? door_count : parseInt(String(door_count), 10)) : null,
         created_by: user.id,
       })
       .select()

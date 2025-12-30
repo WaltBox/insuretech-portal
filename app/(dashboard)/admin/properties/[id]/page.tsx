@@ -56,6 +56,11 @@ export default async function PropertyDetailPage({
                     .join(', ')}
                 </p>
               )}
+              {property.door_count && (
+                <p className="text-sm text-gray-600 mt-1">
+                  {property.door_count} {property.door_count === 1 ? 'door' : 'doors'}
+                </p>
+              )}
             </div>
             <Link
               href={`/admin/properties/${id}/edit`}

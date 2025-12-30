@@ -18,6 +18,7 @@ export interface Property {
   city?: string
   state?: string
   zip_code?: string
+  door_count?: number
   created_by?: string
   created_at: string
   updated_at: string

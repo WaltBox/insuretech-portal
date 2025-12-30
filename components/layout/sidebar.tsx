@@ -8,7 +8,6 @@ import {
   LayoutDashboard, 
   Building2, 
   Users, 
-  FileText, 
   UserCog,
   ChevronDown,
   ChevronUp,
@@ -50,20 +49,20 @@ export const Sidebar = memo(function Sidebar({ user, isOpen, onToggle }: Sidebar
       { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
       { href: '/admin/properties', label: 'Properties', icon: Building2 },
       { href: '/admin/users', label: 'Users', icon: Users },
-      { href: '/claims', label: 'Claims', icon: FileText },
+      { href: '/claims', label: 'Claims', icon: null, imageIcon: '/beagle-bubbles.png' },
     ]
 
     const centralizedMemberLinks = [
       { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
       { href: '/portfolio', label: 'Portfolio', icon: Building2 },
       { href: '/property-managers', label: 'Property Managers', icon: UserCog },
-      { href: '/claims', label: 'Claims', icon: FileText },
+      { href: '/claims', label: 'Claims', icon: null, imageIcon: '/beagle-bubbles.png' },
     ]
 
     const propertyManagerLinks = [
       { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
       { href: '/my-properties', label: 'My Properties', icon: Building2 },
-      { href: '/my-properties/claims', label: 'Claims', icon: FileText },
+      { href: '/my-properties/claims', label: 'Claims', icon: null, imageIcon: '/beagle-bubbles.png' },
     ]
 
     return user.role === 'admin'
@@ -136,7 +135,17 @@ export const Sidebar = memo(function Sidebar({ user, isOpen, onToggle }: Sidebar
                   }
                 `}
               >
-                <Icon className="w-5 h-5" />
+                {link.imageIcon ? (
+                  <Image
+                    src={link.imageIcon}
+                    alt={link.label}
+                    width={20}
+                    height={20}
+                    className="w-5 h-5 object-contain"
+                  />
+                ) : (
+                  Icon && <Icon className="w-5 h-5" />
+                )}
                 {link.label}
               </Link>
             )

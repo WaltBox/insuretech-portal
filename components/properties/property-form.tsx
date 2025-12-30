@@ -19,6 +19,7 @@ export function PropertyForm({ property, onSuccess }: PropertyFormProps) {
     city: property?.city || '',
     state: property?.state || '',
     zip_code: property?.zip_code || '',
+    door_count: property?.door_count || '',
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -133,6 +134,21 @@ export function PropertyForm({ property, onSuccess }: PropertyFormProps) {
           onChange={(e) => setFormData({ ...formData, zip_code: e.target.value })}
           className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
           placeholder="12345"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="door_count" className="block text-sm font-medium text-beagle-dark mb-1.5">
+          Door Count
+        </label>
+        <input
+          type="number"
+          id="door_count"
+          min="0"
+          value={formData.door_count}
+          onChange={(e) => setFormData({ ...formData, door_count: e.target.value ? parseInt(e.target.value) : '' })}
+          className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+          placeholder="Enter number of doors"
         />
       </div>
 
