@@ -110,40 +110,14 @@ export async function GET(request: NextRequest) {
       throw error
     }
 
-    // Apply application-level filtering for impersonation (RLS fallback)
-    // Since RLS doesn't work reliably with connection pooling, we filter here
-    let filteredClaims = claims || []
-    let filteredCount = count || 0
-    
-    if (impersonateUserId) {
-      // Get the effective user info to determine filtering
-      const { data: effectiveRole } = await supabase.rpc('get_effective_user_role', {})
-      const { data: effectiveEmail } = await supabase.rpc('get_effective_user_email', {})
-      
-      // If impersonating a Property Manager, filter to only their claims
-      if (effectiveRole === 'property_manager' && effectiveEmail) {
-        const beforeFilter = filteredClaims.length
-        filteredClaims = filteredClaims.filter(claim => {
-          // PMs only see claims where filed_by_email matches their email
-          if (!claim.filed_by_email || claim.filed_by_email.trim() === '') {
-            return false // Hide claims with no filed_by_email from PMs
-          }
-          return claim.filed_by_email.toLowerCase().trim() === effectiveEmail.toLowerCase().trim()
-        })
-        filteredCount = filteredClaims.length
-        console.log(`🔒 Filtered claims for PM: ${beforeFilter} → ${filteredCount} (email: ${effectiveEmail})`)
-      }
-      // If impersonating Admin or Centralized Member, show all claims (no filtering needed)
-    }
-
-    const hasMore = filteredClaims && filteredClaims.length === limit
-    const nextCursor = hasMore && filteredClaims.length > 0 ? filteredClaims[filteredClaims.length - 1].submitted_date : null
+    const hasMore = claims && claims.length === limit
+    const nextCursor = hasMore && claims.length > 0 ? claims[claims.length - 1].submitted_date : null
 
     return NextResponse.json({
-      claims: filteredClaims,
+      claims,
       nextCursor,
       hasMore,
-      total: filteredCount,
+      total: count,
     })
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'An error occurred'

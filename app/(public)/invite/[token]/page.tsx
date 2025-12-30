@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
 import Image from 'next/image'
+import { createClient } from '@/lib/supabase/client'
 
 export default function InviteAcceptPage({
   params,
@@ -97,11 +98,26 @@ export default function InviteAcceptPage({
         throw new Error(data.error || 'Failed to accept invitation')
       }
 
-      // Redirect to login
-      router.push('/login?message=Account created successfully. Please login.')
+      // Auto-login the user after account creation
+      const supabase = createClient()
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: invitation!.email,
+        password,
+      })
+
+      if (signInError) {
+        // If auto-login fails, redirect to login page with a message
+        setAccepting(false)
+        router.push('/login?message=Account created successfully. Please login with your new password.')
+        return
+      }
+
+      // Successfully logged in, redirect to dashboard
+      // Don't set accepting to false - let the redirect happen with loading state
+      router.push('/dashboard')
+      router.refresh()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
-    } finally {
       setAccepting(false)
     }
   }

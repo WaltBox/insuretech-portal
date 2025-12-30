@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import Image from 'next/image'
 import { Loader2, ChevronDown, ChevronUp, Building2, User, Calendar, FileText } from 'lucide-react'
 import { LoadingState } from '@/components/ui/loading-spinner'
 import { Claim } from '@/lib/types'
@@ -134,27 +133,9 @@ export function ClaimsTable({ propertyId, userEmail }: ClaimsTableProps) {
       </div>
 
       {claims.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-sm p-16 text-center border border-gray-200">
-          <div className="max-w-md mx-auto">
-            <div className="w-32 h-32 mx-auto mb-6 flex items-center justify-center bg-orange-lighter rounded-full p-4">
-              <Image 
-                src="/beagle-bubbles.png" 
-                alt="Beagle with bubbles" 
-                width={120} 
-                height={120} 
-                className="object-contain"
-              />
-            </div>
-            <h3 className="text-lg font-semibold text-beagle-dark mb-2">No Claims Found</h3>
-            <p className="text-sm text-gray-600 mb-1">
-              {timePeriod === 'week' && "No claims have been submitted this week."}
-              {timePeriod === 'month' && "No claims have been submitted this month."}
-              {timePeriod === 'year' && "No claims have been submitted this year."}
-            </p>
-            <p className="text-xs text-gray-500 mt-4">
-              Try selecting a different time period or check back later for new claims.
-            </p>
-          </div>
+        <div className="bg-white rounded-lg shadow-sm p-12 text-center border border-gray-200">
+          <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+          <p className="text-sm text-gray-600">No claims found for this period</p>
         </div>
       ) : (
         <div className="space-y-3">
