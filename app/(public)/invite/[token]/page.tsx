@@ -179,7 +179,7 @@ export default function InviteAcceptPage({
         <div className="text-center">
           <div className="mb-4 sm:mb-6 flex justify-center">
             <Image
-              src="/realbeagle.png"
+              src="/trudy-cute-dog.png"
               alt="Beagle"
               width={120}
               height={120}

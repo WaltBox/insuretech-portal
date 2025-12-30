@@ -90,8 +90,8 @@ async function main() {
       fileName: 'newbeaglelogo.png',
     },
     {
-      localPath: path.join(__dirname, '../public/realbeagle.png'),
-      fileName: 'realbeagle.png',
+      localPath: path.join(__dirname, '../public/trudy-cute-dog.png'),
+      fileName: 'trudy-cute-dog.png',
     },
   ]
 
@@ -107,7 +107,7 @@ async function main() {
   console.log('\n✨ Done!')
   console.log('\n📧 Your email images are now available at:')
   console.log(`   ${supabaseUrl}/storage/v1/object/public/email-assets/newbeaglelogo.png`)
-  console.log(`   ${supabaseUrl}/storage/v1/object/public/email-assets/realbeagle.png`)
+  console.log(`   ${supabaseUrl}/storage/v1/object/public/email-assets/trudy-cute-dog.png`)
 }
 
 main().catch(console.error)

@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { Loader2, ChevronDown, ChevronUp, Building2, User, Calendar, FileText } from 'lucide-react'
+import { Loader2, ChevronDown, ChevronUp, Building2, User, Calendar } from 'lucide-react'
+import Image from 'next/image'
 import { LoadingState } from '@/components/ui/loading-spinner'
 import { Claim } from '@/lib/types'
 
@@ -134,7 +135,17 @@ export function ClaimsTable({ propertyId, userEmail }: ClaimsTableProps) {
 
       {claims.length === 0 ? (
         <div className="bg-white rounded-lg shadow-sm p-12 text-center border border-gray-200">
-          <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+          <div className="flex justify-center mb-4">
+            <div className="w-24 h-24 rounded-full bg-[#faf8f0] flex items-center justify-center">
+              <Image
+                src="/beagle-bubbles.png"
+                alt="Beagle"
+                width={80}
+                height={80}
+                className="w-20 h-20 object-contain"
+              />
+            </div>
+          </div>
           <p className="text-sm text-gray-600">No claims found for this period</p>
         </div>
       ) : (

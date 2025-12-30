@@ -8,6 +8,7 @@ import {
   LayoutDashboard, 
   Building2, 
   Users, 
+  FileText,
   UserCog,
   ChevronDown,
   ChevronUp,
@@ -49,20 +50,20 @@ export const Sidebar = memo(function Sidebar({ user, isOpen, onToggle }: Sidebar
       { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
       { href: '/admin/properties', label: 'Properties', icon: Building2 },
       { href: '/admin/users', label: 'Users', icon: Users },
-      { href: '/claims', label: 'Claims', icon: null, imageIcon: '/beagle-bubbles.png' },
+      { href: '/claims', label: 'Claims', icon: FileText },
     ]
 
     const centralizedMemberLinks = [
       { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
       { href: '/portfolio', label: 'Portfolio', icon: Building2 },
       { href: '/property-managers', label: 'Property Managers', icon: UserCog },
-      { href: '/claims', label: 'Claims', icon: null, imageIcon: '/beagle-bubbles.png' },
+      { href: '/claims', label: 'Claims', icon: FileText },
     ]
 
     const propertyManagerLinks = [
       { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
       { href: '/my-properties', label: 'My Properties', icon: Building2 },
-      { href: '/my-properties/claims', label: 'Claims', icon: null, imageIcon: '/beagle-bubbles.png' },
+      { href: '/my-properties/claims', label: 'Claims', icon: FileText },
     ]
 
     return user.role === 'admin'

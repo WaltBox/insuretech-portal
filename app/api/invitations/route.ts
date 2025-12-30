@@ -178,8 +178,8 @@ async function sendInvitationEmail({
     ? `${supabaseUrl}/storage/v1/object/public/email-assets/newbeaglelogo.png`
     : `${baseUrl}/images/newbeaglelogo.png`
   const dogImageUrl = supabaseUrl
-    ? `${supabaseUrl}/storage/v1/object/public/email-assets/realbeagle.png`
-    : `${baseUrl}/realbeagle.png`
+    ? `${supabaseUrl}/storage/v1/object/public/email-assets/trudy-cute-dog.png`
+    : `${baseUrl}/trudy-cute-dog.png`
 
   const html = `
     <!DOCTYPE html>
@@ -209,36 +209,74 @@ async function sendInvitationEmail({
                 <!-- Content -->
                 <tr>
                   <td style="padding: 0 40px 40px;">
-                    <h1 style="margin: 0 0 16px; font-size: 24px; font-weight: 600; color: #1A1A1A; text-align: center;">
-                      You've been invited!
+                    <h1 style="margin: 0 0 8px; font-size: 28px; font-weight: 700; color: #1A1A1A; text-align: center;">
+                      Welcome to the family,
                     </h1>
-                    <p style="margin: 0 0 24px; font-size: 14px; color: #666666; text-align: center;">
-                      Hi ${firstName},
-                    </p>
-                    <p style="margin: 0 0 24px; font-size: 14px; color: #1A1A1A;">
+                    <h2 style="margin: 0 0 24px; font-size: 28px; font-weight: 700; color: #1A1A1A; text-align: center;">
+                      ${firstName}
+                    </h2>
+                    <p style="margin: 0 0 32px; font-size: 14px; color: #1A1A1A; text-align: center;">
                       You've been invited to join <strong>Beagle Portal</strong> as a <strong>${roleDisplay}</strong>. 
-                      Click the button below to accept your invitation and create your account.
+                      Joining the program will give you access to your own dashboard. Inside it you can:
                     </p>
+                    
+                    <!-- Features List -->
+                    <div style="margin: 0 0 32px; padding: 0; text-align: left;">
+                      <ul style="margin: 0; padding-left: 20px; font-size: 14px; color: #1A1A1A; line-height: 1.8;">
+                        <li style="margin-bottom: 8px;">View Enrollment information</li>
+                        <li style="margin-bottom: 8px;">View Claims Information</li>
+                        <li style="margin-bottom: 8px;">Auto verify and monitor renters insurance compliance</li>
+                        <li style="margin-bottom: 8px;">Offer benefits and liability waiver programs to tenants</li>
+                        <li style="margin-bottom: 8px;">Access free AI tools like AI late rent calls</li>
+                      </ul>
+                    </div>
                     
                     <!-- CTA Button -->
                     <table role="presentation" style="width: 100%; margin: 32px 0;">
                       <tr>
                         <td style="text-align: center;">
-                          <a href="${inviteLink}" style="display: inline-block; padding: 10px 24px; background-color: #ffffff; color: #1A1A1A; text-decoration: none; border: 2px solid #1A1A1A; border-radius: 8px; font-size: 14px; font-weight: 600; transition: all 0.2s;">
+                          <a href="${inviteLink}" style="display: inline-block; padding: 12px 32px; background-color: #1A1A1A; color: #ffffff; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 600; transition: all 0.2s;">
                             Accept Invitation
                           </a>
                         </td>
                       </tr>
                     </table>
                     
-                    <p style="margin: 24px 0 0; font-size: 12px; color: #999999; text-align: center;">
-                      Or copy and paste this link into your browser:<br>
-                      <a href="${inviteLink}" style="color: #FF6B00; word-break: break-all;">${inviteLink}</a>
-                    </p>
+                    <!-- Expiration Notice -->
+                    <div style="margin: 24px 0 0; padding: 16px; background-color: #faf8f0; border-radius: 8px; text-align: center;">
+                      <p style="margin: 0; font-size: 12px; color: #1A1A1A; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <span style="font-size: 14px;">⏰</span>
+                        <span>This invitation link will expire in 72 hours.</span>
+                      </p>
+                    </div>
                     
-                    <p style="margin: 32px 0 0; padding-top: 24px; border-top: 1px solid #E5E5E5; font-size: 12px; color: #999999; text-align: center;">
-                      This invitation will expire in 7 days. If you didn't expect this invitation, you can safely ignore this email.
+                    <p style="margin: 32px 0 0; padding-top: 24px; border-top: 1px solid #E5E5E5; font-size: 12px; color: #666666; text-align: center;">
+                      If you have any questions, feel free to reach out to us at <a href="mailto:help@beagleforpm.com" style="color: #1A1A1A; font-weight: 600;">help@beagleforpm.com</a>. We're here to support you every step of the way.
                     </p>
+                  </td>
+                </tr>
+                
+                <!-- Footer -->
+                <tr>
+                  <td style="padding: 0; background-color: #1A1A1A;">
+                    <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                      <tr>
+                        <td style="padding: 32px 40px; color: #ffffff;">
+                          <p style="margin: 0 0 8px; font-size: 14px; color: #ffffff;">
+                            Got a question? <a href="mailto:help@beagleforpm.com" style="color: #ffffff; text-decoration: underline;">Email us</a>
+                          </p>
+                          <p style="margin: 0 0 24px; font-size: 12px; color: #ffffff; opacity: 0.9;">
+                            473 Pine Street Floor 5, San Francisco CA 94104
+                          </p>
+                          <div style="display: flex; align-items: center; gap: 12px;">
+                            <span style="font-size: 16px; font-weight: 600; color: #ffffff;">beagle</span>
+                            <a href="https://linkedin.com/company/beagle" style="display: inline-block; width: 20px; height: 20px;">
+                              <span style="color: #ffffff; font-size: 16px;">in</span>
+                            </a>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
