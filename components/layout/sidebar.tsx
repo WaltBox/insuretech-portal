@@ -15,9 +15,17 @@ import {
   User as UserIcon,
   LogOut,
   Menu,
-  X
+  X,
+  type LucideIcon
 } from 'lucide-react'
 import { User } from '@/lib/types'
+
+interface SidebarLink {
+  href: string
+  label: string
+  icon: LucideIcon | null
+  imageIcon?: string
+}
 
 interface SidebarProps {
   user: User
@@ -45,22 +53,22 @@ export const Sidebar = memo(function Sidebar({ user, isOpen, onToggle }: Sidebar
     }
   }, [])
 
-  const links = useMemo(() => {
-    const adminLinks = [
+  const links = useMemo((): SidebarLink[] => {
+    const adminLinks: SidebarLink[] = [
       { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
       { href: '/admin/properties', label: 'Properties', icon: Building2 },
       { href: '/admin/users', label: 'Users', icon: Users },
       { href: '/claims', label: 'Claims', icon: FileText },
     ]
 
-    const centralizedMemberLinks = [
+    const centralizedMemberLinks: SidebarLink[] = [
       { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
       { href: '/portfolio', label: 'Portfolio', icon: Building2 },
       { href: '/property-managers', label: 'Property Managers', icon: UserCog },
       { href: '/claims', label: 'Claims', icon: FileText },
     ]
 
-    const propertyManagerLinks = [
+    const propertyManagerLinks: SidebarLink[] = [
       { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
       { href: '/my-properties', label: 'My Properties', icon: Building2 },
       { href: '/my-properties/claims', label: 'Claims', icon: FileText },
