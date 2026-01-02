@@ -12,6 +12,12 @@ export async function GET() {
 
     const supabase = await createClient()
 
+    // Get the actual auth user ID (must match what was used to create tickets)
+    const { data: { user: authUser } } = await supabase.auth.getUser()
+    if (!authUser) {
+      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
+    }
+
     let query = supabase
       .from('support_tickets')
       .select(`
@@ -27,26 +33,30 @@ export async function GET() {
       `)
       .order('updated_at', { ascending: false })
 
-    // Non-admins only see their own tickets
+    // Non-admins only see their own tickets - use auth.uid() to match RLS policy
+    // RLS policy checks auth.uid() = user_id, so we must filter by the same ID
     if (user.role !== 'admin') {
-      query = query.eq('user_id', user.id)
+      query = query.eq('user_id', authUser.id)
     }
 
     const { data: tickets, error } = await query
 
     if (error) {
       console.error('Error fetching tickets:', error)
-      return NextResponse.json({ error: 'Failed to fetch tickets' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to fetch tickets', details: error.message }, { status: 500 })
     }
+
+    console.log('Fetched tickets:', tickets?.length || 0, 'tickets')
 
     // Sort messages by created_at for each ticket
     const ticketsWithSortedMessages = tickets?.map(ticket => ({
       ...ticket,
       messages: ticket.messages?.sort((a: { created_at: string }, b: { created_at: string }) => 
         new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-      )
-    }))
+      ) || []
+    })) || []
 
+    console.log('Returning tickets with sorted messages:', ticketsWithSortedMessages.length)
     return NextResponse.json(ticketsWithSortedMessages)
   } catch (error) {
     console.error('Tickets GET error:', error)
@@ -107,19 +117,29 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to create message' }, { status: 500 })
     }
 
-    // Add auto-response from system
-    await supabase
-      .from('support_messages')
-      .insert({
-        ticket_id: ticket.id,
-        sender_id: authUser.id, // System uses the user's ID but marked as 'system' type
-        sender_type: 'system',
-        content: "Thanks for reaching out! Your account manager has been notified and will get back to you shortly.",
-      })
+    // Add auto-response from system (non-blocking)
+    // Execute the query without awaiting - fire and forget
+    ;(async () => {
+      try {
+        await supabase
+          .from('support_messages')
+          .insert({
+            ticket_id: ticket.id,
+            sender_id: authUser.id, // System uses the user's ID but marked as 'system' type
+            sender_type: 'system',
+            content: "Thanks for reaching out! Your account manager has been notified and will get back to you shortly.",
+          })
+      } catch (error) {
+        console.error('Error creating system message:', error)
+      }
+    })()
 
-    // Send notifications (Telegram + Email)
-    await sendNotifications(user, message)
+    // Send notifications (Telegram + Email) - non-blocking
+    sendNotifications(user, message).catch((error) => {
+      console.error('Error sending notifications:', error)
+    })
 
+    // Return immediately - don't wait for notifications
     return NextResponse.json({ ticket })
   } catch (error) {
     console.error('Tickets POST error:', error)
