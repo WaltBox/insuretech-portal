@@ -249,12 +249,7 @@ async function sendInvitationEmail({
                           <p style="margin: 0 0 24px; font-size: 12px; color: #ffffff; opacity: 0.9;">
                             473 Pine Street Floor 5, San Francisco CA 94104
                           </p>
-                          <div style="display: flex; align-items: center; gap: 12px;">
-                            <span style="font-size: 16px; font-weight: 600; color: #ffffff;">beagle</span>
-                            <a href="https://linkedin.com/company/beagle" style="display: inline-block; width: 20px; height: 20px;">
-                              <span style="color: #ffffff; font-size: 16px;">in</span>
-                            </a>
-                          </div>
+                      
                         </td>
                       </tr>
                     </table>

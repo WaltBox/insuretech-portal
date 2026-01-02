@@ -124,7 +124,7 @@ export async function POST(request: NextRequest) {
     // Send invitation email
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://beagle-caf.com'
     const inviteLink = `${baseUrl}/invite/${token}`
-    const emailSent = await sendInvitationEmail({
+    const emailResult = await sendInvitationEmail({
       email,
       firstName: first_name,
       lastName: last_name,
@@ -132,12 +132,24 @@ export async function POST(request: NextRequest) {
       inviteLink,
     })
 
+    // Log email status for debugging
+    if (!emailResult.success) {
+      console.error('Failed to send invitation email:', {
+        email,
+        error: emailResult.error,
+        inviteLink, // Include link so it can be manually shared
+      })
+    }
+
     return NextResponse.json({
       success: true,
-      message: 'Invitation created',
+      message: emailResult.success 
+        ? 'Invitation created and email sent' 
+        : 'Invitation created, but email failed to send. Please share the invite link manually.',
       invitation,
       inviteLink,
-      emailSent,
+      emailSent: emailResult.success,
+      emailError: emailResult.error || null,
     })
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'An error occurred'
@@ -158,12 +170,15 @@ async function sendInvitationEmail({
   lastName: string
   role: string
   inviteLink: string
-}) {
+}): Promise<{ success: boolean; error?: string }> {
   const resendApiKey = process.env.RESEND_API_KEY
 
   if (!resendApiKey) {
-    console.warn('Resend not configured - skipping invitation email')
-    return false
+    console.error('RESEND_API_KEY is not configured in environment variables')
+    return { 
+      success: false, 
+      error: 'Email service not configured. Please set RESEND_API_KEY environment variable.' 
+    }
   }
 
   const roleDisplay = role
@@ -268,12 +283,7 @@ async function sendInvitationEmail({
                           <p style="margin: 0 0 24px; font-size: 12px; color: #ffffff; opacity: 0.9;">
                             473 Pine Street Floor 5, San Francisco CA 94104
                           </p>
-                          <div style="display: flex; align-items: center; gap: 12px;">
-                            <span style="font-size: 16px; font-weight: 600; color: #ffffff;">beagle</span>
-                            <a href="https://linkedin.com/company/beagle" style="display: inline-block; width: 20px; height: 20px;">
-                              <span style="color: #ffffff; font-size: 16px;">in</span>
-                            </a>
-                          </div>
+                        
                         </td>
                       </tr>
                     </table>
@@ -305,22 +315,35 @@ async function sendInvitationEmail({
     const data = await response.json()
 
     if (!response.ok) {
+      const errorMessage = data?.message || data?.error || 'Unknown error from Resend API'
       console.error('Resend API error:', {
         status: response.status,
         statusText: response.statusText,
         error: data,
+        email,
       })
-      return false
+      return { 
+        success: false, 
+        error: `Resend API error (${response.status}): ${errorMessage}` 
+      }
     }
 
     console.log('Invitation email sent successfully:', {
       email,
       messageId: data.id,
     })
-    return true
+    return { success: true }
   } catch (error) {
-    console.error('Invitation email error:', error)
-    return false
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    console.error('Invitation email error:', {
+      error: errorMessage,
+      email,
+      stack: error instanceof Error ? error.stack : undefined,
+    })
+    return { 
+      success: false, 
+      error: `Failed to send email: ${errorMessage}` 
+    }
   }
 }
 
