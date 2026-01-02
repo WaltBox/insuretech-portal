@@ -203,7 +203,7 @@ async function sendInvitationEmail({
         <table role="presentation" style="width: 100%; border-collapse: collapse;">
           <tr>
             <td style="padding: 40px 20px; text-align: center;">
-              <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; border: 2px solid #1A1A1A; overflow: hidden;">
+              <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; border: 2px solid #4d1701; overflow: hidden;">
                 <!-- Header -->
                 <tr>
                   <td style="padding: 40px 40px 30px; text-align: center; background-color: #ffffff;">
@@ -235,9 +235,7 @@ async function sendInvitationEmail({
                       <ul style="margin: 0; padding-left: 20px; font-size: 14px; color: #1A1A1A; line-height: 1.8;">
                         <li style="margin-bottom: 8px;">View Enrollment information</li>
                         <li style="margin-bottom: 8px;">View Claims Information</li>
-                        <li style="margin-bottom: 8px;">Auto verify and monitor renters insurance compliance</li>
-                        <li style="margin-bottom: 8px;">Offer benefits and liability waiver programs to tenants</li>
-                        <li style="margin-bottom: 8px;">Access free AI tools like AI late rent calls</li>
+                        <li style="margin-bottom: 8px;">Submit claims</li>
                       </ul>
                     </div>
                     
@@ -245,7 +243,7 @@ async function sendInvitationEmail({
                     <table role="presentation" style="width: 100%; margin: 32px 0;">
                       <tr>
                         <td style="text-align: center;">
-                          <a href="${inviteLink}" style="display: inline-block; padding: 12px 32px; background-color: #1A1A1A; color: #ffffff; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 600; transition: all 0.2s;">
+                          <a href="${inviteLink}" style="display: inline-block; padding: 12px 32px; background-color: #4d1701; color: #ffffff; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 600; transition: all 0.2s;">
                             Accept Invitation
                           </a>
                         </td>
@@ -253,12 +251,9 @@ async function sendInvitationEmail({
                     </table>
                     
                     <!-- Expiration Notice -->
-                    <div style="margin: 24px 0 0; padding: 16px; background-color: #faf8f0; border-radius: 8px; text-align: center;">
-                      <p style="margin: 0; font-size: 12px; color: #1A1A1A; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <span style="font-size: 14px;">⏰</span>
-                        <span>This invitation link will expire in 72 hours.</span>
-                      </p>
-                    </div>
+                    <p style="margin: 24px 0 0; padding-top: 24px; border-top: 1px solid #E5E5E5; font-size: 11px; color: #666666; text-align: center;">
+                      This invitation link will expire in 7 days.
+                    </p>
                     
                     <p style="margin: 32px 0 0; padding-top: 24px; border-top: 1px solid #E5E5E5; font-size: 12px; color: #666666; text-align: center;">
                       If you have any questions, feel free to reach out to us at <a href="mailto:walt@beagleforpm.com" style="color: #1A1A1A; font-weight: 600;">walt@beagleforpm.com</a>. We're here to support you every step of the way.
@@ -268,7 +263,7 @@ async function sendInvitationEmail({
                 
                 <!-- Footer -->
                 <tr>
-                  <td style="padding: 0; background-color: #1A1A1A;">
+                  <td style="padding: 0; background-color: #4d1701;">
                     <table role="presentation" style="width: 100%; border-collapse: collapse;">
                       <tr>
                         <td style="padding: 32px 40px; color: #ffffff;">
