@@ -5,3 +5,4 @@ ALTER TABLE properties ADD COLUMN IF NOT EXISTS door_count INTEGER;
 CREATE INDEX IF NOT EXISTS idx_properties_door_count ON properties(door_count) WHERE door_count IS NOT NULL;
 
 
+

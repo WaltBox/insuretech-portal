@@ -38,3 +38,4 @@ FROM pg_policies
 WHERE tablename = 'support_tickets'
 ORDER BY policyname;
 
+

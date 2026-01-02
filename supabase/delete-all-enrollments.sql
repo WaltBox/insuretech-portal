@@ -6,3 +6,4 @@ DELETE FROM enrollments;
 -- Verify deletion
 SELECT COUNT(*) as remaining_enrollments FROM enrollments;
 
+

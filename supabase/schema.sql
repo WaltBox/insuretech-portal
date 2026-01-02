@@ -79,6 +79,7 @@ CREATE TABLE enrollments (
   city TEXT,
   state TEXT,
   zip TEXT,
+  unit_number TEXT,
   
   -- Coverage details
   coverage_name TEXT NOT NULL,
@@ -444,6 +445,7 @@ BEGIN
     city,
     state,
     zip,
+    unit_number,
     coverage_name,
     coverage_rate,
     effective_date,
@@ -472,6 +474,7 @@ BEGIN
     (e->>'City')::TEXT,
     (e->>'State')::TEXT,
     (e->>'ZIP')::TEXT,
+    (e->>'Unit Number')::TEXT,
     (e->>'Coverage Name')::TEXT,
     (e->>'Coverage Rate')::TEXT,
     NULLIF(e->>'Effective Date', '')::DATE,
@@ -534,6 +537,7 @@ CREATE TRIGGER update_enrollments_updated_at
 CREATE TRIGGER update_claims_updated_at
   BEFORE UPDATE ON claims
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
 
 
 

@@ -11,3 +11,4 @@ CREATE INDEX IF NOT EXISTS idx_claims_filed_by_email ON claims(filed_by_email);
 COMMENT ON COLUMN claims.filed_by_email IS 'Email of the Property Manager or Centralized Member who filed this claim';
 
 
+

@@ -187,6 +187,22 @@ export async function POST(
         let coverageName: string
         let chargeAmount: string
         let postDate: string
+        let unitNumber: string = ''
+        
+        // Extract unit number (try various field name variations)
+        unitNumber = (
+          row['Unit Number'] ||
+          row['unit number'] ||
+          row['Unit number'] ||
+          row['UnitNumber'] ||
+          row['unitNumber'] ||
+          row['Unit #'] ||
+          row['unit #'] ||
+          row['Unit'] ||
+          row['unit'] ||
+          row['"Unit Number"'] ||
+          ''
+        ).trim().replace(/^"|"$/g, '')
         
         if (isOriginalFormat) {
           // Original format: Charge Code, Resident, Current Charge Amount, Charge Post Month
@@ -282,6 +298,7 @@ export async function POST(
           'Premium Amount': premiumAmount,
           'Effective Date': effectiveDate,
           'Expiration Date': expirationDate,
+          'Unit Number': unitNumber,
         }
         
         // Debug: Log if coverage name is missing or wrong

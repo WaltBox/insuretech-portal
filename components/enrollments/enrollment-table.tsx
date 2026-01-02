@@ -118,7 +118,14 @@ export function EnrollmentTable({ propertyId }: EnrollmentTableProps) {
 
   const formatAddress = (enrollment: Enrollment) => {
     const parts = []
-    if (enrollment.address1) parts.push(enrollment.address1)
+    if (enrollment.address1) {
+      const address = enrollment.unit_number 
+        ? `${enrollment.address1} #${enrollment.unit_number}`
+        : enrollment.address1
+      parts.push(address)
+    } else if (enrollment.unit_number) {
+      parts.push(`Unit #${enrollment.unit_number}`)
+    }
     if (enrollment.city) {
       const cityState = enrollment.state 
         ? `${enrollment.city}, ${enrollment.state}`
