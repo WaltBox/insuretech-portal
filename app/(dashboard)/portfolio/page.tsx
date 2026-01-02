@@ -89,33 +89,31 @@ export default async function PortfolioPage() {
       <h2 className="text-sm font-semibold text-beagle-dark mb-4">Your Properties</h2>
       {properties && properties.length > 0 ? (
         <div className="space-y-3 mb-8">
-          {properties.map((property: { id: string; name: string; address?: string; city?: string; state?: string; created_at: string; enrollments?: { count: number }[] }) => {
+          {properties.map((property: { id: string; name: string; address?: string; city?: string; state?: string; zip_code?: string; created_at: string; enrollments?: { count: number }[] }) => {
             const enrollmentCount = property.enrollments?.[0]?.count || 0
+            const fullAddress = [property.address, property.city, property.state, property.zip_code].filter(Boolean).join(', ')
             
             return (
               <Link
                 key={property.id}
                 href={`/portfolio/${property.id}`}
-                className="group flex flex-col gap-2 px-3 py-3 sm:px-5 sm:py-3 bg-white rounded-lg border border-gray-200 hover:border-beagle-orange hover:shadow-md transition-all duration-200"
+                className="group flex items-center justify-between px-4 py-3 bg-white rounded-lg border border-gray-200 hover:border-beagle-orange hover:shadow-md transition-all duration-200"
               >
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex-1">
-                    <p className="text-sm font-semibold text-beagle-dark mb-0 truncate">{property.name}</p>
-                    <p className="text-xs text-gray-500">
-                      {[property.address, property.city, property.state].filter(Boolean).join(', ')}
-                    </p>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-beagle-dark group-hover:text-beagle-orange transition-colors duration-200" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-base font-bold text-beagle-dark mb-1 truncate">{property.name}</p>
+                  <p className="text-xs text-gray-500 truncate">
+                    {fullAddress || 'No address'}
+                  </p>
                 </div>
 
-                <div className="hidden sm:flex flex-wrap gap-6 items-center justify-between">
-                  <div className="text-center">
-                    <p className="text-xs text-gray-500 mb-1">Enrollments</p>
+                <div className="flex items-center gap-6 ml-4">
+                  <div className="text-right">
+                    <p className="text-xs text-gray-500 mb-0.5">Enrollments</p>
                     <p className="text-lg font-bold text-beagle-dark">{enrollmentCount}</p>
                   </div>
 
-                  <div className="text-center">
-                    <p className="text-xs text-gray-500 mb-1">Created</p>
+                  <div className="text-right">
+                    <p className="text-xs text-gray-500 mb-0.5">Created</p>
                     <p className="text-xs text-gray-700">
                       {new Date(property.created_at).toLocaleDateString('en-US', { 
                         month: 'short', 
@@ -124,6 +122,8 @@ export default async function PortfolioPage() {
                       })}
                     </p>
                   </div>
+
+                  <ChevronRight className="w-5 h-5 text-beagle-dark group-hover:text-beagle-orange transition-colors duration-200 flex-shrink-0 ml-2" />
                 </div>
               </Link>
             )
