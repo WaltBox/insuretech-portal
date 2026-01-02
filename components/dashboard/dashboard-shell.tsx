@@ -186,18 +186,20 @@ export function DashboardShell({
       // Switch to chat view immediately
       setSelectedTicketId(newTicketId)
       
-      // Fetch tickets (auto-response is already there, but we'll filter it out)
+      // Fetch tickets to show user's message
       await fetchTickets()
       
-      // Show typing indicator (this will hide the auto-response via filter)
-      setShowTypingIndicator(true)
-      
-      // Wait for typing animation, then hide indicator (auto-response will appear)
-      setTimeout(async () => {
-        setShowTypingIndicator(false)
-        // Refresh to ensure we have latest data
-        await fetchTickets()
-      }, 2500)
+      // Show typing indicator after 1 second delay
+      setTimeout(() => {
+        setShowTypingIndicator(true)
+        
+        // Hide typing indicator and refresh after 4 seconds (when system message arrives)
+        setTimeout(async () => {
+          setShowTypingIndicator(false)
+          // Refresh to show the system message
+          await fetchTickets()
+        }, 4000)
+      }, 1000)
     } catch (error) {
       console.error('Error creating ticket:', error)
       setContactStatus('error')

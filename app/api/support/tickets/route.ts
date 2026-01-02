@@ -117,10 +117,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to create message' }, { status: 500 })
     }
 
-    // Add auto-response from system (non-blocking)
-    // Execute the query without awaiting - fire and forget
+    // Add auto-response from system (non-blocking, delayed by 4 seconds)
+    // This gives time for the typing indicator to show first
     ;(async () => {
       try {
+        // Wait 4 seconds before creating the system message
+        await new Promise(resolve => setTimeout(resolve, 4000))
+        
         await supabase
           .from('support_messages')
           .insert({
