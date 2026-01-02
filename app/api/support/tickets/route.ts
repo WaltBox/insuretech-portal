@@ -70,11 +70,17 @@ export async function POST(request: NextRequest) {
 
     const supabase = await createClient()
 
-    // Create the ticket
+    // Get the authenticated user ID from Supabase Auth (must match auth.uid() for RLS)
+    const { data: { user: authUser } } = await supabase.auth.getUser()
+    if (!authUser) {
+      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
+    }
+
+    // Create the ticket - use authUser.id to match RLS policy auth.uid() check
     const { data: ticket, error: ticketError } = await supabase
       .from('support_tickets')
       .insert({
-        user_id: user.id,
+        user_id: authUser.id, // Use auth user ID to match RLS policy
         subject: subject || message.slice(0, 50) + (message.length > 50 ? '...' : ''),
         status: 'open',
       })
@@ -91,7 +97,7 @@ export async function POST(request: NextRequest) {
       .from('support_messages')
       .insert({
         ticket_id: ticket.id,
-        sender_id: user.id,
+        sender_id: authUser.id, // Use auth user ID to match RLS policy
         sender_type: 'user',
         content: message,
       })
@@ -106,7 +112,7 @@ export async function POST(request: NextRequest) {
       .from('support_messages')
       .insert({
         ticket_id: ticket.id,
-        sender_id: user.id, // System uses the user's ID but marked as 'system' type
+        sender_id: authUser.id, // System uses the user's ID but marked as 'system' type
         sender_type: 'system',
         content: "Thanks for reaching out! Your account manager has been notified and will get back to you shortly.",
       })
