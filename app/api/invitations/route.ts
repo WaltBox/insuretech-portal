@@ -121,35 +121,30 @@ export async function POST(request: NextRequest) {
 
     if (inviteError) throw inviteError
 
-    // Send invitation email
+    // Send invitation email (non-blocking - don't wait for it)
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://beagle-caf.com'
     const inviteLink = `${baseUrl}/invite/${token}`
-    const emailResult = await sendInvitationEmail({
+    
+    // Send email asynchronously without blocking the response
+    sendInvitationEmail({
       email,
       firstName: first_name,
       lastName: last_name,
       role,
       inviteLink,
-    })
-
-    // Log email status for debugging
-    if (!emailResult.success) {
-      console.error('Failed to send invitation email:', {
+    }).catch((error) => {
+      console.error('Failed to send invitation email (async):', {
         email,
-        error: emailResult.error,
-        inviteLink, // Include link so it can be manually shared
+        error: error instanceof Error ? error.message : error,
+        inviteLink,
       })
-    }
+    })
 
     return NextResponse.json({
       success: true,
-      message: emailResult.success 
-        ? 'Invitation created and email sent' 
-        : 'Invitation created, but email failed to send. Please share the invite link manually.',
+      message: 'Invitation created',
       invitation,
       inviteLink,
-      emailSent: emailResult.success,
-      emailError: emailResult.error || null,
     })
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'An error occurred'
@@ -266,7 +261,7 @@ async function sendInvitationEmail({
                     </div>
                     
                     <p style="margin: 32px 0 0; padding-top: 24px; border-top: 1px solid #E5E5E5; font-size: 12px; color: #666666; text-align: center;">
-                      If you have any questions, feel free to reach out to us at <a href="mailto:help@beagleforpm.com" style="color: #1A1A1A; font-weight: 600;">help@beagleforpm.com</a>. We're here to support you every step of the way.
+                      If you have any questions, feel free to reach out to us at <a href="mailto:walt@beagleforpm.com" style="color: #1A1A1A; font-weight: 600;">walt@beagleforpm.com</a>. We're here to support you every step of the way.
                     </p>
                   </td>
                 </tr>
@@ -278,7 +273,7 @@ async function sendInvitationEmail({
                       <tr>
                         <td style="padding: 32px 40px; color: #ffffff;">
                           <p style="margin: 0 0 8px; font-size: 14px; color: #ffffff;">
-                            Got a question? <a href="mailto:help@beagleforpm.com" style="color: #ffffff; text-decoration: underline;">Email us</a>
+                            Got a question? <a href="mailto:walt@beagleforpm.com" style="color: #ffffff; text-decoration: underline;">Email us</a>
                           </p>
                           <p style="margin: 0 0 24px; font-size: 12px; color: #ffffff; opacity: 0.9;">
                             473 Pine Street Floor 5, San Francisco CA 94104
