@@ -18,18 +18,14 @@ export default async function DashboardPage() {
       { count: enrollmentCount },
       { data: allProperties },
       { data: recentProperties },
-      { count: premiumPayingCount },
-      { count: issuedNotPaidCount },
-      { count: lapsedCount }
+      { count: premiumPayingCount }
     ] = await Promise.all([
       supabase.from('properties').select('*', { count: 'exact', head: true }),
       supabase.from('users').select('*', { count: 'exact', head: true }),
       supabase.from('enrollments').select('*', { count: 'exact', head: true }),
       supabase.from('properties').select('door_count').order('created_at', { ascending: false }),
       supabase.from('properties').select('*').order('created_at', { ascending: false }),
-      supabase.from('enrollments').select('*', { count: 'exact', head: true }).eq('status', 'Premium Paying'),
-      supabase.from('enrollments').select('*', { count: 'exact', head: true }).eq('status', 'Issued, Not Paid'),
-      supabase.from('enrollments').select('*', { count: 'exact', head: true }).eq('status', 'Lapsed')
+      supabase.from('enrollments').select('*', { count: 'exact', head: true }).eq('status', 'Premium Paying')
     ])
 
     // Calculate total doors from door_count field
@@ -39,9 +35,7 @@ export default async function DashboardPage() {
 
     // Create stats array with accurate counts across all properties
     const stats = [
-      { status: 'Premium Paying', count: premiumPayingCount || 0 },
-      { status: 'Issued, Not Paid', count: issuedNotPaidCount || 0 },
-      { status: 'Lapsed', count: lapsedCount || 0 }
+      { status: 'Premium Paying', count: premiumPayingCount || 0 }
     ]
 
     return (
@@ -62,17 +56,13 @@ export default async function DashboardPage() {
       { count: enrollmentCount },
       { data: allProperties },
       { data: recentProperties },
-      { count: premiumPayingCount },
-      { count: issuedNotPaidCount },
-      { count: lapsedCount }
+      { count: premiumPayingCount }
     ] = await Promise.all([
       supabase.from('properties').select('*', { count: 'exact', head: true }),
       supabase.from('enrollments').select('*', { count: 'exact', head: true }),
       supabase.from('properties').select('door_count').order('created_at', { ascending: false }),
       supabase.from('properties').select('*').order('created_at', { ascending: false }),
-      supabase.from('enrollments').select('*', { count: 'exact', head: true }).eq('status', 'Premium Paying'),
-      supabase.from('enrollments').select('*', { count: 'exact', head: true }).eq('status', 'Issued, Not Paid'),
-      supabase.from('enrollments').select('*', { count: 'exact', head: true }).eq('status', 'Lapsed')
+      supabase.from('enrollments').select('*', { count: 'exact', head: true }).eq('status', 'Premium Paying')
     ])
 
     // Calculate total doors from door_count field
@@ -82,9 +72,7 @@ export default async function DashboardPage() {
 
     // Create stats array with accurate counts across all properties
     const stats = [
-      { status: 'Premium Paying', count: premiumPayingCount || 0 },
-      { status: 'Issued, Not Paid', count: issuedNotPaidCount || 0 },
-      { status: 'Lapsed', count: lapsedCount || 0 }
+      { status: 'Premium Paying', count: premiumPayingCount || 0 }
     ]
 
     return (

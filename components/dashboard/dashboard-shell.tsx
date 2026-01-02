@@ -634,14 +634,6 @@ export function DashboardShell({
                   <span className="text-sm font-semibold text-beagle-dark">{totalDoors}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-600">Unverified Tenants</span>
-                  <span className="text-sm font-semibold text-beagle-dark">{getStat('Issued, Not Paid')}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-600">Verified Tenants</span>
-                  <span className="text-sm font-semibold text-beagle-dark">{getStat('Lapsed')}</span>
-                </div>
-                <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-600">Tenants Enrolled</span>
                   <span className="text-sm font-semibold text-beagle-dark">{getStat('Premium Paying')}</span>
                 </div>
