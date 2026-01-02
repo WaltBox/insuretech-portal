@@ -129,3 +129,4 @@ CREATE TRIGGER on_new_message_update_ticket
   FOR EACH ROW
   EXECUTE FUNCTION update_ticket_timestamp();
 
+

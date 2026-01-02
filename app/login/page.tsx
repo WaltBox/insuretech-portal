@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import Image from 'next/image'
+import { ErrorMessage } from '@/components/ui/error-message'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -47,6 +48,7 @@ export default function LoginPage() {
             height={32}
             priority
             className="h-6 sm:h-8 w-auto"
+            style={{ width: 'auto', height: 'auto' }}
           />
         </div>
 
@@ -69,11 +71,7 @@ export default function LoginPage() {
           </p>
         </div>
         <form className="mt-4 sm:mt-6 space-y-4 sm:space-y-6" onSubmit={handleLogin}>
-          {error && (
-            <div className="rounded-lg bg-red-50 border-l-4 border-error p-3 sm:p-4">
-              <p className="text-xs sm:text-sm font-medium text-red-800">{error}</p>
-            </div>
-          )}
+          {error && <ErrorMessage message={error} />}
           <div className="space-y-3 sm:space-y-4">
             <div>
               <label htmlFor="email" className="block text-xs sm:text-sm font-medium text-beagle-dark mb-1.5">

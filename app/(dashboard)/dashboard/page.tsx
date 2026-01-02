@@ -22,13 +22,20 @@ export default async function DashboardPage() {
       { count: propertyCount },
       { count: userCount },
       { count: enrollmentCount },
+      { data: allProperties },
       { data: recentProperties }
     ] = await Promise.all([
       supabase.from('properties').select('*', { count: 'exact', head: true }),
       supabase.from('users').select('*', { count: 'exact', head: true }),
       supabase.from('enrollments').select('*', { count: 'exact', head: true }),
-      supabase.from('properties').select('*').order('created_at', { ascending: false }).limit(5)
+      supabase.from('properties').select('door_count').order('created_at', { ascending: false }),
+      supabase.from('properties').select('*').order('created_at', { ascending: false })
     ])
+
+    // Calculate total doors from door_count field
+    const totalDoors = allProperties?.reduce((sum, property) => {
+      return sum + (property.door_count || 0)
+    }, 0) || 0
 
     const stats = await fetchRecentStats(recentProperties?.[0]?.id)
 
@@ -36,6 +43,7 @@ export default async function DashboardPage() {
       <DashboardShell
         enrollmentCount={enrollmentCount || 0}
         propertyCount={propertyCount || 0}
+        totalDoors={totalDoors}
         propertyStats={stats}
         recentProperties={recentProperties || []}
         currentUser={user}
@@ -47,12 +55,19 @@ export default async function DashboardPage() {
     const [
       { count: propertyCount },
       { count: enrollmentCount },
+      { data: allProperties },
       { data: recentProperties }
     ] = await Promise.all([
       supabase.from('properties').select('*', { count: 'exact', head: true }),
       supabase.from('enrollments').select('*', { count: 'exact', head: true }),
-      supabase.from('properties').select('*').order('created_at', { ascending: false }).limit(5)
+      supabase.from('properties').select('door_count').order('created_at', { ascending: false }),
+      supabase.from('properties').select('*').order('created_at', { ascending: false })
     ])
+
+    // Calculate total doors from door_count field
+    const totalDoors = allProperties?.reduce((sum, property) => {
+      return sum + (property.door_count || 0)
+    }, 0) || 0
 
     const stats = await fetchRecentStats(recentProperties?.[0]?.id)
 
@@ -60,6 +75,7 @@ export default async function DashboardPage() {
       <DashboardShell
         enrollmentCount={enrollmentCount || 0}
         propertyCount={propertyCount || 0}
+        totalDoors={totalDoors}
         propertyStats={stats}
         recentProperties={recentProperties || []}
         currentUser={user}

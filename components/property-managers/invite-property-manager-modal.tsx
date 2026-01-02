@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { X, Loader2, Check, Copy, Building2 } from 'lucide-react'
 import { Property } from '@/lib/types'
+import { ErrorMessage } from '@/components/ui/error-message'
 
 interface InvitePropertyManagerModalProps {
   onClose: () => void
@@ -179,8 +180,8 @@ export function InvitePropertyManagerModal({
 
         <form onSubmit={handleSubmit} className="p-6">
           {error && (
-            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-800">{error}</p>
+            <div className="mb-4">
+              <ErrorMessage message={error} />
             </div>
           )}
 

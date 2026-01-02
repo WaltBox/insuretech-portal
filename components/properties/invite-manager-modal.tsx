@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { X } from 'lucide-react'
+import { ErrorMessage } from '@/components/ui/error-message'
 
 interface InviteManagerModalProps {
   propertyId: string
@@ -72,11 +73,7 @@ export function InviteManagerModal({
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="rounded-md bg-red-50 p-4">
-              <p className="text-sm text-red-800">{error}</p>
-            </div>
-          )}
+          {error && <ErrorMessage message={error} />}
 
           {success && (
             <div className="rounded-md bg-green-50 p-4">

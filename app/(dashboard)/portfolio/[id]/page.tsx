@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
-import { requireRole } from '@/lib/auth'
-import { notFound } from 'next/navigation'
+import { requireAuth, checkPermission } from '@/lib/auth'
+import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowLeft, Users } from 'lucide-react'
@@ -12,7 +12,18 @@ export default async function PortfolioPropertyPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  await requireRole(['centralized_member', 'admin'])
+  const user = await requireAuth()
+  
+  // Allow centralized_member and admin, or property_manager with permission
+  if (user.role === 'property_manager') {
+    const hasPermission = await checkPermission(user.id, id)
+    if (!hasPermission) {
+      redirect('/my-properties')
+    }
+  } else if (!['centralized_member', 'admin'].includes(user.role)) {
+    redirect('/dashboard')
+  }
+  
   const supabase = await createClient()
 
   // Run all queries in parallel

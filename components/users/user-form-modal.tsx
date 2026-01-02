@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { User, UserRole, Property } from '@/lib/types'
 import { X } from 'lucide-react'
+import { ErrorMessage } from '@/components/ui/error-message'
 
 interface UserFormModalProps {
   user?: User | null
@@ -164,11 +165,7 @@ export function UserFormModal({ user, onClose, onSuccess }: UserFormModalProps) 
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <div className="rounded-lg bg-red-50 border-l-4 border-error p-4">
-                <p className="text-sm font-medium text-red-800">{error}</p>
-              </div>
-            )}
+            {error && <ErrorMessage message={error} />}
 
           <div>
             <label className="block text-sm font-medium text-beagle-dark mb-1.5">First Name *</label>

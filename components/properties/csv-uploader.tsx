@@ -3,6 +3,8 @@
 import { useState, useRef } from 'react'
 import { Upload, AlertCircle, CheckCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { useQueryClient } from '@tanstack/react-query'
+import { ErrorMessage } from '@/components/ui/error-message'
 
 interface CSVUploaderProps {
   propertyId: string
@@ -10,6 +12,7 @@ interface CSVUploaderProps {
 
 export function CSVUploader({ propertyId }: CSVUploaderProps) {
   const router = useRouter()
+  const queryClient = useQueryClient()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -51,7 +54,10 @@ export function CSVUploader({ propertyId }: CSVUploaderProps) {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Upload failed')
+        const errorMsg = data.error || 'Upload failed'
+        const details = data.details ? `\nDetails: ${data.details}` : ''
+        const code = data.code ? `\nError code: ${data.code}` : ''
+        throw new Error(`${errorMsg}${details}${code}`)
       }
 
       setSuccess(`Successfully uploaded ${data.count} enrollments`)
@@ -59,6 +65,9 @@ export function CSVUploader({ propertyId }: CSVUploaderProps) {
       if (fileInputRef.current) {
         fileInputRef.current.value = ''
       }
+      
+      // Invalidate React Query cache for enrollments to force refetch
+      queryClient.invalidateQueries({ queryKey: ['enrollments', propertyId] })
       
       // Refresh the page to show updated stats
       router.refresh()
@@ -71,12 +80,7 @@ export function CSVUploader({ propertyId }: CSVUploaderProps) {
 
   return (
     <div className="space-y-4">
-      {error && (
-        <div className="flex items-center gap-2 p-4 bg-red-50 border-l-4 border-error rounded-r-lg">
-          <AlertCircle className="h-5 w-5 text-red-600" />
-          <p className="text-sm font-medium text-red-800">{error}</p>
-        </div>
-      )}
+      {error && <ErrorMessage message={error} />}
 
       {success && (
         <div className="flex items-center gap-2 p-4 bg-green-50 border-l-4 border-success rounded-r-lg">
@@ -105,11 +109,24 @@ export function CSVUploader({ propertyId }: CSVUploaderProps) {
 
       <div className="text-sm text-gray-600 bg-orange-lighter p-4 rounded-lg border border-orange-light">
         <p className="font-semibold text-beagle-dark mb-2">CSV Format Requirements:</p>
-        <ul className="list-disc list-inside space-y-1">
-          <li><strong>Required columns:</strong> Enrollment #, Status, Coverage Holder Name, First Name, Last Name, Coverage Name</li>
-          <li><strong>Optional columns:</strong> Email, Phone, Address1, Address2, City, State, ZIP, Coverage Rate, Effective Date, Expiration Date, Paid To Date, Premium Amount, Cost Amount, Producer Name, Reference ID, Note, Payment Source, Creation Source</li>
-          <li>First row must contain column headers</li>
-        </ul>
+        <div className="space-y-3">
+          <div>
+            <p className="font-medium text-beagle-dark mb-1">New Format (Charges CSV):</p>
+            <ul className="list-disc list-inside space-y-1 ml-2">
+              <li><strong>Required columns:</strong> Tenant Name, Coverage Name, Current Charge Amount, Post Date</li>
+              <li>Duplicates are automatically filtered (same Tenant Name + Coverage Name combination)</li>
+              <li>Tenant Name will be parsed into First Name and Last Name</li>
+            </ul>
+          </div>
+          <div>
+            <p className="font-medium text-beagle-dark mb-1">Legacy Format (Full Enrollment CSV):</p>
+            <ul className="list-disc list-inside space-y-1 ml-2">
+              <li><strong>Required columns:</strong> Status, Coverage Holder Name, First Name, Last Name, Coverage Name</li>
+              <li><strong>Optional columns:</strong> Enrollment #, Email, Phone, Address1, Address2, City, State, ZIP, Coverage Rate, Effective Date, Expiration Date, Paid To Date, Premium Amount, Cost Amount, Producer Name, Reference ID, Note, Payment Source, Creation Source</li>
+            </ul>
+          </div>
+          <p className="text-xs text-gray-500 mt-2">First row must contain column headers</p>
+        </div>
       </div>
     </div>
   )

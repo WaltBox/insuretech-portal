@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { ErrorMessage } from '@/components/ui/error-message'
 import { Property } from '@/lib/types'
 
 interface PropertyFormProps {
@@ -59,11 +60,7 @@ export function PropertyForm({ property, onSuccess }: PropertyFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {error && (
-        <div className="rounded-lg bg-red-50 border-l-4 border-error p-4">
-          <p className="text-sm font-medium text-red-800">{error}</p>
-        </div>
-      )}
+      {error && <ErrorMessage message={error} />}
 
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-beagle-dark mb-1.5">

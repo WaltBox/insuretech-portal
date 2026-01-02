@@ -9,6 +9,7 @@ import { User, SupportTicket } from '@/lib/types'
 interface DashboardShellProps {
   enrollmentCount?: number
   propertyCount?: number
+  totalDoors?: number
   propertyStats: Array<{ status: string; count: number }>
   recentProperties: Array<{ id: string; name: string; city?: string; state?: string }>
   currentUser: User
@@ -21,11 +22,12 @@ const LEASE_ADDENDUM_PDF = '/Combined_TLW_SDA_Lease_Addendum.pdf'
 export function DashboardShell({
   enrollmentCount = 0,
   propertyCount = 0,
+  totalDoors = 0,
   propertyStats,
   recentProperties,
   currentUser,
 }: DashboardShellProps) {
-  const [visibleCount, setVisibleCount] = useState(5)
+  const [visibleCount, setVisibleCount] = useState(4)
   const [activePanel, setActivePanel] = useState<'claim' | 'program' | 'contact' | 'addendum' | null>(null)
   const [contactSubject, setContactSubject] = useState('')
   const [contactMessage, setContactMessage] = useState('')
@@ -604,7 +606,7 @@ export function DashboardShell({
               <div className="flex flex-wrap gap-6 text-sm">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-600">Total Doors</span>
-                  <span className="text-sm font-semibold text-beagle-dark">{propertyCount * 100}</span>
+                  <span className="text-sm font-semibold text-beagle-dark">{totalDoors}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-600">Unverified Tenants</span>
@@ -641,10 +643,18 @@ export function DashboardShell({
                 ))}
                 {hasMore && (
                   <button
-                    onClick={() => setVisibleCount((prev) => prev + 5)}
-                    className="w-full text-center py-3 text-xs font-semibold text-beagle-dark border border-dashed border-gray-300 rounded-lg"
+                    onClick={() => setVisibleCount((prev) => prev + 4)}
+                    className="w-full text-center py-3 text-xs font-semibold text-beagle-dark border border-dashed border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                   >
-                    Load more
+                    View More
+                  </button>
+                )}
+                {visibleCount > 4 && (
+                  <button
+                    onClick={() => setVisibleCount(4)}
+                    className="w-full text-center py-3 text-xs font-semibold text-beagle-dark border border-dashed border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    View Less
                   </button>
                 )}
               </div>

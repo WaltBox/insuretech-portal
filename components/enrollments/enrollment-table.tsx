@@ -6,6 +6,7 @@ import { Enrollment } from '@/lib/types'
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
 import { EnrollmentFilters } from './enrollment-filters'
 import { LoadingState } from '@/components/ui/loading-spinner'
+import { ErrorMessage } from '@/components/ui/error-message'
 
 interface EnrollmentTableProps {
   propertyId: string
@@ -24,6 +25,11 @@ export function EnrollmentTable({ propertyId }: EnrollmentTableProps) {
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setPage(1)
+  }, [filters.search, filters.status, filters.coverage_type])
 
   const {
     data,
@@ -53,7 +59,18 @@ export function EnrollmentTable({ propertyId }: EnrollmentTableProps) {
   })
 
   const enrollments = data?.enrollments || []
+  const propertyName = data?.propertyName || ''
   const total = data?.total || 0
+  
+  // Debug: Log coverage names to see what we're getting
+  useEffect(() => {
+    if (enrollments.length > 0) {
+      const coverageNames = enrollments.map((e: Enrollment) => e.coverage_name)
+      const uniqueCoverage = [...new Set(coverageNames)]
+      console.log('Enrollment Table - Coverage names in data:', uniqueCoverage)
+      console.log('First 5 enrollments coverage_name:', enrollments.slice(0, 5).map((e: Enrollment) => ({ name: `${e.first_name} ${e.last_name}`, coverage: e.coverage_name })))
+    }
+  }, [enrollments])
   const totalPages = Math.ceil(total / limit)
   const startEntry = total === 0 ? 0 : (page - 1) * limit + 1
   const endEntry = Math.min(page * limit, total)
@@ -70,13 +87,17 @@ export function EnrollmentTable({ propertyId }: EnrollmentTableProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Premium Paying':
+      case 'Active':
         return 'bg-green-50 text-green-700'
       case 'Issued, Not Paid':
         return 'bg-amber-50 text-amber-700'
-      case 'Lapsed':
+      case 'Missing Payment':
         return 'bg-orange-50 text-orange-700'
-      case 'Cancelled':
+      case 'Lapsed':
+      case 'Expired':
         return 'bg-red-50 text-red-700'
+      case 'Cancelled':
+        return 'bg-gray-50 text-gray-700'
       default:
         return 'bg-gray-50 text-gray-700'
     }
@@ -86,21 +107,31 @@ export function EnrollmentTable({ propertyId }: EnrollmentTableProps) {
     if (!dateString) return '-'
     try {
       const date = new Date(dateString)
-      return date.toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: '2-digit', 
-        day: '2-digit' 
-      })
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      const year = date.getFullYear()
+      return `${month}/${day}/${year}`
     } catch {
       return '-'
     }
   }
 
+  const formatAddress = (enrollment: Enrollment) => {
+    const parts = []
+    if (enrollment.address1) parts.push(enrollment.address1)
+    if (enrollment.city) {
+      const cityState = enrollment.state 
+        ? `${enrollment.city}, ${enrollment.state}`
+        : enrollment.city
+      parts.push(cityState)
+    }
+    if (enrollment.zip) parts.push(enrollment.zip)
+    return parts.length > 0 ? parts.join(' ') : '-'
+  }
+
   if (error) {
     return (
-      <div className="bg-red-50 border-l-4 border-error p-4 rounded-r-lg">
-        <p className="text-sm font-medium text-red-800">Error loading enrollments: {(error as Error).message}</p>
-      </div>
+      <ErrorMessage message={`Error loading enrollments: ${(error as Error).message}`} />
     )
   }
 
@@ -151,19 +182,19 @@ export function EnrollmentTable({ propertyId }: EnrollmentTableProps) {
                   {enrollments.map((enrollment: Enrollment) => (
                     <tr key={enrollment.id} className="hover:bg-gray-50 transition-colors duration-150">
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {enrollment.enrollment_number}
+                        {enrollment.enrollment_number || '-'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                         {enrollment.first_name} {enrollment.last_name}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {enrollment.unit_number || '-'}
+                        {formatAddress(enrollment)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        -
+                        {propertyName || '-'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {enrollment.coverage_name}
+                        {String(enrollment.coverage_name || '')}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                         {formatDate(enrollment.effective_date)}

@@ -27,7 +27,7 @@ export interface Property {
 export interface Enrollment {
   id: string
   property_id: string
-  enrollment_number: string
+  enrollment_number?: string
   status: string
   coverage_holder_name: string
   first_name: string

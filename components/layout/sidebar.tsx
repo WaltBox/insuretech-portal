@@ -113,10 +113,11 @@ export const Sidebar = memo(function Sidebar({ user, isOpen, onToggle }: Sidebar
               src="/images/beagle-text-logo.webp"
               alt="Beagle"
               width={100}
-            height={32}
-            priority
-            className="h-8 w-auto"
-          />
+              height={32}
+              priority
+              className="h-8 w-auto"
+              style={{ width: 'auto', height: 'auto' }}
+            />
         </Link>
       </div>
 

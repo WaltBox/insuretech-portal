@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Plus, Building2, Mail, Search } from 'lucide-react'
 import { InvitePropertyManagerModal } from './invite-property-manager-modal'
 import { LoadingState } from '@/components/ui/loading-spinner'
+import { ErrorMessage } from '@/components/ui/error-message'
 
 interface PropertyManager {
   user: {
@@ -49,9 +50,7 @@ export function PropertyManagersList() {
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-        <p className="text-sm text-red-800">Failed to load property managers</p>
-      </div>
+      <ErrorMessage message="Failed to load property managers" />
     )
   }
 

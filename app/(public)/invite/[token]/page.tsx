@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
+import { ErrorMessage } from '@/components/ui/error-message'
 
 export default function InviteAcceptPage({
   params,
@@ -142,13 +143,35 @@ export default function InviteAcceptPage({
             height={32}
             priority
             className="h-6 sm:h-8 w-auto"
+            style={{ width: 'auto', height: 'auto' }}
           />
         </div>
         
-        <div className="max-w-md w-full bg-white rounded-2xl shadow-sm p-4 sm:p-8 border-2 border-error">
+        <div className="max-w-md w-full bg-white rounded-2xl shadow-sm p-4 sm:p-8 border border-gray-200">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-error mb-4">Invalid Invitation</h2>
-            <p className="text-sm text-gray-600 mb-6">{error}</p>
+            <div className="mb-4 sm:mb-6 flex justify-center">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-red-50 flex items-center justify-center">
+                <svg 
+                  className="w-8 h-8 sm:w-10 sm:h-10 text-red-600" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M6 18L18 6M6 6l12 12" 
+                  />
+                </svg>
+              </div>
+            </div>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-beagle-dark mb-4 sm:mb-6">
+              Invalid Invitation
+            </h2>
+            <div className="mb-6 sm:mb-8">
+              <ErrorMessage message={error} />
+            </div>
             <a
               href="/login"
               className="inline-block px-6 py-2.5 bg-beagle-orange text-white rounded-lg font-semibold text-sm hover:bg-accent-orange active:bg-[#e66d00] shadow-sm hover:shadow-md transition-all duration-200"

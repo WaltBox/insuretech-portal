@@ -7,3 +7,4 @@ ALTER TABLE invitations ALTER COLUMN property_id DROP NOT NULL;
 
 
 
+

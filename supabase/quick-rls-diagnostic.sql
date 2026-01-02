@@ -51,3 +51,4 @@ FROM public.claims
 ORDER BY submitted_date DESC
 LIMIT 10;
 
+
