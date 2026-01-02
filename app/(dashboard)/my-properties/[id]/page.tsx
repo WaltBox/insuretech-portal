@@ -3,7 +3,7 @@ import { requireRole, checkPermission } from '@/lib/auth'
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Users } from 'lucide-react'
 import { EnrollmentTable } from '@/components/enrollments/enrollment-table'
 
 export default async function MyPropertyDetailPage({
@@ -25,14 +25,22 @@ export default async function MyPropertyDetailPage({
   // Run queries in parallel
   const [
     { data: property },
-    { data: stats }
+    { data: stats },
+    { data: managers }
   ] = await Promise.all([
     supabase
       .from('properties')
       .select('*')
       .eq('id', id)
       .single(),
-    supabase.rpc('get_enrollment_stats', { p_property_id: id })
+    supabase.rpc('get_enrollment_stats', { p_property_id: id }),
+    supabase
+      .from('property_managers')
+      .select(`
+        id,
+        user:users!property_managers_user_id_fkey(first_name, last_name, email)
+      `)
+      .eq('property_id', id)
   ])
 
   if (!property) {
@@ -77,16 +85,43 @@ export default async function MyPropertyDetailPage({
             </div>
 
             {stats && stats.map((stat: any) => (
-              <>
+              <div key={stat.status} className="flex items-center gap-2">
                 <div className="h-8 w-px bg-gray-300"></div>
-                <div key={stat.status} className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-600">{stat.status}</span>
                   <span className="text-2xl font-bold text-beagle-dark">{stat.count}</span>
                 </div>
-              </>
+              </div>
             ))}
           </div>
         </div>
+
+        {/* Property Managers */}
+        {managers && managers.length > 0 && (
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-3">
+              <Users className="h-4 w-4 text-gray-400" />
+              <h3 className="text-sm font-medium text-gray-600">Property Managers</h3>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {managers.map((manager: any) => (
+                <div key={manager.id} className="flex items-center gap-2.5 px-3 py-2 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="w-7 h-7 bg-orange-light rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-xs font-semibold text-beagle-orange">
+                      {manager.user.first_name[0]}{manager.user.last_name[0]}
+                    </span>
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-beagle-dark truncate">
+                      {manager.user.first_name} {manager.user.last_name}
+                    </p>
+                    <p className="text-xs text-gray-500 truncate">{manager.user.email}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Enrollments */}
         <EnrollmentTable propertyId={id} />

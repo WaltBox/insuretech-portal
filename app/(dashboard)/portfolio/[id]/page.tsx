@@ -89,37 +89,37 @@ export default async function PortfolioPropertyPage({
             </div>
 
             {stats && stats.map((stat: any) => (
-              <>
+              <div key={stat.status} className="flex items-center gap-2">
                 <div className="h-8 w-px bg-gray-300"></div>
-                <div key={stat.status} className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-600">{stat.status}</span>
                   <span className="text-2xl font-bold text-beagle-dark">{stat.count}</span>
                 </div>
-              </>
+              </div>
             ))}
           </div>
         </div>
 
         {/* Property Managers */}
         {managers && managers.length > 0 && (
-          <div className="bg-white rounded-lg shadow-sm p-6 mb-8 border border-gray-200">
-            <div className="flex items-center gap-2 mb-4">
-              <Users className="h-5 w-5 text-beagle-orange" />
-              <h2 className="text-xl font-semibold text-beagle-dark">Property Managers</h2>
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-3">
+              <Users className="h-4 w-4 text-gray-400" />
+              <h3 className="text-sm font-medium text-gray-600">Property Managers</h3>
             </div>
-            <div className="space-y-2">
+            <div className="flex flex-wrap gap-3">
               {managers.map((manager: any) => (
-                <div key={manager.id} className="flex items-center gap-3 text-sm">
-                  <div className="w-8 h-8 bg-orange-light rounded-full flex items-center justify-center">
-                    <span className="text-beagle-orange font-semibold">
+                <div key={manager.id} className="flex items-center gap-2.5 px-3 py-2 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="w-7 h-7 bg-orange-light rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-xs font-semibold text-beagle-orange">
                       {manager.user.first_name[0]}{manager.user.last_name[0]}
                     </span>
                   </div>
-                  <div>
-                    <p className="font-medium text-beagle-dark">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-beagle-dark truncate">
                       {manager.user.first_name} {manager.user.last_name}
                     </p>
-                    <p className="text-gray-500">{manager.user.email}</p>
+                    <p className="text-xs text-gray-500 truncate">{manager.user.email}</p>
                   </div>
                 </div>
               ))}
