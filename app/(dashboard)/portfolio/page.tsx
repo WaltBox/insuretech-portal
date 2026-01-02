@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireRole } from '@/lib/auth'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Building2, Users, FileText, ChevronRight, TrendingUp } from 'lucide-react'
+import { Building2, Users, FileText, ChevronRight } from 'lucide-react'
 
 export default async function PortfolioPage() {
   await requireRole(['centralized_member', 'admin'])
@@ -32,11 +32,6 @@ export default async function PortfolioPage() {
       .limit(5)
   ])
 
-  // Calculate stats
-  const totalDoors = (properties?.length || 0) * 100 // Assuming 100 doors per property
-  const avgEnrollmentRate = properties?.length 
-    ? Math.round((totalEnrollments || 0) / totalDoors * 100) 
-    : 0
 
   return (
     <div className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
@@ -75,13 +70,6 @@ export default async function PortfolioPage() {
             <span className="text-2xl font-bold text-beagle-dark">{totalClaims || 0}</span>
           </div>
 
-          <div className="h-8 w-px bg-gray-300"></div>
-
-          <div className="flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-beagle-orange" />
-            <span className="text-xs text-gray-600">Enrollment Rate</span>
-            <span className="text-2xl font-bold text-beagle-dark">{avgEnrollmentRate}%</span>
-          </div>
         </div>
       </div>
 
