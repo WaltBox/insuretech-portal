@@ -114,6 +114,7 @@ export function CSVUploader({ propertyId }: CSVUploaderProps) {
             <p className="font-medium text-beagle-dark mb-1">New Format (Charges CSV):</p>
             <ul className="list-disc list-inside space-y-1 ml-2">
               <li><strong>Required columns:</strong> Tenant Name, Coverage Name, Current Charge Amount, Post Date</li>
+              <li><strong>Optional columns:</strong> Unit Number (or Unit, Unit #)</li>
               <li>Duplicates are automatically filtered (same Tenant Name + Coverage Name combination)</li>
               <li>Tenant Name will be parsed into First Name and Last Name</li>
             </ul>
@@ -122,7 +123,7 @@ export function CSVUploader({ propertyId }: CSVUploaderProps) {
             <p className="font-medium text-beagle-dark mb-1">Legacy Format (Full Enrollment CSV):</p>
             <ul className="list-disc list-inside space-y-1 ml-2">
               <li><strong>Required columns:</strong> Status, Coverage Holder Name, First Name, Last Name, Coverage Name</li>
-              <li><strong>Optional columns:</strong> Enrollment #, Email, Phone, Address1, Address2, City, State, ZIP, Coverage Rate, Effective Date, Expiration Date, Paid To Date, Premium Amount, Cost Amount, Producer Name, Reference ID, Note, Payment Source, Creation Source</li>
+              <li><strong>Optional columns:</strong> Enrollment #, Email, Phone, Address1, Address2, City, State, ZIP, Unit Number (or Unit, Unit #), Coverage Rate, Effective Date, Expiration Date, Paid To Date, Premium Amount, Cost Amount, Producer Name, Reference ID, Note, Payment Source, Creation Source</li>
             </ul>
           </div>
           <p className="text-xs text-gray-500 mt-2">First row must contain column headers</p>

@@ -116,24 +116,12 @@ export function EnrollmentTable({ propertyId }: EnrollmentTableProps) {
     }
   }
 
-  const formatAddress = (enrollment: Enrollment) => {
-    const parts = []
-    if (enrollment.address1) {
-      const address = enrollment.unit_number 
-        ? `${enrollment.address1} #${enrollment.unit_number}`
-        : enrollment.address1
-      parts.push(address)
-    } else if (enrollment.unit_number) {
-      parts.push(`Unit #${enrollment.unit_number}`)
+  const formatUnitNumber = (enrollment: Enrollment) => {
+    // Display only unit number
+    if (enrollment.unit_number) {
+      return String(enrollment.unit_number).trim()
     }
-    if (enrollment.city) {
-      const cityState = enrollment.state 
-        ? `${enrollment.city}, ${enrollment.state}`
-        : enrollment.city
-      parts.push(cityState)
-    }
-    if (enrollment.zip) parts.push(enrollment.zip)
-    return parts.length > 0 ? parts.join(' ') : '-'
+    return '-'
   }
 
   if (error) {
@@ -166,7 +154,7 @@ export function EnrollmentTable({ propertyId }: EnrollmentTableProps) {
                       Full Name
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500">
-                      Address
+                      Unit Number
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500">
                       Property Manager
@@ -180,9 +168,6 @@ export function EnrollmentTable({ propertyId }: EnrollmentTableProps) {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500">
                       Expire Date
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500">
-                      Status
-                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
@@ -195,28 +180,19 @@ export function EnrollmentTable({ propertyId }: EnrollmentTableProps) {
                         {enrollment.first_name} {enrollment.last_name}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {formatAddress(enrollment)}
+                        {formatUnitNumber(enrollment)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                         {propertyName || '-'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {String(enrollment.coverage_name || '')}
+                        {enrollment.coverage_name === 'SDI' ? 'SDA' : String(enrollment.coverage_name || '')}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                         {formatDate(enrollment.effective_date)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                         {formatDate(enrollment.expiration_date)}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span
-                          className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium ${getStatusColor(
-                            enrollment.status
-                          )}`}
-                        >
-                          {enrollment.status}
-                        </span>
                       </td>
                     </tr>
                   ))}

@@ -30,7 +30,9 @@ export default async function PortfolioPropertyPage({
   const [
     { data: property },
     { data: stats },
-    { data: managers }
+    { data: managers },
+    { count: sdiCount },
+    { count: tllCount }
   ] = await Promise.all([
     supabase
       .from('properties')
@@ -44,7 +46,9 @@ export default async function PortfolioPropertyPage({
         id,
         user:users!property_managers_user_id_fkey(first_name, last_name, email)
       `)
-      .eq('property_id', id)
+      .eq('property_id', id),
+    supabase.from('enrollments').select('*', { count: 'exact', head: true }).eq('property_id', id).eq('coverage_name', 'SDI'),
+    supabase.from('enrollments').select('*', { count: 'exact', head: true }).eq('property_id', id).eq('coverage_name', 'TLL')
   ])
 
   if (!property) {
@@ -88,7 +92,19 @@ export default async function PortfolioPropertyPage({
               <span className="text-2xl font-bold text-beagle-dark">{enrollmentCount || 0}</span>
             </div>
 
-            {stats && stats.map((stat: any) => (
+            <div className="h-8 w-px bg-gray-300"></div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-600">SDA</span>
+              <span className="text-2xl font-bold text-beagle-dark">{sdiCount || 0}</span>
+            </div>
+
+            <div className="h-8 w-px bg-gray-300"></div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-600">TLL</span>
+              <span className="text-2xl font-bold text-beagle-dark">{tllCount || 0}</span>
+            </div>
+
+            {stats && stats.filter((stat: any) => stat.status !== 'Premium Paying').map((stat: any) => (
               <div key={stat.status} className="flex items-center gap-2">
                 <div className="h-8 w-px bg-gray-300"></div>
                 <div className="flex items-center gap-2">

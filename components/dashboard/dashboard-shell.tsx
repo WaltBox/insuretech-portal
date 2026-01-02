@@ -13,6 +13,8 @@ interface DashboardShellProps {
   propertyStats: Array<{ status: string; count: number }>
   recentProperties: Array<{ id: string; name: string; city?: string; state?: string }>
   currentUser: User
+  sdiCount?: number
+  tllCount?: number
 }
 
 const REIMBURSEMENT_URL = 'https://claims.yourrenterskit.com/reimbursement'
@@ -26,6 +28,8 @@ export function DashboardShell({
   propertyStats,
   recentProperties,
   currentUser,
+  sdiCount = 0,
+  tllCount = 0,
 }: DashboardShellProps) {
   const [visibleCount, setVisibleCount] = useState(4)
   const [activePanel, setActivePanel] = useState<'claim' | 'program' | 'contact' | 'addendum' | null>(null)
@@ -634,8 +638,12 @@ export function DashboardShell({
                   <span className="text-sm font-semibold text-beagle-dark">{totalDoors}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-600">Tenants Enrolled</span>
-                  <span className="text-sm font-semibold text-beagle-dark">{getStat('Premium Paying')}</span>
+                  <span className="text-xs text-gray-600">SDA</span>
+                  <span className="text-sm font-semibold text-beagle-dark">{sdiCount}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-gray-600">TLL</span>
+                  <span className="text-sm font-semibold text-beagle-dark">{tllCount}</span>
                 </div>
               </div>
             </div>

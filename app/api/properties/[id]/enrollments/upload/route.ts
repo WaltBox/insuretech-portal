@@ -352,6 +352,44 @@ export async function POST(
           { status: 400 }
         )
       }
+      
+      // Normalize unit_number field name to "Unit Number" for legacy format
+      // This ensures the database function can find it regardless of CSV column name variation
+      data = data.map((row: any) => {
+        // Extract unit number from any possible column name variation
+        const unitNumber = (
+          row['Unit Number'] ||
+          row['unit number'] ||
+          row['Unit number'] ||
+          row['UnitNumber'] ||
+          row['unitNumber'] ||
+          row['Unit #'] ||
+          row['unit #'] ||
+          row['Unit'] ||
+          row['unit'] ||
+          row['"Unit Number"'] ||
+          ''
+        ).trim().replace(/^"|"$/g, '')
+        
+        // Normalize to "Unit Number" key (remove other variations)
+        const normalizedRow = { ...row }
+        delete normalizedRow['unit number']
+        delete normalizedRow['Unit number']
+        delete normalizedRow['UnitNumber']
+        delete normalizedRow['unitNumber']
+        delete normalizedRow['Unit #']
+        delete normalizedRow['unit #']
+        delete normalizedRow['Unit']
+        delete normalizedRow['unit']
+        delete normalizedRow['"Unit Number"']
+        
+        // Set the normalized key
+        if (unitNumber) {
+          normalizedRow['Unit Number'] = unitNumber
+        }
+        
+        return normalizedRow
+      })
     }
 
     if (data.length === 0) {

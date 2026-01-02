@@ -75,7 +75,7 @@ export const EnrollmentFilters = memo(function EnrollmentFilters({
           className="px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm text-beagle-dark focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200 cursor-pointer min-w-[140px]"
         >
           <option value="">All Products</option>
-          <option value="SDI">SDI</option>
+          <option value="SDI">SDA</option>
           <option value="TLL">TLL</option>
         </select>
       </div>

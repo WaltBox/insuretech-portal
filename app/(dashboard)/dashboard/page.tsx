@@ -18,14 +18,18 @@ export default async function DashboardPage() {
       { count: enrollmentCount },
       { data: allProperties },
       { data: recentProperties },
-      { count: premiumPayingCount }
+      { count: premiumPayingCount },
+      { count: sdiCount },
+      { count: tllCount }
     ] = await Promise.all([
       supabase.from('properties').select('*', { count: 'exact', head: true }),
       supabase.from('users').select('*', { count: 'exact', head: true }),
       supabase.from('enrollments').select('*', { count: 'exact', head: true }),
       supabase.from('properties').select('door_count').order('created_at', { ascending: false }),
       supabase.from('properties').select('*').order('created_at', { ascending: false }),
-      supabase.from('enrollments').select('*', { count: 'exact', head: true }).eq('status', 'Premium Paying')
+      supabase.from('enrollments').select('*', { count: 'exact', head: true }).eq('status', 'Premium Paying'),
+      supabase.from('enrollments').select('*', { count: 'exact', head: true }).eq('coverage_name', 'SDI'),
+      supabase.from('enrollments').select('*', { count: 'exact', head: true }).eq('coverage_name', 'TLL')
     ])
 
     // Calculate total doors from door_count field
@@ -46,6 +50,8 @@ export default async function DashboardPage() {
         propertyStats={stats}
         recentProperties={recentProperties || []}
         currentUser={user}
+        sdiCount={sdiCount || 0}
+        tllCount={tllCount || 0}
       />
     )
   }
@@ -56,13 +62,17 @@ export default async function DashboardPage() {
       { count: enrollmentCount },
       { data: allProperties },
       { data: recentProperties },
-      { count: premiumPayingCount }
+      { count: premiumPayingCount },
+      { count: sdiCount },
+      { count: tllCount }
     ] = await Promise.all([
       supabase.from('properties').select('*', { count: 'exact', head: true }),
       supabase.from('enrollments').select('*', { count: 'exact', head: true }),
       supabase.from('properties').select('door_count').order('created_at', { ascending: false }),
       supabase.from('properties').select('*').order('created_at', { ascending: false }),
-      supabase.from('enrollments').select('*', { count: 'exact', head: true }).eq('status', 'Premium Paying')
+      supabase.from('enrollments').select('*', { count: 'exact', head: true }).eq('status', 'Premium Paying'),
+      supabase.from('enrollments').select('*', { count: 'exact', head: true }).eq('coverage_name', 'SDI'),
+      supabase.from('enrollments').select('*', { count: 'exact', head: true }).eq('coverage_name', 'TLL')
     ])
 
     // Calculate total doors from door_count field
@@ -83,6 +93,8 @@ export default async function DashboardPage() {
         propertyStats={stats}
         recentProperties={recentProperties || []}
         currentUser={user}
+        sdiCount={sdiCount || 0}
+        tllCount={tllCount || 0}
       />
     )
   }
