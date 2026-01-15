@@ -7,3 +7,9 @@ DELETE FROM enrollments;
 SELECT COUNT(*) as remaining_enrollments FROM enrollments;
 
 
+
+
+
+
+
+

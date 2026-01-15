@@ -6,3 +6,9 @@ CREATE INDEX IF NOT EXISTS idx_properties_door_count ON properties(door_count) W
 
 
 
+
+
+
+
+
+

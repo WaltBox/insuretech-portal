@@ -63,26 +63,22 @@ export async function POST(
       .single()
 
     if (messageError) {
-      console.error('Error creating message:', messageError)
       return NextResponse.json({ 
         error: 'Failed to create message', 
         details: messageError.message 
       }, { status: 500 })
     }
 
-    console.log('Created message:', message)
-
     // Send notifications if user (not admin) sent the message
     if (senderType === 'user') {
       // Non-blocking notification
-      sendNotification(user, content, ticketId).catch((error) => {
-        console.error('Error sending notification:', error)
+      sendNotification(user, content, ticketId).catch(() => {
+        // Silently handle notification errors
       })
     }
 
     return NextResponse.json({ message })
   } catch (error) {
-    console.error('Messages POST error:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

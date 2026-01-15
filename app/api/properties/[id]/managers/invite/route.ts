@@ -291,10 +291,6 @@ async function sendInvitationEmail({
       return false
     }
 
-    console.log('Invitation email sent successfully:', {
-      email,
-      messageId: data.id,
-    })
     return true
   } catch (error) {
     console.error('Invitation email error:', error)

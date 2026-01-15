@@ -70,24 +70,6 @@ export async function GET(
 
     if (error) throw error
 
-    // Debug: Log coverage names being returned
-    if (enrollments && enrollments.length > 0) {
-      const coverageNames = enrollments.map((e: any) => e.coverage_name)
-      const uniqueCoverage = [...new Set(coverageNames)]
-      const sdiCount = coverageNames.filter((c: string) => c === 'SDI').length
-      const tllCount = coverageNames.filter((c: string) => c === 'TLL').length
-      console.log(`[API] Property ${propertyId} - Returning ${enrollments.length} enrollments`)
-      console.log(`[API] Coverage names:`, uniqueCoverage)
-      console.log(`[API] Counts - SDI: ${sdiCount}, TLL: ${tllCount}`)
-      console.log(`[API] First 5 enrollments coverage_name:`, enrollments.slice(0, 5).map((e: any) => ({ 
-        name: `${e.first_name} ${e.last_name}`, 
-        coverage_name: e.coverage_name,
-        id: e.id
-      })))
-    } else {
-      console.log(`[API] No enrollments returned for property ${propertyId}`)
-    }
-
     // Get property name for Property Manager column
     const { data: property } = await supabase
       .from('properties')

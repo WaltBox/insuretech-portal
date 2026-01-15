@@ -19,12 +19,18 @@ export async function createClientWithImpersonation() {
       })
     } catch (error) {
       // If function doesn't exist, that's okay - run the SQL script first
-      console.warn('Impersonation context not set. Run supabase/impersonation-rls-support.sql first.')
+      // Silently fail in production
     }
   }
 
   return client
 }
+
+
+
+
+
+
 
 
 

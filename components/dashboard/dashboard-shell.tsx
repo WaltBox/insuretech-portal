@@ -72,20 +72,16 @@ export function DashboardShell({
     try {
       const res = await fetch('/api/support/tickets')
       if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}))
-        console.error('Failed to fetch tickets:', res.status, errorData)
         setTickets([])
         setTicketsLoading(false)
         return
       }
       
       const data = await res.json()
-      console.log('Fetched tickets data:', data?.length || 0, 'tickets', data)
       
       // Always update tickets - remove the comparison that was preventing updates
       setTickets(Array.isArray(data) ? data : [])
     } catch (error) {
-      console.error('Failed to fetch tickets:', error)
       setTickets([])
     } finally {
       // Always clear loading state
@@ -163,18 +159,14 @@ export function DashboardShell({
       })
       
       if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}))
-        console.error('Failed to create ticket:', res.status, errorData)
         setContactStatus('error')
         setShowTypingIndicator(false)
         return
       }
       
       const data = await res.json()
-      console.log('Created ticket:', data)
       
       if (!data.ticket || !data.ticket.id) {
-        console.error('Invalid ticket response:', data)
         setContactStatus('error')
         setShowTypingIndicator(false)
         return
@@ -205,7 +197,6 @@ export function DashboardShell({
         }, 4000)
       }, 1000)
     } catch (error) {
-      console.error('Error creating ticket:', error)
       setContactStatus('error')
       setShowTypingIndicator(false)
     }
@@ -224,20 +215,17 @@ export function DashboardShell({
       })
       
       if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}))
-        console.error('Failed to send reply:', res.status, errorData)
         setReplyStatus('idle')
         return
       }
       
       const data = await res.json()
-      console.log('Sent reply:', data)
       
       setReplyMessage('')
       // Immediately refresh tickets to show the new message
       await fetchTickets()
     } catch (error) {
-      console.error('Failed to send reply:', error)
+      // Silently handle error
     } finally {
       setReplyStatus('idle')
     }

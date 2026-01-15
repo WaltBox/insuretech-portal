@@ -27,29 +27,11 @@ export async function GET(request: NextRequest) {
     // If this fails, the query will still run but RLS won't respect impersonation
     if (impersonateUserId) {
       try {
-        const { data, error: contextError } = await supabase.rpc('set_impersonation_context', { 
+        await supabase.rpc('set_impersonation_context', { 
           user_id: impersonateUserId 
-        })
-        if (contextError) {
-          console.error('❌ Failed to set impersonation context:', contextError.message)
-          console.error('Context error details:', JSON.stringify(contextError, null, 2))
-        } else {
-          console.log('✅ Impersonation context set for user:', impersonateUserId)
-        }
-        
-        // Verify the context was set by checking the effective user
-        const { data: effectiveId } = await supabase.rpc('get_effective_user_id', {})
-        const { data: effectiveRole } = await supabase.rpc('get_effective_user_role', {})
-        const { data: effectiveEmail } = await supabase.rpc('get_effective_user_email', {})
-        console.log('🔍 Effective user check:', {
-          effectiveId,
-          effectiveRole,
-          effectiveEmail,
-          impersonateUserId
         })
       } catch (error) {
         // Non-blocking - if function doesn't exist, query will still work
-        console.error('❌ Impersonation context error:', error instanceof Error ? error.message : error)
       }
     }
     

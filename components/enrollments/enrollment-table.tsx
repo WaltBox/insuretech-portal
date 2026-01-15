@@ -61,16 +61,6 @@ export function EnrollmentTable({ propertyId }: EnrollmentTableProps) {
   const enrollments = data?.enrollments || []
   const propertyName = data?.propertyName || ''
   const total = data?.total || 0
-  
-  // Debug: Log coverage names to see what we're getting
-  useEffect(() => {
-    if (enrollments.length > 0) {
-      const coverageNames = enrollments.map((e: Enrollment) => e.coverage_name)
-      const uniqueCoverage = [...new Set(coverageNames)]
-      console.log('Enrollment Table - Coverage names in data:', uniqueCoverage)
-      console.log('First 5 enrollments coverage_name:', enrollments.slice(0, 5).map((e: Enrollment) => ({ name: `${e.first_name} ${e.last_name}`, coverage: e.coverage_name })))
-    }
-  }, [enrollments])
   const totalPages = Math.ceil(total / limit)
   const startEntry = total === 0 ? 0 : (page - 1) * limit + 1
   const endEntry = Math.min(page * limit, total)

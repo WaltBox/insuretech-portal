@@ -44,7 +44,6 @@ export async function POST(request: NextRequest) {
     try {
       await supabase.rpc('set_impersonation_context', { user_id: userId })
     } catch (error) {
-      console.warn('Could not set impersonation context in database:', error)
       // Continue anyway - cookie-based impersonation will still work for UI
     }
 
@@ -55,7 +54,6 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'An error occurred'
-    console.error('Impersonation error:', error)
     return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }
@@ -78,7 +76,7 @@ export async function DELETE() {
     try {
       await supabase.rpc('clear_impersonation_context')
     } catch (error) {
-      console.warn('Could not clear impersonation context in database:', error)
+      // Silently fail
     }
 
     return NextResponse.json({
@@ -87,7 +85,6 @@ export async function DELETE() {
     })
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'An error occurred'
-    console.error('Stop impersonation error:', error)
     return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }

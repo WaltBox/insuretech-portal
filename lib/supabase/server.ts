@@ -40,7 +40,7 @@ export async function createClient() {
     } catch (error) {
       // Function might not exist yet - that's okay, run the SQL script first
       // RLS will fall back to using auth.uid() if the function fails
-      console.warn('Could not set impersonation context. Run supabase/impersonation-rls-support.sql first.')
+      // Silently fail in production
     }
   }
 

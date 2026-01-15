@@ -42,11 +42,8 @@ export async function GET() {
     const { data: tickets, error } = await query
 
     if (error) {
-      console.error('Error fetching tickets:', error)
       return NextResponse.json({ error: 'Failed to fetch tickets', details: error.message }, { status: 500 })
     }
-
-    console.log('Fetched tickets:', tickets?.length || 0, 'tickets')
 
     // Sort messages by created_at for each ticket
     const ticketsWithSortedMessages = tickets?.map(ticket => ({
@@ -56,10 +53,8 @@ export async function GET() {
       ) || []
     })) || []
 
-    console.log('Returning tickets with sorted messages:', ticketsWithSortedMessages.length)
     return NextResponse.json(ticketsWithSortedMessages)
   } catch (error) {
-    console.error('Tickets GET error:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

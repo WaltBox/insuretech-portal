@@ -318,10 +318,6 @@ async function sendInvitationEmail({
       }
     }
 
-    console.log('Invitation email sent successfully:', {
-      email,
-      messageId: data.id,
-    })
     return { success: true }
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
