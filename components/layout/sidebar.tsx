@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
-import { useState, useMemo, useCallback, memo } from 'react'
+import { useState, useMemo, useCallback, memo, useEffect, useRef } from 'react'
 import { 
   LayoutDashboard, 
   Building2, 
@@ -37,8 +37,43 @@ export const Sidebar = memo(function Sidebar({ user, isOpen, onToggle }: Sidebar
   const pathname = usePathname()
   const [showMenu, setShowMenu] = useState(false)
   const [loggingOut, setLoggingOut] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
 
-  const isActive = useCallback((path: string) => pathname.startsWith(path), [pathname])
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowMenu(false)
+      }
+    }
+
+    if (showMenu) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showMenu])
+
+  // Only match exact path OR if it's a parent route with children being viewed
+  const isActive = useCallback((path: string, allLinks: SidebarLink[]) => {
+    // Exact match
+    if (pathname === path) return true
+    
+    // Check if this is a parent route - only active if NO other link is a better match
+    if (pathname.startsWith(path + '/')) {
+      // Check if any other link is a more specific match
+      const moreSpecificMatch = allLinks.some(link => 
+        link.href !== path && 
+        pathname.startsWith(link.href) && 
+        link.href.length > path.length
+      )
+      return !moreSpecificMatch
+    }
+    
+    return false
+  }, [pathname])
 
   const handleLogout = useCallback(async () => {
     setLoggingOut(true)
@@ -126,7 +161,7 @@ export const Sidebar = memo(function Sidebar({ user, isOpen, onToggle }: Sidebar
         <div className="space-y-1">
           {links.map((link) => {
             const Icon = link.icon
-            const active = isActive(link.href)
+            const active = isActive(link.href, links)
             return (
               <Link
                 key={link.href}
@@ -164,7 +199,7 @@ export const Sidebar = memo(function Sidebar({ user, isOpen, onToggle }: Sidebar
       </nav>
 
       {/* Bottom User Section with Dropdown */}
-      <div className="px-3 py-4 border-t border-gray-200 relative">
+      <div ref={menuRef} className="px-3 py-4 border-t border-gray-200 relative">
         <button
           onClick={() => setShowMenu(!showMenu)}
           className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors duration-200"

@@ -18,30 +18,48 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
 
   if (impersonateUserId) {
     // Verify the actual authenticated user is an admin
-    const { data: adminUser } = await supabase
+    const { data: adminUser, error: adminError } = await supabase
       .from('users')
       .select('role')
       .eq('id', authUser.id)
       .single()
 
-    if (adminUser?.role === 'admin') {
+    if (adminError) {
+      console.error('Error fetching admin user:', adminError)
+      // Continue to normal flow if we can't verify admin status
+    } else if (adminUser?.role === 'admin') {
       // Return the impersonated user
-      const { data: impersonatedUser } = await supabase
+      const { data: impersonatedUser, error: impersonateError } = await supabase
         .from('users')
         .select('*')
         .eq('id', impersonateUserId)
         .single()
 
-      return impersonatedUser as User | null
+      if (impersonateError) {
+        // Silently handle - impersonated user might not exist, clear the cookie
+        if (impersonateError.code === 'PGRST116') {
+          // User not found - clear invalid impersonation cookie
+          cookieStore.delete('impersonate_user_id')
+        }
+        // Fall through to normal flow
+      } else if (impersonatedUser) {
+        return impersonatedUser as User | null
+      }
     }
   }
 
   // Normal flow - return the authenticated user
-  const { data: user } = await supabase
+  const { data: user, error } = await supabase
     .from('users')
     .select('*')
     .eq('id', authUser.id)
     .single()
+
+  if (error) {
+    // Log error but don't throw - return null to trigger redirect
+    console.error('Error fetching user from database:', error)
+    return null
+  }
 
   return user as User | null
 })
@@ -80,9 +98,21 @@ export async function requireAuth() {
 
 export async function requireRole(allowedRoles: string[]) {
   const user = await requireAuth()
+  
+  // Get actual user for admin check
+  const actualUser = await getActualUser()
+  
+  // Admins can access any page (for impersonation purposes)
+  if (actualUser?.role === 'admin') {
+    return user
+  }
+  
+  // For non-admins, check the current user's role (may be impersonated)
+  // This allows admins impersonating property managers to see property manager pages
   if (!allowedRoles.includes(user.role)) {
     throw new Error('Forbidden')
   }
+  
   return user
 }
 

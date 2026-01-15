@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, keepPreviousData } from '@tanstack/react-query'
 import { Loader2, ChevronDown, ChevronUp, Building2, User, Calendar } from 'lucide-react'
 import Image from 'next/image'
 import { LoadingState } from '@/components/ui/loading-spinner'
@@ -28,6 +28,7 @@ export function ClaimsTable({ propertyId, userEmail }: ClaimsTableProps) {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
+    isFetching,
     error,
   } = useInfiniteQuery({
     queryKey: ['claims', propertyId, timePeriod],
@@ -47,6 +48,7 @@ export function ClaimsTable({ propertyId, userEmail }: ClaimsTableProps) {
     },
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     initialPageParam: undefined,
+    placeholderData: keepPreviousData, // Keep showing previous data while fetching new
   })
 
   const claims = data?.pages.flatMap((page) => page.claims) || []
@@ -97,7 +99,7 @@ export function ClaimsTable({ propertyId, userEmail }: ClaimsTableProps) {
   return (
     <div className="space-y-6">
       {/* Time Period Filter */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 items-center">
         <button
           onClick={() => setTimePeriod('week')}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
@@ -128,6 +130,10 @@ export function ClaimsTable({ propertyId, userEmail }: ClaimsTableProps) {
         >
           This Year
         </button>
+        {/* Subtle loading indicator when switching tabs */}
+        {isFetching && !isLoading && (
+          <Loader2 className="w-4 h-4 animate-spin text-gray-400" />
+        )}
         <div className="ml-auto flex items-center text-sm text-gray-600">
           <span className="font-semibold text-beagle-dark mr-1">{totalCount}</span> claims
         </div>
