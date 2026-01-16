@@ -619,7 +619,10 @@ export function DashboardShell({
                 <h3 className="text-sm font-medium text-gray-700">System Overview</h3>
               </div>
 
-              <p className="text-3xl font-bold text-beagle-dark mb-6">{enrollmentCount}</p>
+              <div className="flex items-baseline gap-2 mb-6">
+                <p className="text-3xl font-bold text-beagle-dark">{enrollmentCount}</p>
+                <span className="text-sm text-gray-400">Total Enrollments</span>
+              </div>
               <div className="flex flex-wrap gap-6 text-sm">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-600">Total Doors</span>
@@ -639,10 +642,18 @@ export function DashboardShell({
             <h2 className="text-sm font-semibold text-beagle-dark mb-4">Recent Properties</h2>
             {visibleProperties.length > 0 ? (
               <div className="space-y-3 mb-4">
-                {visibleProperties.map((property) => (
+                {visibleProperties.map((property) => {
+                  // Property managers go to /my-properties, others go to /portfolio
+                  const propertyUrl = currentUser.role === 'property_manager' 
+                    ? `/my-properties/${property.id}`
+                    : currentUser.role === 'admin'
+                    ? `/admin/properties/${property.id}`
+                    : `/portfolio/${property.id}`
+                  
+                  return (
                   <Link
                     key={property.id}
-                    href={`/portfolio/${property.id}`}
+                    href={propertyUrl}
                     className="group flex items-center justify-between px-4 py-3 bg-white rounded-lg border border-gray-200 hover:border-beagle-orange transition-all duration-200"
                   >
                     <div>
@@ -653,7 +664,8 @@ export function DashboardShell({
                     </div>
                     <ChevronRight className="w-5 h-5 text-beagle-dark group-hover:text-beagle-orange transition-colors duration-200" />
                   </Link>
-                ))}
+                  )
+                })}
                 {hasMore && (
                   <button
                     onClick={() => setVisibleCount((prev) => prev + 4)}

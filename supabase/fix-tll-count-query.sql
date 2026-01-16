@@ -36,3 +36,4 @@ SELECT
   (SELECT COUNT(*) FROM enrollments WHERE UPPER(TRIM(coverage_name)) = 'TLL') - 
   (SELECT COUNT(*) FROM enrollments WHERE coverage_name = 'TLL' OR coverage_name = 'tll') as missing_count;
 
+

@@ -37,3 +37,4 @@ WHERE tablename = 'enrollments'
   AND schemaname = 'public'
   AND cmd = 'SELECT';
 
+

@@ -77,3 +77,4 @@ GROUP BY
     ELSE 'HAS_VALUE'
   END;
 
+

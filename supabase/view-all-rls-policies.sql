@@ -128,3 +128,4 @@ WHERE schemaname = 'public'
 AND tablename IN ('properties', 'enrollments', 'claims', 'users', 'property_managers', 'invitations')
 ORDER BY tablename, cmd, policyname;
 
+

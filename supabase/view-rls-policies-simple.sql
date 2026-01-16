@@ -48,3 +48,4 @@ WHERE schemaname = 'public'
 AND rowsecurity = true
 ORDER BY tablename;
 
+

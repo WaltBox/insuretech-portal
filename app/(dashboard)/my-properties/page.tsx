@@ -4,6 +4,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Building2, Users, FileText, ChevronRight, MapPin } from 'lucide-react'
 
+// Disable caching - always fetch fresh data
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function MyPropertiesPage() {
   const user = await requireRole(['property_manager'])
   const supabase = await createClient()

@@ -30,3 +30,4 @@ WHERE coverage_name IS NOT NULL
 GROUP BY coverage_name
 ORDER BY count DESC;
 
+

@@ -42,3 +42,4 @@ FROM pg_proc
 WHERE proname = 'get_effective_user_role'
   AND pronamespace = (SELECT oid FROM pg_namespace WHERE nspname = 'public');
 
+

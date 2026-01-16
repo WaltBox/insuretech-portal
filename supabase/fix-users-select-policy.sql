@@ -38,3 +38,4 @@ ORDER BY policyname;
 -- 1. "Admins can view all users" - with admin check
 -- 2. "Users can view themselves" - with id = auth.uid() check
 
+
