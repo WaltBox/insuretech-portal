@@ -3,6 +3,53 @@ import { createClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth'
 import crypto from 'crypto'
 
+// GET - Fetch pending invitations
+export async function GET() {
+  try {
+    const user = await getCurrentUser()
+    
+    if (!user || !['admin', 'centralized_member'].includes(user.role)) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+
+    const supabase = await createClient()
+
+    // Get all pending (not accepted and not expired) invitations
+    const { data: invitations, error } = await supabase
+      .from('invitations')
+      .select(`
+        id,
+        email,
+        role,
+        token,
+        expires_at,
+        created_at,
+        metadata,
+        invited_by,
+        inviter:users!invited_by(first_name, last_name)
+      `)
+      .is('accepted_at', null)
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+
+    // Mark which invitations are expired
+    const now = new Date()
+    const invitationsWithStatus = invitations?.map(inv => ({
+      ...inv,
+      is_expired: new Date(inv.expires_at) < now,
+      first_name: inv.metadata?.first_name || '',
+      last_name: inv.metadata?.last_name || '',
+    })) || []
+
+    return NextResponse.json({ invitations: invitationsWithStatus })
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'An error occurred'
+    console.error('Error fetching invitations:', error)
+    return NextResponse.json({ error: errorMessage }, { status: 500 })
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const user = await getCurrentUser()

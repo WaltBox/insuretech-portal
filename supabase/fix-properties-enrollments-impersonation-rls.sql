@@ -179,4 +179,3 @@ SELECT
 -- 
 -- To verify policies are updated, check the policy_condition column below
 -- It should contain 'get_effective_user_role' or 'get_effective_user_id'
-
