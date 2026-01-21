@@ -27,6 +27,7 @@ export default async function UsersPage() {
         token,
         expires_at,
         created_at,
+        last_resent_at,
         metadata,
         invited_by,
         inviter:users!invited_by(first_name, last_name)
@@ -49,6 +50,7 @@ export default async function UsersPage() {
       token: inv.token,
       expires_at: inv.expires_at,
       created_at: inv.created_at,
+      last_resent_at: inv.last_resent_at,
       is_expired: new Date(inv.expires_at) < now,
       first_name: (inv.metadata as { first_name?: string })?.first_name || '',
       last_name: (inv.metadata as { last_name?: string })?.last_name || '',

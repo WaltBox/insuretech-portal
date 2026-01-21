@@ -13,6 +13,7 @@ interface PendingInvitation {
   is_expired: boolean
   first_name: string
   last_name: string
+  last_resent_at?: string
   inviter?: {
     first_name: string
     last_name: string
@@ -28,11 +29,14 @@ export function PendingInvitationsTable({ initialInvitations }: PendingInvitatio
   const [resending, setResending] = useState<string | null>(null)
   const [deleting, setDeleting] = useState<string | null>(null)
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [resentId, setResentId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
   const handleResend = async (invitation: PendingInvitation) => {
     setResending(invitation.id)
     setError(null)
+    setSuccessMessage(null)
 
     try {
       const response = await fetch(`/api/admin/invitations/${invitation.id}/resend`, {
@@ -45,16 +49,26 @@ export function PendingInvitationsTable({ initialInvitations }: PendingInvitatio
         throw new Error(data.error || 'Failed to resend invitation')
       }
 
-      // Update the invitation in the list (it's no longer expired)
+      // Update the invitation in the list (it's no longer expired, and track resent time)
+      const now = new Date().toISOString()
       setInvitations(prev =>
         prev.map(inv =>
           inv.id === invitation.id
-            ? { ...inv, is_expired: false, token: data.inviteLink?.split('/').pop() || inv.token }
+            ? { ...inv, is_expired: false, token: data.inviteLink?.split('/').pop() || inv.token, last_resent_at: now }
             : inv
         )
       )
 
-      alert('Invitation resent successfully!')
+      // Show success indicator
+      setResentId(invitation.id)
+      setTimeout(() => setResentId(null), 3000)
+
+      if (data.emailSent) {
+        setSuccessMessage(`✓ Invitation resent to ${invitation.email}`)
+        setTimeout(() => setSuccessMessage(null), 5000)
+      } else {
+        setError(`Email failed: ${data.emailError || 'Unknown error'}. Copy the link and send manually.`)
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to resend invitation')
     } finally {
@@ -158,6 +172,13 @@ export function PendingInvitationsTable({ initialInvitations }: PendingInvitatio
         </div>
       </div>
 
+      {successMessage && (
+        <div className="mx-6 mt-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2 text-sm text-green-700">
+          <Check className="h-4 w-4" />
+          {successMessage}
+        </div>
+      )}
+
       {error && (
         <div className="mx-6 mt-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-sm text-red-700">
           <AlertCircle className="h-4 w-4" />
@@ -188,7 +209,12 @@ export function PendingInvitationsTable({ initialInvitations }: PendingInvitatio
           </thead>
           <tbody className="divide-y divide-gray-100">
             {invitations.map((invitation) => (
-              <tr key={invitation.id} className="hover:bg-gray-50 transition-colors duration-150">
+              <tr 
+                key={invitation.id} 
+                className={`hover:bg-gray-50 transition-colors duration-300 ${
+                  resentId === invitation.id ? 'bg-green-50' : ''
+                }`}
+              >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div>
                     <div className="text-sm font-medium text-beagle-dark">
@@ -220,7 +246,12 @@ export function PendingInvitationsTable({ initialInvitations }: PendingInvitatio
                   )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {getTimeAgo(invitation.created_at)}
+                  <div>{getTimeAgo(invitation.created_at)}</div>
+                  {invitation.last_resent_at && (
+                    <div className="text-xs text-green-600 mt-0.5">
+                      Resent {getTimeAgo(invitation.last_resent_at)}
+                    </div>
+                  )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex items-center justify-end gap-2">
@@ -239,10 +270,18 @@ export function PendingInvitationsTable({ initialInvitations }: PendingInvitatio
                     <button
                       onClick={() => handleResend(invitation)}
                       disabled={resending === invitation.id}
-                      className="text-beagle-orange hover:text-accent-orange transition-colors duration-200 disabled:opacity-50"
-                      title="Resend invitation"
+                      className={`transition-colors duration-200 disabled:opacity-50 ${
+                        resentId === invitation.id 
+                          ? 'text-green-500' 
+                          : 'text-beagle-orange hover:text-accent-orange'
+                      }`}
+                      title={resentId === invitation.id ? 'Resent!' : 'Resend invitation'}
                     >
-                      <RefreshCw className={`h-4 w-4 ${resending === invitation.id ? 'animate-spin' : ''}`} />
+                      {resentId === invitation.id ? (
+                        <Check className="h-4 w-4" />
+                      ) : (
+                        <RefreshCw className={`h-4 w-4 ${resending === invitation.id ? 'animate-spin' : ''}`} />
+                      )}
                     </button>
                     <button
                       onClick={() => handleDelete(invitation)}

@@ -168,30 +168,34 @@ export async function POST(request: NextRequest) {
 
     if (inviteError) throw inviteError
 
-    // Send invitation email (non-blocking - don't wait for it)
+    // Send invitation email
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://beagle-caf.com'
     const inviteLink = `${baseUrl}/invite/${token}`
     
-    // Send email asynchronously without blocking the response
-    sendInvitationEmail({
+    // Wait for email to send so we can report status
+    const emailResult = await sendInvitationEmail({
       email,
       firstName: first_name,
       lastName: last_name,
       role,
       inviteLink,
-    }).catch((error) => {
-      console.error('Failed to send invitation email (async):', {
+    })
+
+    if (!emailResult.success) {
+      console.error('Failed to send invitation email:', {
         email,
-        error: error instanceof Error ? error.message : error,
+        error: emailResult.error,
         inviteLink,
       })
-    })
+    }
 
     return NextResponse.json({
       success: true,
       message: 'Invitation created',
       invitation,
       inviteLink,
+      emailSent: emailResult.success,
+      emailError: emailResult.error || null,
     })
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'An error occurred'
@@ -335,6 +339,14 @@ async function sendInvitationEmail({
   `
 
   try {
+    console.log('📧 Attempting to send invitation email:', {
+      to: email,
+      firstName,
+      role,
+      hasApiKey: !!resendApiKey,
+      apiKeyPrefix: resendApiKey?.substring(0, 10) + '...',
+    })
+
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -351,9 +363,16 @@ async function sendInvitationEmail({
 
     const data = await response.json()
 
+    console.log('📧 Resend API response:', {
+      status: response.status,
+      ok: response.ok,
+      data,
+      email,
+    })
+
     if (!response.ok) {
       const errorMessage = data?.message || data?.error || 'Unknown error from Resend API'
-      console.error('Resend API error:', {
+      console.error('❌ Resend API error:', {
         status: response.status,
         statusText: response.statusText,
         error: data,
@@ -365,10 +384,11 @@ async function sendInvitationEmail({
       }
     }
 
+    console.log('✅ Email sent successfully:', { email, resendId: data?.id })
     return { success: true }
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
-    console.error('Invitation email error:', {
+    console.error('❌ Invitation email exception:', {
       error: errorMessage,
       email,
       stack: error instanceof Error ? error.stack : undefined,

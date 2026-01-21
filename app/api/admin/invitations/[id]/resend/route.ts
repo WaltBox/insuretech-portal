@@ -37,12 +37,13 @@ export async function POST(
     const newExpiresAt = new Date()
     newExpiresAt.setDate(newExpiresAt.getDate() + 7) // 7 days from now
 
-    // Update invitation with new token and expiration
+    // Update invitation with new token, expiration, and resent timestamp
     const { error: updateError } = await supabase
       .from('invitations')
       .update({
         token: newToken,
         expires_at: newExpiresAt.toISOString(),
+        last_resent_at: new Date().toISOString(),
       })
       .eq('id', id)
 
@@ -56,7 +57,7 @@ export async function POST(
     const firstName = invitation.metadata?.first_name || 'User'
     const lastName = invitation.metadata?.last_name || ''
     
-    await sendInvitationEmail({
+    const emailResult = await sendInvitationEmail({
       email: invitation.email,
       firstName,
       lastName,
@@ -64,10 +65,19 @@ export async function POST(
       inviteLink,
     })
 
+    if (!emailResult.success) {
+      console.error('Failed to send invitation email:', {
+        email: invitation.email,
+        error: emailResult.error,
+      })
+    }
+
     return NextResponse.json({
       success: true,
-      message: 'Invitation resent successfully',
+      message: emailResult.success ? 'Invitation resent successfully' : 'Invitation updated but email failed',
       inviteLink,
+      emailSent: emailResult.success,
+      emailError: emailResult.error || null,
     })
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'An error occurred'
@@ -197,6 +207,13 @@ async function sendInvitationEmail({
   `
 
   try {
+    console.log('📧 Attempting to resend invitation email:', {
+      to: email,
+      firstName,
+      role,
+      hasApiKey: !!resendApiKey,
+    })
+
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -211,15 +228,24 @@ async function sendInvitationEmail({
       }),
     })
 
+    const data = await response.json()
+
+    console.log('📧 Resend API response:', {
+      status: response.status,
+      ok: response.ok,
+      data,
+      email,
+    })
+
     if (!response.ok) {
-      const data = await response.json()
-      console.error('Resend API error:', data)
+      console.error('❌ Resend API error:', data)
       return { success: false, error: data?.message || 'Failed to send email' }
     }
 
+    console.log('✅ Reminder email sent successfully:', { email, resendId: data?.id })
     return { success: true }
   } catch (error) {
-    console.error('Email sending error:', error)
+    console.error('❌ Email sending error:', error)
     return { success: false, error: 'Failed to send email' }
   }
 }

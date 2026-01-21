@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { User, UserRole, Property } from '@/lib/types'
-import { X } from 'lucide-react'
+import { X, AlertTriangle } from 'lucide-react'
 import { ErrorMessage } from '@/components/ui/error-message'
 
 interface UserFormModalProps {
@@ -15,6 +15,8 @@ export function UserFormModal({ user, onClose, onSuccess }: UserFormModalProps) 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [inviteLink, setInviteLink] = useState<string | null>(null)
+  const [emailSent, setEmailSent] = useState<boolean | null>(null)
+  const [emailError, setEmailError] = useState<string | null>(null)
   const [properties, setProperties] = useState<Property[]>([])
   const [selectedProperties, setSelectedProperties] = useState<string[]>([])
   const [formData, setFormData] = useState({
@@ -90,6 +92,8 @@ export function UserFormModal({ user, onClose, onSuccess }: UserFormModalProps) 
 
         const data = await response.json()
         setInviteLink(data.inviteLink)
+        setEmailSent(data.emailSent)
+        setEmailError(data.emailError)
         
         // Don't close modal, show the invite link
       }
@@ -136,12 +140,29 @@ export function UserFormModal({ user, onClose, onSuccess }: UserFormModalProps) 
 
         {inviteLink ? (
           <div className="space-y-4">
-            <div className="rounded-lg bg-green-50 border-l-4 border-success p-4">
-              <p className="text-sm text-green-800 font-semibold mb-2">Invitation sent!</p>
-              <p className="text-sm text-green-700">
-                Share this link with {formData.first_name} {formData.last_name}:
-              </p>
-            </div>
+            {emailSent ? (
+              <div className="rounded-lg bg-green-50 border-l-4 border-success p-4">
+                <p className="text-sm text-green-800 font-semibold mb-2">Invitation email sent!</p>
+                <p className="text-sm text-green-700">
+                  An email has been sent to {formData.email}. You can also share this link directly:
+                </p>
+              </div>
+            ) : (
+              <div className="rounded-lg bg-amber-50 border-l-4 border-amber-500 p-4">
+                <div className="flex items-start gap-2">
+                  <AlertTriangle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-amber-800 font-semibold mb-1">Email failed to send</p>
+                    <p className="text-sm text-amber-700">
+                      {emailError || 'The invitation was created but the email could not be sent.'}
+                    </p>
+                    <p className="text-sm text-amber-700 mt-2 font-medium">
+                      Please copy the link below and send it manually to {formData.first_name}:
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
             <div className="p-4 bg-gray-50 rounded-lg break-all text-sm font-medium text-beagle-dark border border-gray-200">
               {inviteLink}
             </div>
