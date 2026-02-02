@@ -20,7 +20,7 @@ export default async function ProfilePage() {
           <div className="space-y-6">
             {/* Profile Picture */}
             <div className="flex items-center gap-6">
-              <div className="w-20 h-20 rounded-full bg-beagle-orange/10 flex items-center justify-center text-2xl font-semibold text-beagle-orange">
+              <div className="w-20 h-20 rounded-full bg-i3-navy/10 flex items-center justify-center text-2xl font-semibold text-i3-navy">
                 {user.first_name[0]}{user.last_name[0]}
               </div>
               <div>

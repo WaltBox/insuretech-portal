@@ -72,7 +72,7 @@ export function PropertyForm({ property, onSuccess }: PropertyFormProps) {
           required
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+          className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200"
           placeholder="Enter property name"
         />
       </div>
@@ -86,7 +86,7 @@ export function PropertyForm({ property, onSuccess }: PropertyFormProps) {
           id="address"
           value={formData.address}
           onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-          className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+          className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200"
           placeholder="Street address"
         />
       </div>
@@ -101,7 +101,7 @@ export function PropertyForm({ property, onSuccess }: PropertyFormProps) {
             id="city"
             value={formData.city}
             onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-            className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+            className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200"
             placeholder="City"
           />
         </div>
@@ -114,7 +114,7 @@ export function PropertyForm({ property, onSuccess }: PropertyFormProps) {
             id="state"
             value={formData.state}
             onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-            className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+            className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200"
             placeholder="ST"
           />
         </div>
@@ -129,7 +129,7 @@ export function PropertyForm({ property, onSuccess }: PropertyFormProps) {
           id="zip_code"
           value={formData.zip_code}
           onChange={(e) => setFormData({ ...formData, zip_code: e.target.value })}
-          className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+          className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200"
           placeholder="12345"
         />
       </div>
@@ -144,7 +144,7 @@ export function PropertyForm({ property, onSuccess }: PropertyFormProps) {
           min="0"
           value={formData.door_count}
           onChange={(e) => setFormData({ ...formData, door_count: e.target.value ? parseInt(e.target.value) : '' })}
-          className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+          className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200"
           placeholder="Enter number of doors"
         />
       </div>
@@ -153,7 +153,7 @@ export function PropertyForm({ property, onSuccess }: PropertyFormProps) {
         <button
           type="submit"
           disabled={loading}
-          className="flex-1 bg-beagle-orange text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-accent-orange active:bg-[#e66d00] disabled:bg-gray-300 disabled:cursor-not-allowed shadow-sm hover:shadow-md transition-all duration-200"
+          className="flex-1 bg-i3-navy text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-i3-navy-light disabled:bg-gray-300 disabled:cursor-not-allowed shadow-sm hover:shadow-md transition-all duration-200"
         >
           {loading ? 'Saving...' : property ? 'Update Property' : 'Create Property'}
         </button>

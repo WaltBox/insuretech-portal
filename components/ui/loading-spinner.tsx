@@ -1,12 +1,12 @@
 interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg'
-  color?: 'orange' | 'white' | 'gray' | 'dark'
+  color?: 'navy' | 'white' | 'gray' | 'dark'
   className?: string
 }
 
 export function LoadingSpinner({ 
   size = 'md', 
-  color = 'orange',
+  color = 'navy',
   className = '' 
 }: LoadingSpinnerProps) {
   const sizeClasses = {
@@ -16,7 +16,7 @@ export function LoadingSpinner({
   }
 
   const colorClasses = {
-    orange: 'text-beagle-orange',
+    navy: 'text-i3-navy',
     white: 'text-white',
     gray: 'text-gray-400',
     dark: 'text-beagle-dark'
@@ -54,7 +54,7 @@ export function LoadingOverlay({ message = 'Loading...' }: LoadingOverlayProps) 
   return (
     <div className="fixed inset-0 bg-gray-900/50 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-8 shadow-2xl flex flex-col items-center gap-4 min-w-[200px]">
-        <LoadingSpinner size="lg" color="orange" />
+        <LoadingSpinner size="lg" color="navy" />
         <p className="text-sm font-medium text-beagle-dark">{message}</p>
       </div>
     </div>
@@ -69,7 +69,7 @@ interface LoadingStateProps {
 export function LoadingState({ message = 'Loading...', className = '' }: LoadingStateProps) {
   return (
     <div className={`flex flex-col items-center justify-center py-12 ${className}`}>
-      <LoadingSpinner size="lg" color="orange" />
+      <LoadingSpinner size="lg" color="navy" />
       <p className="text-sm text-gray-600 mt-4">{message}</p>
     </div>
   )

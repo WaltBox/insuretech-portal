@@ -86,7 +86,7 @@ export default function LoginPage() {
                     disabled={loading}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="block w-full px-3 py-2 sm:px-4 sm:py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200 disabled:bg-gray-50 disabled:cursor-not-allowed"
+                    className="block w-full px-3 py-2 sm:px-4 sm:py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200 disabled:bg-gray-50 disabled:cursor-not-allowed"
                     placeholder="you@example.com"
                   />
             </div>
@@ -103,7 +103,7 @@ export default function LoginPage() {
                     disabled={loading}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full px-3 py-2 sm:px-4 sm:py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200 disabled:bg-gray-50 disabled:cursor-not-allowed"
+                    className="block w-full px-3 py-2 sm:px-4 sm:py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200 disabled:bg-gray-50 disabled:cursor-not-allowed"
                     placeholder="Enter your password"
                   />
             </div>
@@ -117,7 +117,7 @@ export default function LoginPage() {
             {loading ? (
               <>
                 <svg 
-                  className="animate-spin h-4 w-4 text-beagle-orange" 
+                  className="animate-spin h-4 w-4 text-i3-navy" 
                   xmlns="http://www.w3.org/2000/svg" 
                   fill="none" 
                   viewBox="0 0 24 24"

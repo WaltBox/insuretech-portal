@@ -46,7 +46,7 @@ export default async function MyPropertiesPage() {
 
         <div className="flex items-center gap-8 flex-wrap">
           <div className="flex items-center gap-2">
-            <Building2 className="w-5 h-5 text-beagle-orange" />
+            <Building2 className="w-5 h-5 text-i3-navy" />
             <span className="text-xs text-gray-600">Assigned Properties</span>
             <span className="text-2xl font-bold text-beagle-dark">{properties.length}</span>
           </div>
@@ -54,7 +54,7 @@ export default async function MyPropertiesPage() {
           <div className="h-8 w-px bg-gray-300"></div>
 
           <div className="flex items-center gap-2">
-            <Users className="w-5 h-5 text-beagle-orange" />
+            <Users className="w-5 h-5 text-i3-navy" />
             <span className="text-xs text-gray-600">Total Enrollments</span>
             <span className="text-2xl font-bold text-beagle-dark">{totalEnrollments}</span>
           </div>
@@ -62,7 +62,7 @@ export default async function MyPropertiesPage() {
           <div className="h-8 w-px bg-gray-300"></div>
 
           <div className="flex items-center gap-2">
-            <FileText className="w-5 h-5 text-beagle-orange" />
+            <FileText className="w-5 h-5 text-i3-navy" />
             <span className="text-xs text-gray-600">Active Claims</span>
             <span className="text-2xl font-bold text-beagle-dark">{totalClaims}</span>
           </div>
@@ -80,7 +80,7 @@ export default async function MyPropertiesPage() {
               <Link
                 key={property.id}
                 href={`/my-properties/${property.id}`}
-                className="group flex items-center justify-between px-6 py-4 bg-white rounded-lg border border-gray-200 hover:border-beagle-orange hover:shadow-md transition-all duration-200"
+                className="group flex items-center justify-between px-6 py-4 bg-white rounded-lg border border-gray-200 hover:border-i3-navy hover:shadow-md transition-all duration-200"
               >
                 <div className="flex items-center gap-6 flex-1">
                   {/* Property Name & Address */}
@@ -135,7 +135,7 @@ export default async function MyPropertiesPage() {
                   </div>
                 </div>
 
-                <ChevronRight className="w-5 h-5 text-beagle-dark group-hover:text-beagle-orange transition-colors duration-200 flex-shrink-0 ml-4" />
+                <ChevronRight className="w-5 h-5 text-beagle-dark group-hover:text-i3-navy transition-colors duration-200 flex-shrink-0 ml-4" />
               </Link>
             )
           })}

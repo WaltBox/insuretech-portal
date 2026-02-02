@@ -45,7 +45,7 @@ export default async function PortfolioPage() {
       </div>
 
       {/* Single Consolidated Stats Card */}
-      <div className="bg-orange-lighter rounded-lg p-6 border border-gray-200 shadow-sm mb-8">
+      <div className="bg-i3-bg-light rounded-lg p-6 border border-gray-200 shadow-sm mb-8">
         <div className="flex items-center gap-3 mb-6">
           <Image src="/images/star.svg" alt="" width={20} height={20} className="w-5 h-5" />
           <h3 className="text-sm font-medium text-gray-700">Portfolio Metrics</h3>
@@ -53,7 +53,7 @@ export default async function PortfolioPage() {
 
         <div className="flex items-center gap-8 flex-wrap">
           <div className="flex items-center gap-2">
-            <Building2 className="w-5 h-5 text-beagle-orange" />
+            <Building2 className="w-5 h-5 text-i3-navy" />
             <span className="text-xs text-gray-600">Properties</span>
             <span className="text-2xl font-bold text-beagle-dark">{properties?.length || 0}</span>
           </div>
@@ -61,7 +61,7 @@ export default async function PortfolioPage() {
           <div className="h-8 w-px bg-gray-300"></div>
 
           <div className="flex items-center gap-2">
-            <Users className="w-5 h-5 text-beagle-orange" />
+            <Users className="w-5 h-5 text-i3-navy" />
             <span className="text-xs text-gray-600">Total Enrollments</span>
             <span className="text-2xl font-bold text-beagle-dark">{totalEnrollments || 0}</span>
           </div>
@@ -69,7 +69,7 @@ export default async function PortfolioPage() {
           <div className="h-8 w-px bg-gray-300"></div>
 
           <div className="flex items-center gap-2">
-            <FileText className="w-5 h-5 text-beagle-orange" />
+            <FileText className="w-5 h-5 text-i3-navy" />
             <span className="text-xs text-gray-600">Active Claims</span>
             <span className="text-2xl font-bold text-beagle-dark">{totalClaims || 0}</span>
           </div>
@@ -89,7 +89,7 @@ export default async function PortfolioPage() {
               <Link
                 key={property.id}
                 href={`/portfolio/${property.id}`}
-                className="group flex items-center justify-between px-4 py-3 bg-white rounded-lg border border-gray-200 hover:border-beagle-orange hover:shadow-md transition-all duration-200"
+                className="group flex items-center justify-between px-4 py-3 bg-white rounded-lg border border-gray-200 hover:border-i3-navy hover:shadow-md transition-all duration-200"
               >
                 <div className="flex-1 min-w-0">
                   <p className="text-base font-bold text-beagle-dark mb-1 truncate">{property.name}</p>
@@ -115,7 +115,7 @@ export default async function PortfolioPage() {
                     </p>
                   </div>
 
-                  <ChevronRight className="w-5 h-5 text-beagle-dark group-hover:text-beagle-orange transition-colors duration-200 flex-shrink-0 ml-2" />
+                  <ChevronRight className="w-5 h-5 text-beagle-dark group-hover:text-i3-navy transition-colors duration-200 flex-shrink-0 ml-2" />
                 </div>
               </Link>
             )

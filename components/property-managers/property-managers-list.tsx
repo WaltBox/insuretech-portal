@@ -65,7 +65,7 @@ export function PropertyManagersList() {
         </div>
         <button
           onClick={() => setShowInviteModal(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-beagle-orange text-white rounded-lg text-sm font-medium hover:bg-accent-orange transition-all duration-200 shadow-sm"
+          className="flex items-center gap-2 px-4 py-2.5 bg-i3-navy text-white rounded-lg text-sm font-medium hover:bg-i3-navy-light transition-all duration-200 shadow-sm"
         >
           <Plus className="w-4 h-4" />
           Property Manager
@@ -81,7 +81,7 @@ export function PropertyManagersList() {
             placeholder="Search by name or email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-4 py-2.5 w-full border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+            className="pl-10 pr-4 py-2.5 w-full border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200"
           />
         </div>
       </div>
@@ -97,7 +97,7 @@ export function PropertyManagersList() {
           {!searchTerm && (
             <button
               onClick={() => setShowInviteModal(true)}
-              className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-beagle-orange text-white rounded-lg text-sm font-medium hover:bg-accent-orange transition-all duration-200"
+              className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-i3-navy text-white rounded-lg text-sm font-medium hover:bg-i3-navy-light transition-all duration-200"
             >
               <Plus className="w-4 h-4" />
               Invite First Property Manager
@@ -132,7 +132,7 @@ export function PropertyManagersList() {
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-beagle-orange/10 flex items-center justify-center text-sm font-semibold text-beagle-orange">
+                        <div className="w-10 h-10 rounded-full bg-i3-navy/10 flex items-center justify-center text-sm font-semibold text-i3-navy">
                           {manager.user.first_name[0]}{manager.user.last_name[0]}
                         </div>
                         <div>

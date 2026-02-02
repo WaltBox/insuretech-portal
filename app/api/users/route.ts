@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { getCurrentUser } from '@/lib/auth'
 
 export async function GET() {
@@ -25,6 +24,7 @@ export async function GET() {
   }
 }
 
+// DEMO MODE: Create mock users (data won't persist)
 export async function POST(request: NextRequest) {
   try {
     const user = await getCurrentUser()
@@ -33,53 +33,24 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { email, password, role, first_name, last_name } = body
+    const { email, role, first_name, last_name } = body
 
-    if (!email || !password || !role || !first_name || !last_name) {
+    if (!email || !role || !first_name || !last_name) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       )
     }
 
-    // Use service role key to create users
-    const supabase = createSupabaseClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
-      }
-    )
-
-    // Create auth user using admin API
-    const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+    // DEMO MODE: Return a mock created user
+    const newUser = {
+      id: `mock-user-${Date.now()}`,
       email,
-      password,
-      email_confirm: true,
-    })
-
-    if (authError) throw authError
-
-    // Create user record
-    const { data: newUser, error: userError } = await supabase
-      .from('users')
-      .insert({
-        id: authData.user.id,
-        email,
-        role,
-        first_name,
-        last_name,
-      })
-      .select()
-      .single()
-
-    if (userError) {
-      // Rollback: delete auth user if user record creation fails
-      await supabase.auth.admin.deleteUser(authData.user.id)
-      throw userError
+      role,
+      first_name,
+      last_name,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
     }
 
     return NextResponse.json(newUser, { status: 201 })

@@ -132,7 +132,7 @@ export function InvitePropertyManagerModal({
           <div className="flex gap-3">
             <button
               onClick={handleCopyLink}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-beagle-orange text-white rounded-lg text-sm font-medium hover:bg-accent-orange transition-all duration-200"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-i3-navy text-white rounded-lg text-sm font-medium hover:bg-i3-navy-light transition-all duration-200"
             >
               {copied ? (
                 <>
@@ -201,7 +201,7 @@ export function InvitePropertyManagerModal({
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200"
                 placeholder="manager@example.com"
               />
             </div>
@@ -222,7 +222,7 @@ export function InvitePropertyManagerModal({
                   onChange={(e) =>
                     setFormData({ ...formData, first_name: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200"
                   placeholder="John"
                 />
               </div>
@@ -242,7 +242,7 @@ export function InvitePropertyManagerModal({
                   onChange={(e) =>
                     setFormData({ ...formData, last_name: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200"
                   placeholder="Doe"
                 />
               </div>
@@ -254,7 +254,7 @@ export function InvitePropertyManagerModal({
               </label>
               {propertiesLoading ? (
                 <div className="flex justify-center py-8">
-                  <Loader2 className="w-6 h-6 animate-spin text-beagle-orange" />
+                  <Loader2 className="w-6 h-6 animate-spin text-i3-navy" />
                 </div>
               ) : properties.length === 0 ? (
                 <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg text-center">
@@ -273,7 +273,7 @@ export function InvitePropertyManagerModal({
                         type="checkbox"
                         checked={formData.property_ids.includes(property.id)}
                         onChange={() => toggleProperty(property.id)}
-                        className="w-4 h-4 border-2 border-gray-300 rounded cursor-pointer appearance-none checked:bg-beagle-orange checked:border-beagle-orange focus:outline-none"
+                        className="w-4 h-4 border-2 border-gray-300 rounded cursor-pointer appearance-none checked:bg-i3-navy checked:border-i3-navy focus:outline-none"
                         style={{
                           backgroundImage: formData.property_ids.includes(property.id)
                             ? `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='white'%3E%3Cpath fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clip-rule='evenodd'/%3E%3C/svg%3E")`
@@ -312,7 +312,7 @@ export function InvitePropertyManagerModal({
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-beagle-orange text-white rounded-lg text-sm font-medium hover:bg-accent-orange transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-i3-navy text-white rounded-lg text-sm font-medium hover:bg-i3-navy-light transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <>

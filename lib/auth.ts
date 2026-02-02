@@ -1,86 +1,28 @@
-import { createClient } from './supabase/server'
 import { User } from './types'
 import { cache } from 'react'
+import { DEMO_USER, getMockUserById } from './mock-data'
 import { cookies } from 'next/headers'
 
+// DEMO MODE: Always return the demo user - no authentication required
 export const getCurrentUser = cache(async (): Promise<User | null> => {
-  const supabase = await createClient()
-  
-  const {
-    data: { user: authUser },
-  } = await supabase.auth.getUser()
-
-  if (!authUser) return null
-
-  // Check for impersonation (admin feature)
+  // Check for impersonation (demo feature)
   const cookieStore = await cookies()
   const impersonateUserId = cookieStore.get('impersonate_user_id')?.value
 
   if (impersonateUserId) {
-    // Verify the actual authenticated user is an admin
-    const { data: adminUser, error: adminError } = await supabase
-      .from('users')
-      .select('role')
-      .eq('id', authUser.id)
-      .single()
-
-    if (adminError) {
-      console.error('Error fetching admin user:', adminError)
-      // Continue to normal flow if we can't verify admin status
-    } else if (adminUser?.role === 'admin') {
-      // Return the impersonated user
-      const { data: impersonatedUser, error: impersonateError } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', impersonateUserId)
-        .single()
-
-      if (impersonateError) {
-        // Silently handle - impersonated user might not exist, clear the cookie
-        if (impersonateError.code === 'PGRST116') {
-          // User not found - clear invalid impersonation cookie
-          cookieStore.delete('impersonate_user_id')
-        }
-        // Fall through to normal flow
-      } else if (impersonatedUser) {
-        return impersonatedUser as User | null
-      }
+    const impersonatedUser = getMockUserById(impersonateUserId)
+    if (impersonatedUser) {
+      return impersonatedUser
     }
   }
 
-  // Normal flow - return the authenticated user
-  const { data: user, error } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', authUser.id)
-    .single()
-
-  if (error) {
-    // Log error but don't throw - return null to trigger redirect
-    console.error('Error fetching user from database:', error)
-    return null
-  }
-
-  return user as User | null
+  // Return the demo admin user
+  return DEMO_USER
 })
 
+// DEMO MODE: Always return the demo admin user
 export const getActualUser = cache(async (): Promise<User | null> => {
-  // Always returns the actual authenticated user, not the impersonated one
-  const supabase = await createClient()
-  
-  const {
-    data: { user: authUser },
-  } = await supabase.auth.getUser()
-
-  if (!authUser) return null
-
-  const { data: user } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', authUser.id)
-    .single()
-
-  return user as User | null
+  return DEMO_USER
 })
 
 export const isImpersonating = cache(async (): Promise<boolean> => {
@@ -116,8 +58,9 @@ export async function requireRole(allowedRoles: string[]) {
   return user
 }
 
+// DEMO MODE: Check permissions using mock data
 export async function checkPermission(userId: string, propertyId: string): Promise<boolean> {
-  const supabase = await createClient()
+  const { mockPropertyManagers } = await import('./mock-data')
   const user = await getCurrentUser()
 
   if (!user) return false
@@ -129,14 +72,9 @@ export async function checkPermission(userId: string, propertyId: string): Promi
 
   // Property managers only have access to their assigned properties
   if (user.role === 'property_manager') {
-    const { data } = await supabase
-      .from('property_managers')
-      .select('id')
-      .eq('user_id', userId)
-      .eq('property_id', propertyId)
-      .single()
-
-    return !!data
+    return mockPropertyManagers.some(
+      pm => pm.user_id === userId && pm.property_id === propertyId
+    )
   }
 
   return false

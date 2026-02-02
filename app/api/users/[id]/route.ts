@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { getCurrentUser } from '@/lib/auth'
 
+// DEMO MODE: Updates won't persist
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -38,6 +38,7 @@ export async function PUT(
   }
 }
 
+// DEMO MODE: Deletes won't persist
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -51,28 +52,13 @@ export async function DELETE(
 
     const supabase = await createClient()
     
-    // Delete user record
+    // Delete user record (mock - won't persist)
     const { error: userError } = await supabase
       .from('users')
       .delete()
       .eq('id', id)
 
     if (userError) throw userError
-
-    // Use service role to delete auth user
-    const supabaseAdmin = createSupabaseClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
-      }
-    )
-    
-    const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(id)
-    if (authError) throw authError
 
     return NextResponse.json({ success: true })
   } catch (error) {

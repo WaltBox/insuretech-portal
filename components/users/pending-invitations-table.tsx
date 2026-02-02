@@ -120,7 +120,7 @@ export function PendingInvitationsTable({ initialInvitations }: PendingInvitatio
     const colors: Record<string, string> = {
       admin: 'bg-purple-50 text-purple-700',
       centralized_member: 'bg-blue-50 text-blue-700',
-      property_manager: 'bg-orange-50 text-orange-700',
+      property_manager: 'bg-blue-50 text-blue-700',
     }
     return colors[role] || 'bg-gray-50 text-gray-700'
   }
@@ -273,7 +273,7 @@ export function PendingInvitationsTable({ initialInvitations }: PendingInvitatio
                       className={`transition-colors duration-200 disabled:opacity-50 ${
                         resentId === invitation.id 
                           ? 'text-green-500' 
-                          : 'text-beagle-orange hover:text-accent-orange'
+                          : 'text-i3-navy hover:text-i3-navy-light'
                       }`}
                       title={resentId === invitation.id ? 'Resent!' : 'Resend invitation'}
                     >

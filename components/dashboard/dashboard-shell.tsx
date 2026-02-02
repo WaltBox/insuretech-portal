@@ -243,8 +243,8 @@ export function DashboardShell({
   return (
     <div className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl lg:text-5xl font-normal text-beagle-dark">Welcome to Beagle!</h1>
-        <p className="text-sm text-gray-600 mt-2">Overview of your property management system</p>
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-i3-navy">Real estate insurance <em className="italic font-serif text-i3-navy">syndicated.</em></h1>
+        <p className="text-sm text-i3-text-muted mt-2">Overview of your property management system</p>
       </div>
 
       <div className="space-y-4 mb-8">
@@ -265,10 +265,10 @@ export function DashboardShell({
             </button>
           </div>
         ) : showContactPanel ? (
-          <div className="relative rounded-3xl border border-beagle-orange/30 bg-gradient-to-r from-beagle-orange/10 via-white to-beagle-orange/10 px-8 py-10 shadow-lg min-h-[520px] lg:min-h-[640px]">
+          <div className="relative rounded-3xl border border-i3-navy/30 bg-gradient-to-r from-i3-navy/5 via-white to-i3-navy/5 px-8 py-10 shadow-lg min-h-[520px] lg:min-h-[640px]">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs uppercase text-beagle-orange tracking-[0.3em]">Support</p>
+                <p className="text-xs uppercase text-i3-navy tracking-[0.3em]">Support</p>
                 <h3 className="text-2xl font-semibold text-beagle-dark">Contact Support</h3>
                 <p className="text-sm text-gray-600 max-w-xl">
                   Have a question or need assistance? Drop us a note and your account manager will be in touch.
@@ -293,7 +293,7 @@ export function DashboardShell({
                   {selectedTicketId && (
                     <button
                       onClick={() => setSelectedTicketId(null)}
-                      className="text-xs text-beagle-orange hover:underline"
+                      className="text-xs text-i3-navy hover:underline"
                     >
                       New Ticket
                     </button>
@@ -302,7 +302,7 @@ export function DashboardShell({
                 <div className="space-y-3 max-h-[480px] overflow-y-auto pr-2">
                   {ticketsLoading ? (
                     <div className="flex items-center justify-center py-8">
-                      <Loader2 className="w-5 h-5 animate-spin text-beagle-orange" />
+                      <Loader2 className="w-5 h-5 animate-spin text-i3-navy" />
                     </div>
                   ) : tickets.length === 0 ? (
                     <div className="bg-white rounded-2xl border border-gray-200 p-6 text-center">
@@ -319,7 +319,7 @@ export function DashboardShell({
                         }}
                         className={`w-full px-4 py-3 flex items-start justify-between gap-3 text-left rounded-2xl border transition-colors ${
                           selectedTicketId === ticket.id
-                            ? 'bg-beagle-orange/10 border-beagle-orange'
+                            ? 'bg-i3-navy/10 border-i3-navy'
                             : 'bg-white border-gray-200 hover:bg-gray-50'
                         }`}
                       >
@@ -356,7 +356,7 @@ export function DashboardShell({
                     if (!selectedTicket) {
                       return (
                         <div className="bg-white rounded-2xl border border-gray-200 flex items-center justify-center h-[480px]">
-                          <Loader2 className="w-5 h-5 animate-spin text-beagle-orange" />
+                          <Loader2 className="w-5 h-5 animate-spin text-i3-navy" />
                         </div>
                       )
                     }
@@ -390,11 +390,11 @@ export function DashboardShell({
                                 msg.sender_type === 'user'
                                   ? 'bg-beagle-dark text-white rounded-br-sm'
                                   : msg.sender_type === 'admin'
-                                  ? 'bg-beagle-orange/20 text-beagle-dark rounded-bl-sm'
+                                  ? 'bg-i3-navy/20 text-beagle-dark rounded-bl-sm'
                                   : 'bg-gray-100 text-gray-700 rounded-bl-sm'
                               }`}>
                                 {msg.sender_type === 'admin' && (
-                                  <p className="text-[10px] font-semibold text-beagle-orange mb-1">Account Manager</p>
+                                  <p className="text-[10px] font-semibold text-i3-navy mb-1">Account Manager</p>
                                 )}
                                 {msg.sender_type === 'system' && (
                                   <p className="text-[10px] font-semibold text-gray-500 mb-1">Beagle</p>
@@ -413,9 +413,9 @@ export function DashboardShell({
                               <div className="max-w-[80%] px-3 py-2 rounded-2xl bg-gray-100 text-gray-700 rounded-bl-sm">
                                 <div className="flex items-center gap-2">
                                   <div className="flex gap-1">
-                                    <span className="w-2 h-2 bg-beagle-orange rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                                    <span className="w-2 h-2 bg-beagle-orange rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                                    <span className="w-2 h-2 bg-beagle-orange rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                                    <span className="w-2 h-2 bg-i3-navy rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                                    <span className="w-2 h-2 bg-i3-navy rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                                    <span className="w-2 h-2 bg-i3-navy rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                                   </div>
                                   <span className="text-xs text-gray-500">Beagle is typing...</span>
                                 </div>
@@ -426,13 +426,13 @@ export function DashboardShell({
                           {/* Typing indicator for admin */}
                           {adminTyping && !showTypingIndicator && (
                             <div className="flex justify-start">
-                              <div className="max-w-[80%] px-3 py-2 rounded-2xl bg-beagle-orange/20 text-beagle-dark rounded-bl-sm">
+                              <div className="max-w-[80%] px-3 py-2 rounded-2xl bg-i3-navy/20 text-beagle-dark rounded-bl-sm">
                                 <div className="flex items-center gap-2">
-                                  <p className="text-[10px] font-semibold text-beagle-orange mb-0">Account Manager</p>
+                                  <p className="text-[10px] font-semibold text-i3-navy mb-0">Account Manager</p>
                                   <div className="flex gap-1">
-                                    <span className="w-2 h-2 bg-beagle-orange rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                                    <span className="w-2 h-2 bg-beagle-orange rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                                    <span className="w-2 h-2 bg-beagle-orange rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                                    <span className="w-2 h-2 bg-i3-navy rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                                    <span className="w-2 h-2 bg-i3-navy rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                                    <span className="w-2 h-2 bg-i3-navy rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                                   </div>
                                 </div>
                               </div>
@@ -448,7 +448,7 @@ export function DashboardShell({
                               value={replyMessage}
                               onChange={(e) => setReplyMessage(e.target.value)}
                               placeholder="Type a reply..."
-                              className="flex-1 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-beagle-orange/30"
+                              className="flex-1 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-i3-navy/30"
                               onKeyDown={(e) => {
                                 if (e.key === 'Enter' && !e.shiftKey) {
                                   e.preventDefault()
@@ -486,14 +486,14 @@ export function DashboardShell({
                         value={contactSubject}
                         onChange={(e) => setContactSubject(e.target.value)}
                         placeholder="Subject"
-                        className="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-beagle-orange/30 focus:border-beagle-orange"
+                        className="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-i3-navy/30 focus:border-i3-navy"
                       />
                       
                       <textarea
                         value={contactMessage}
                         onChange={(event) => setContactMessage(event.target.value)}
                         rows={6}
-                        className="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-beagle-orange/30 focus:border-beagle-orange"
+                        className="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-i3-navy/30 focus:border-i3-navy"
                         placeholder="Tell us what you need help with..."
                       />
 
@@ -526,10 +526,10 @@ export function DashboardShell({
             </div>
           </div>
         ) : showAddendumPanel ? (
-          <div className="relative rounded-3xl border border-beagle-orange/30 bg-gradient-to-r from-beagle-orange/10 via-white to-beagle-orange/10 px-8 py-10 shadow-lg min-h-[520px] lg:min-h-[640px]">
+          <div className="relative rounded-3xl border border-i3-navy/30 bg-gradient-to-r from-i3-navy/5 via-white to-i3-navy/5 px-8 py-10 shadow-lg min-h-[520px] lg:min-h-[640px]">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs uppercase text-beagle-orange tracking-[0.3em]">Documents</p>
+                <p className="text-xs uppercase text-i3-navy tracking-[0.3em]">Documents</p>
                 <h3 className="text-2xl font-semibold text-beagle-dark">Lease Addendum</h3>
                 <p className="text-sm text-gray-600 max-w-xl">
                   View, download, or send the TLW & SDA Lease Addendum to tenants.
@@ -579,7 +579,7 @@ export function DashboardShell({
                       value={emailRecipient}
                       onChange={(e) => setEmailRecipient(e.target.value)}
                       placeholder="example@email.com"
-                      className="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-beagle-orange/30 focus:border-beagle-orange"
+                      className="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-i3-navy/30 focus:border-i3-navy"
                     />
                     <button
                       type="button"
@@ -587,7 +587,7 @@ export function DashboardShell({
                         setEmailStatus('sent')
                         setEmailRecipient('')
                       }}
-                      className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl border border-beagle-orange text-beagle-orange hover:bg-beagle-orange/10 transition-colors text-sm font-medium"
+                      className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl border border-i3-navy text-i3-navy hover:bg-i3-navy/10 transition-colors text-sm font-medium"
                     >
                       <Mail className="w-4 h-4" />
                       Send
@@ -613,33 +613,35 @@ export function DashboardShell({
           </div>
         ) : (
           <>
-            <div className="bg-orange-lighter rounded-lg p-6 border border-gray-200 shadow-sm">
+            <div className="bg-white rounded-2xl p-6 border border-i3-border shadow-sm">
               <div className="flex items-center gap-3 mb-6">
-                <Image src="/images/star.svg" alt="" width={20} height={20} className="w-5 h-5" />
-                <h3 className="text-sm font-medium text-gray-700">System Overview</h3>
+                <div className="w-10 h-10 rounded-xl bg-i3-navy/10 flex items-center justify-center">
+                  <Layers className="w-5 h-5 text-i3-navy" />
+                </div>
+                <h3 className="text-sm font-medium text-i3-text-muted">System Overview</h3>
               </div>
 
               <div className="flex items-baseline gap-2 mb-6">
-                <p className="text-3xl font-bold text-beagle-dark">{enrollmentCount}</p>
-                <span className="text-sm text-gray-400">Total Enrollments</span>
+                <p className="text-4xl font-bold text-i3-navy">{enrollmentCount.toLocaleString()}</p>
+                <span className="text-sm text-i3-text-muted">Total Enrollments</span>
               </div>
-              <div className="flex flex-wrap gap-6 text-sm">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-600">Total Doors</span>
-                  <span className="text-sm font-semibold text-beagle-dark">{totalDoors}</span>
+              <div className="flex flex-wrap gap-4 text-sm">
+                <div className="bg-i3-bg rounded-xl px-4 py-3">
+                  <span className="text-xs text-i3-text-muted block">Total Doors</span>
+                  <span className="text-lg font-semibold text-i3-navy">{totalDoors.toLocaleString()}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-600">SDA</span>
-                  <span className="text-sm font-semibold text-beagle-dark">{sdiCount}</span>
+                <div className="bg-i3-bg rounded-xl px-4 py-3">
+                  <span className="text-xs text-i3-text-muted block">SDA</span>
+                  <span className="text-lg font-semibold text-i3-navy">{sdiCount.toLocaleString()}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-600">TLL</span>
-                  <span className="text-sm font-semibold text-beagle-dark">{tllCount}</span>
+                <div className="bg-i3-bg rounded-xl px-4 py-3">
+                  <span className="text-xs text-i3-text-muted block">TLL</span>
+                  <span className="text-lg font-semibold text-i3-navy">{tllCount.toLocaleString()}</span>
                 </div>
               </div>
             </div>
 
-            <h2 className="text-sm font-semibold text-beagle-dark mb-4">Recent Properties</h2>
+            <h2 className="text-sm font-semibold text-i3-navy mb-4 mt-8">Recent Properties</h2>
             {visibleProperties.length > 0 ? (
               <div className="space-y-3 mb-4">
                 {visibleProperties.map((property) => {
@@ -654,22 +656,22 @@ export function DashboardShell({
                   <Link
                     key={property.id}
                     href={propertyUrl}
-                    className="group flex items-center justify-between px-4 py-3 bg-white rounded-lg border border-gray-200 hover:border-beagle-orange transition-all duration-200"
+                    className="group flex items-center justify-between px-4 py-4 bg-white rounded-xl border border-i3-border hover:border-i3-navy hover:shadow-sm transition-all duration-200"
                   >
                     <div>
-                      <p className="text-sm font-semibold text-beagle-dark">{property.name}</p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-sm font-semibold text-i3-navy">{property.name}</p>
+                      <p className="text-xs text-i3-text-muted">
                         {[property.city, property.state].filter(Boolean).join(', ')}
                       </p>
                     </div>
-                    <ChevronRight className="w-5 h-5 text-beagle-dark group-hover:text-beagle-orange transition-colors duration-200" />
+                    <ChevronRight className="w-5 h-5 text-i3-text-muted group-hover:text-i3-navy transition-colors duration-200" />
                   </Link>
                   )
                 })}
                 {hasMore && (
                   <button
                     onClick={() => setVisibleCount((prev) => prev + 4)}
-                    className="w-full text-center py-3 text-xs font-semibold text-beagle-dark border border-dashed border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="w-full text-center py-3 text-xs font-semibold text-i3-text-muted border border-dashed border-i3-border rounded-xl hover:bg-white transition-colors"
                   >
                     View More
                   </button>
@@ -677,37 +679,41 @@ export function DashboardShell({
                 {visibleCount > 4 && (
                   <button
                     onClick={() => setVisibleCount(4)}
-                    className="w-full text-center py-3 text-xs font-semibold text-beagle-dark border border-dashed border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="w-full text-center py-3 text-xs font-semibold text-i3-text-muted border border-dashed border-i3-border rounded-xl hover:bg-white transition-colors"
                   >
                     View Less
                   </button>
                 )}
               </div>
             ) : (
-              <div className="px-4 py-8 bg-white rounded-lg border border-gray-200 text-center mb-8">
-                <p className="text-xs text-gray-500">No properties yet</p>
+              <div className="px-4 py-8 bg-white rounded-xl border border-i3-border text-center mb-8">
+                <p className="text-xs text-i3-text-muted">No properties yet</p>
               </div>
             )}
           </>
         )}
       </div>
 
-      <h2 className="text-sm font-semibold text-beagle-dark mb-4">Quick Links</h2>
+      <h2 className="text-sm font-semibold text-i3-navy mb-4">Quick Links</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <button
           onClick={() => setActivePanel('claim')}
-          className="group bg-white hover:bg-orange-lighter rounded-lg p-6 border border-gray-200 transition-all duration-200 text-left"
+          className="group bg-white hover:bg-i3-bg-light rounded-xl p-6 border border-i3-border hover:border-i3-navy hover:shadow-sm transition-all duration-200 text-left"
         >
-          <FileText className="w-8 h-8 text-beagle-orange mb-3" />
-          <p className="text-xs font-semibold text-beagle-dark">File a Claim</p>
+          <div className="w-12 h-12 rounded-xl bg-i3-navy/10 flex items-center justify-center mb-3">
+            <FileText className="w-6 h-6 text-i3-navy" />
+          </div>
+          <p className="text-sm font-semibold text-i3-navy">File a Claim</p>
         </button>
 
         <button
           onClick={() => setActivePanel('program')}
-          className="group bg-white hover:bg-orange-lighter rounded-lg p-6 border border-gray-200 transition-all duration-200 text-left"
+          className="group bg-white hover:bg-i3-bg-light rounded-xl p-6 border border-i3-border hover:border-i3-navy hover:shadow-sm transition-all duration-200 text-left"
         >
-          <Layers className="w-8 h-8 text-beagle-orange mb-3" />
-          <p className="text-xs font-semibold text-beagle-dark">View Program</p>
+          <div className="w-12 h-12 rounded-xl bg-i3-navy/10 flex items-center justify-center mb-3">
+            <Layers className="w-6 h-6 text-i3-navy" />
+          </div>
+          <p className="text-sm font-semibold text-i3-navy">View Program</p>
         </button>
 
         <button
@@ -715,10 +721,12 @@ export function DashboardShell({
             setContactStatus('idle')
             setActivePanel('contact')
           }}
-          className="group bg-white hover:bg-orange-lighter rounded-lg p-6 border border-gray-200 transition-all duration-200 text-left"
+          className="group bg-white hover:bg-i3-bg-light rounded-xl p-6 border border-i3-border hover:border-i3-navy hover:shadow-sm transition-all duration-200 text-left"
         >
-          <Headphones className="w-8 h-8 text-beagle-orange mb-3" />
-          <p className="text-xs font-semibold text-beagle-dark">Contact Support</p>
+          <div className="w-12 h-12 rounded-xl bg-i3-navy/10 flex items-center justify-center mb-3">
+            <Headphones className="w-6 h-6 text-i3-navy" />
+          </div>
+          <p className="text-sm font-semibold text-i3-navy">Contact Support</p>
         </button>
 
         <button
@@ -726,10 +734,12 @@ export function DashboardShell({
             setEmailStatus('idle')
             setActivePanel('addendum')
           }}
-          className="group bg-white hover:bg-orange-lighter rounded-lg p-6 border border-gray-200 transition-all duration-200 text-left"
+          className="group bg-white hover:bg-i3-bg-light rounded-xl p-6 border border-i3-border hover:border-i3-navy hover:shadow-sm transition-all duration-200 text-left"
         >
-          <FileCheck className="w-8 h-8 text-beagle-orange mb-3" />
-          <p className="text-xs font-semibold text-beagle-dark">Lease Addendum</p>
+          <div className="w-12 h-12 rounded-xl bg-i3-navy/10 flex items-center justify-center mb-3">
+            <FileCheck className="w-6 h-6 text-i3-navy" />
+          </div>
+          <p className="text-sm font-semibold text-i3-navy">Lease Addendum</p>
         </button>
       </div>
 

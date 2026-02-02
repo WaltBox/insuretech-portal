@@ -30,65 +30,53 @@ export default async function PropertiesPage() {
     <div className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl lg:text-5xl font-normal text-beagle-dark">Properties</h1>
-          <p className="text-sm text-gray-600 mt-2">Manage all properties in the system</p>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-i3-navy">Properties</h1>
+          <p className="text-sm text-i3-text-muted mt-2">Manage all properties in the system</p>
         </div>
         <Link
           href="/admin/properties/create"
-          className="flex items-center gap-2 group transition-colors duration-200"
+          className="flex items-center gap-2 px-4 py-2 bg-i3-navy hover:bg-i3-navy-light text-white rounded-xl transition-colors duration-200"
         >
           <svg 
-            className="h-5 w-5 transition-all duration-200" 
+            className="h-5 w-5" 
             viewBox="0 0 24 24" 
             fill="none" 
             xmlns="http://www.w3.org/2000/svg"
           >
-            <circle 
-              cx="12" 
-              cy="12" 
-              r="10" 
-              className="stroke-beagle-orange group-hover:fill-beagle-orange transition-all duration-200" 
-              strokeWidth="2"
-            />
             <path 
-              d="M12 8V16M8 12H16" 
-              className="stroke-beagle-orange group-hover:stroke-white transition-all duration-200" 
+              d="M12 5V19M5 12H19" 
+              stroke="currentColor" 
               strokeWidth="2" 
               strokeLinecap="round"
             />
           </svg>
-          <span className="font-semibold text-sm text-beagle-orange group-hover:text-accent-orange transition-colors duration-200">Create Property</span>
+          <span className="font-semibold text-sm">Create Property</span>
         </Link>
       </div>
 
       {/* Stats Card */}
-      <div className="bg-orange-lighter rounded-lg p-6 border border-gray-200 shadow-sm mb-8">
+      <div className="bg-white rounded-2xl p-6 border border-i3-border shadow-sm mb-8">
         <div className="flex items-center gap-3 mb-6">
-          <Image src="/images/star.svg" alt="" width={20} height={20} className="w-5 h-5" />
-          <h3 className="text-sm font-medium text-gray-700">System Overview</h3>
+          <div className="w-10 h-10 rounded-xl bg-i3-navy/10 flex items-center justify-center">
+            <Building2 className="w-5 h-5 text-i3-navy" />
+          </div>
+          <h3 className="text-sm font-medium text-i3-text-muted">System Overview</h3>
         </div>
 
-        <div className="flex items-center gap-8 flex-wrap">
-          <div className="flex items-center gap-2">
-            <Building2 className="w-5 h-5 text-beagle-orange" />
-            <span className="text-xs text-gray-600">Total Properties</span>
-            <span className="text-2xl font-bold text-beagle-dark">{properties?.length || 0}</span>
+        <div className="flex items-center gap-6 flex-wrap">
+          <div className="bg-i3-bg rounded-xl px-4 py-3">
+            <span className="text-xs text-i3-text-muted block">Total Properties</span>
+            <span className="text-2xl font-bold text-i3-navy">{properties?.length || 0}</span>
           </div>
 
-          <div className="h-8 w-px bg-gray-300"></div>
-
-          <div className="flex items-center gap-2">
-            <Users className="w-5 h-5 text-beagle-orange" />
-            <span className="text-xs text-gray-600">Total Enrollments</span>
-            <span className="text-2xl font-bold text-beagle-dark">{totalEnrollments || 0}</span>
+          <div className="bg-i3-bg rounded-xl px-4 py-3">
+            <span className="text-xs text-i3-text-muted block">Total Enrollments</span>
+            <span className="text-2xl font-bold text-i3-navy">{totalEnrollments || 0}</span>
           </div>
 
-          <div className="h-8 w-px bg-gray-300"></div>
-
-          <div className="flex items-center gap-2">
-            <FileText className="w-5 h-5 text-beagle-orange" />
-            <span className="text-xs text-gray-600">Active Claims</span>
-            <span className="text-2xl font-bold text-beagle-dark">{totalClaims || 0}</span>
+          <div className="bg-i3-bg rounded-xl px-4 py-3">
+            <span className="text-xs text-i3-text-muted block">Active Claims</span>
+            <span className="text-2xl font-bold text-i3-navy">{totalClaims || 0}</span>
           </div>
         </div>
       </div>
@@ -103,13 +91,13 @@ export default async function PropertiesPage() {
               <Link
                 key={property.id}
                 href={`/admin/properties/${property.id}`}
-                className="group flex items-center justify-between gap-4 px-6 py-4 bg-white rounded-lg border border-gray-200 hover:border-beagle-orange hover:shadow-md transition-all duration-200"
+                className="group flex items-center justify-between gap-4 px-6 py-4 bg-white rounded-xl border border-i3-border hover:border-i3-navy hover:shadow-sm transition-all duration-200"
               >
                 <div className="flex items-center gap-6 flex-1 min-w-0">
                   {/* Property Name & Location */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-beagle-dark mb-1 truncate">{property.name}</p>
-                    <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                    <p className="text-sm font-semibold text-i3-navy mb-1 truncate">{property.name}</p>
+                    <div className="flex items-center gap-1.5 text-xs text-i3-text-muted">
                       <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
                       <span className="truncate">
                         {[property.address, property.city, property.state].filter(Boolean).join(', ') || 'No address'}
@@ -117,38 +105,38 @@ export default async function PropertiesPage() {
                     </div>
                   </div>
 
-                  <div className="h-10 w-px bg-gray-200 hidden sm:block"></div>
+                  <div className="h-10 w-px bg-i3-border hidden sm:block"></div>
 
                   {/* Address */}
                   <div className="hidden md:block w-48 flex-shrink-0">
-                    <p className="text-xs text-gray-500 mb-1">Address</p>
-                    <p className="text-sm text-gray-700 truncate">
+                    <p className="text-xs text-i3-text-muted mb-1">Address</p>
+                    <p className="text-sm text-i3-text-secondary truncate">
                       {property.address || 'N/A'}
                     </p>
                   </div>
 
-                  <div className="h-10 w-px bg-gray-200 hidden sm:block"></div>
+                  <div className="h-10 w-px bg-i3-border hidden sm:block"></div>
 
                   {/* Enrollments */}
                   <div className="w-24 flex-shrink-0 text-center">
-                    <p className="text-xs text-gray-500 mb-1">Enrollments</p>
-                    <p className="text-lg font-bold text-beagle-dark">{enrollmentCount}</p>
+                    <p className="text-xs text-i3-text-muted mb-1">Enrollments</p>
+                    <p className="text-lg font-bold text-i3-navy">{enrollmentCount}</p>
                   </div>
 
-                  <div className="h-10 w-px bg-gray-200 hidden sm:block"></div>
+                  <div className="h-10 w-px bg-i3-border hidden sm:block"></div>
 
                   {/* Claims */}
                   <div className="w-20 flex-shrink-0 text-center">
-                    <p className="text-xs text-gray-500 mb-1">Claims</p>
-                    <p className="text-lg font-bold text-beagle-dark">{claimCount}</p>
+                    <p className="text-xs text-i3-text-muted mb-1">Claims</p>
+                    <p className="text-lg font-bold text-i3-navy">{claimCount}</p>
                   </div>
 
-                  <div className="h-10 w-px bg-gray-200 hidden sm:block"></div>
+                  <div className="h-10 w-px bg-i3-border hidden sm:block"></div>
 
                   {/* Created Date */}
                   <div className="hidden lg:block w-28 flex-shrink-0 text-center">
-                    <p className="text-xs text-gray-500 mb-1">Created</p>
-                    <p className="text-xs text-gray-700">
+                    <p className="text-xs text-i3-text-muted mb-1">Created</p>
+                    <p className="text-xs text-i3-text-secondary">
                       {new Date(property.created_at).toLocaleDateString('en-US', { 
                         month: 'short', 
                         day: 'numeric',
@@ -158,40 +146,33 @@ export default async function PropertiesPage() {
                   </div>
                 </div>
 
-                <ChevronRight className="w-5 h-5 text-beagle-dark group-hover:text-beagle-orange transition-colors duration-200 flex-shrink-0" />
+                <ChevronRight className="w-5 h-5 text-i3-text-muted group-hover:text-i3-navy transition-colors duration-200 flex-shrink-0" />
               </Link>
             )
           })}
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow-sm p-12 text-center border border-gray-200">
-          <Building2 className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-          <p className="text-sm text-gray-600 mb-6">No properties yet. Create your first property to get started.</p>
+        <div className="bg-white rounded-xl p-12 text-center border border-i3-border shadow-sm">
+          <Building2 className="w-12 h-12 text-i3-text-muted mx-auto mb-4" />
+          <p className="text-sm text-i3-text-muted mb-6">No properties yet. Create your first property to get started.</p>
           <Link
             href="/admin/properties/create"
-            className="inline-flex items-center gap-2 group transition-colors duration-200"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-i3-navy hover:bg-i3-navy-light text-white rounded-xl transition-colors duration-200"
           >
             <svg 
-              className="h-5 w-5 transition-all duration-200" 
+              className="h-5 w-5" 
               viewBox="0 0 24 24" 
               fill="none" 
               xmlns="http://www.w3.org/2000/svg"
             >
-              <circle 
-                cx="12" 
-                cy="12" 
-                r="10" 
-                className="stroke-beagle-orange group-hover:fill-beagle-orange transition-all duration-200" 
-                strokeWidth="2"
-              />
               <path 
-                d="M12 8V16M8 12H16" 
-                className="stroke-beagle-orange group-hover:stroke-white transition-all duration-200" 
+                d="M12 5V19M5 12H19" 
+                stroke="currentColor" 
                 strokeWidth="2" 
                 strokeLinecap="round"
               />
             </svg>
-            <span className="font-semibold text-sm text-beagle-orange group-hover:text-accent-orange transition-colors duration-200">Create Property</span>
+            <span className="font-semibold text-sm">Create Property</span>
           </Link>
         </div>
       )}

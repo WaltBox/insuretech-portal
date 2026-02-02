@@ -1,10 +1,8 @@
-import { createBrowserClient } from '@supabase/ssr'
+import { createMockSupabaseClient } from '../mock-supabase'
 
+// DEMO MODE: Using mock Supabase client - no real database connection
 export function createClient() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  return createMockSupabaseClient() as any
 }
 
 

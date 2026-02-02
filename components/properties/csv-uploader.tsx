@@ -95,19 +95,19 @@ export function CSVUploader({ propertyId }: CSVUploaderProps) {
           type="file"
           accept=".csv"
           onChange={handleFileSelect}
-          className="block w-full text-sm text-beagle-dark file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-orange-light file:text-beagle-orange hover:file:bg-orange-50 file:transition-all file:duration-200 file:cursor-pointer"
+          className="block w-full text-sm text-beagle-dark file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-i3-bg file:text-i3-navy hover:file:bg-i3-bg-light file:transition-all file:duration-200 file:cursor-pointer"
         />
         <button
           onClick={handleUpload}
           disabled={!file || uploading}
-          className="flex items-center gap-2 px-6 py-2.5 bg-beagle-orange text-white rounded-lg font-semibold text-sm hover:bg-accent-orange active:bg-[#e66d00] disabled:bg-gray-300 disabled:cursor-not-allowed shadow-sm hover:shadow-md transition-all duration-200 whitespace-nowrap"
+          className="flex items-center gap-2 px-6 py-2.5 bg-i3-navy text-white rounded-lg font-semibold text-sm hover:bg-i3-navy-light disabled:bg-gray-300 disabled:cursor-not-allowed shadow-sm hover:shadow-md transition-all duration-200 whitespace-nowrap"
         >
           <Upload className="h-4 w-4" />
           {uploading ? 'Uploading...' : 'Upload CSV'}
         </button>
       </div>
 
-      <div className="text-sm text-gray-600 bg-orange-lighter p-4 rounded-lg border border-orange-light">
+      <div className="text-sm text-gray-600 bg-i3-bg p-4 rounded-lg border border-i3-border">
         <p className="font-semibold text-beagle-dark mb-2">CSV Format Requirements:</p>
         <div className="space-y-3">
           <div>

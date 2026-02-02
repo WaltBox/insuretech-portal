@@ -82,7 +82,7 @@ export function EnrollmentTable({ propertyId }: EnrollmentTableProps) {
       case 'Issued, Not Paid':
         return 'bg-amber-50 text-amber-700'
       case 'Missing Payment':
-        return 'bg-orange-50 text-orange-700'
+        return 'bg-blue-50 text-blue-700'
       case 'Lapsed':
       case 'Expired':
         return 'bg-red-50 text-red-700'
@@ -205,7 +205,7 @@ export function EnrollmentTable({ propertyId }: EnrollmentTableProps) {
                   setLimit(Number(e.target.value))
                   setPage(1)
                 }}
-                className="px-3 py-1.5 border border-gray-200 rounded-lg text-sm text-beagle-dark focus:outline-none focus:border-beagle-orange cursor-pointer"
+                className="px-3 py-1.5 border border-gray-200 rounded-lg text-sm text-beagle-dark focus:outline-none focus:border-i3-navy cursor-pointer"
               >
                 <option value={10}>10 items</option>
                 <option value={25}>25 items</option>

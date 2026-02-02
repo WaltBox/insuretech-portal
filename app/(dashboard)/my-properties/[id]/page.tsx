@@ -60,7 +60,7 @@ export default async function MyPropertyDetailPage({
         <div className="mb-8">
           <Link
             href="/my-properties"
-            className="inline-flex items-center gap-2 text-beagle-orange hover:text-accent-orange transition-colors duration-200 mb-4"
+            className="inline-flex items-center gap-2 text-i3-navy hover:text-i3-navy-light transition-colors duration-200 mb-4"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to My Properties
@@ -123,7 +123,7 @@ export default async function MyPropertyDetailPage({
               {managers.map((manager: any) => (
                 <div key={manager.id} className="flex items-center gap-2.5 px-3 py-2 bg-gray-50 rounded-lg border border-gray-200">
                   <div className="w-7 h-7 bg-orange-light rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-xs font-semibold text-beagle-orange">
+                    <span className="text-xs font-semibold text-i3-navy">
                       {manager.user.first_name[0]}{manager.user.last_name[0]}
                     </span>
                   </div>

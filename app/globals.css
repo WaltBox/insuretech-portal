@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -18,34 +18,33 @@
   }
 
   body {
-    font-family: 'Bricolage Grotesque', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background-color: #f8f5f0;
-    color: #3a2415;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: #f5f3ee;
+    color: #1a1a3e;
   }
 
-  /* Custom Scrollbar */
+  /* Custom Scrollbar - Light Theme */
   ::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
+    width: 8px;
+    height: 8px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #f8f5f0;
+    background: #f5f3ee;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #ff8a26;
-    border-radius: 6px;
-    border: 2px solid #f8f5f0;
+    background: #d0cdc6;
+    border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #ff7a00;
+    background: #b8b5ae;
   }
 
   /* Custom Focus Styles */
   *:focus-visible {
-    outline: 2px solid #ff7a00;
+    outline: 2px solid #1a1a3e;
     outline-offset: 2px;
   }
 
@@ -54,16 +53,17 @@
     appearance: none;
     width: 20px;
     height: 20px;
-    border: 2px solid #d6d3d1;
+    border: 2px solid #d0cdc6;
     border-radius: 50%;
     position: relative;
     cursor: pointer;
     transition: all 0.2s ease;
+    background-color: white;
   }
 
   input[type="radio"]:checked {
-    border-color: #ff7a00;
-    background-color: #ff7a00;
+    border-color: #1a1a3e;
+    background-color: #1a1a3e;
   }
 
   input[type="radio"]:checked::before {
@@ -78,8 +78,101 @@
     border-radius: 50%;
   }
 
+  /* Custom Checkbox */
+  input[type="checkbox"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #d0cdc6;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: white;
+  }
+
+  input[type="checkbox"]:checked {
+    border-color: #1a1a3e;
+    background-color: #1a1a3e;
+  }
+
+  input[type="checkbox"]:checked::before {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
   /* Smooth Transitions */
   button, a, input, select, textarea {
     transition: all 200ms ease-in-out;
+  }
+
+  /* Form Inputs - Light Theme */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="search"],
+  input[type="date"],
+  textarea,
+  select {
+    background-color: #ffffff;
+    border: 1px solid #e5e2dc;
+    color: #1a1a3e;
+  }
+
+  input[type="text"]::placeholder,
+  input[type="email"]::placeholder,
+  input[type="password"]::placeholder,
+  input[type="number"]::placeholder,
+  input[type="tel"]::placeholder,
+  input[type="url"]::placeholder,
+  input[type="search"]::placeholder,
+  textarea::placeholder {
+    color: #9999aa;
+  }
+
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus,
+  input[type="number"]:focus,
+  input[type="tel"]:focus,
+  input[type="url"]:focus,
+  input[type="search"]:focus,
+  input[type="date"]:focus,
+  textarea:focus,
+  select:focus {
+    border-color: #1a1a3e;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(26, 26, 62, 0.1);
+  }
+}
+
+@layer components {
+  /* Card Style */
+  .card-i3 {
+    @apply bg-white border border-i3-border rounded-2xl;
+  }
+
+  /* Navy Button */
+  .btn-navy {
+    @apply px-6 py-3 bg-i3-navy hover:bg-i3-navy-light text-white font-semibold rounded-xl transition-all;
+  }
+
+  /* Accent Button */
+  .btn-accent {
+    @apply px-6 py-3 bg-i3-accent hover:bg-i3-accent-hover text-white font-semibold rounded-xl transition-all;
+  }
+
+  /* Ghost Button */
+  .btn-ghost {
+    @apply px-6 py-3 bg-transparent hover:bg-i3-bg border border-i3-border text-i3-navy font-medium rounded-xl transition-all;
   }
 }

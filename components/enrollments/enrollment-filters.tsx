@@ -64,7 +64,7 @@ export const EnrollmentFilters = memo(function EnrollmentFilters({
             placeholder="Search by name, email, phone, address, enrollment #..."
             value={searchValue}
             onChange={handleSearchChange}
-            className="pl-10 w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+            className="pl-10 w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200"
           />
         </div>
 
@@ -72,7 +72,7 @@ export const EnrollmentFilters = memo(function EnrollmentFilters({
         <select
           value={filters.coverage_type}
           onChange={handleProductChange}
-          className="px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm text-beagle-dark focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200 cursor-pointer min-w-[140px]"
+          className="px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm text-beagle-dark focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200 cursor-pointer min-w-[140px]"
         >
           <option value="">All Products</option>
           <option value="SDI">SDA</option>

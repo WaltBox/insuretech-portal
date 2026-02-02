@@ -8,8 +8,8 @@ export default async function ClaimsPage() {
   return (
     <div className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl lg:text-5xl font-normal text-beagle-dark">Claims</h1>
-        <p className="text-sm text-gray-600 mt-2">View and manage all claims across properties</p>
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-i3-navy">Claims</h1>
+        <p className="text-sm text-i3-text-muted mt-2">View and manage all claims across properties</p>
       </div>
 
       <ClaimsTable userEmail={user?.email} />

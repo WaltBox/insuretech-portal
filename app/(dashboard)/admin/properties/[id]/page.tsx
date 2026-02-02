@@ -45,7 +45,7 @@ export default async function PropertyDetailPage({
         <div className="mb-8">
           <Link
             href="/admin/properties"
-            className="inline-flex items-center gap-2 text-beagle-orange hover:text-accent-orange transition-colors duration-200 mb-4"
+            className="inline-flex items-center gap-2 text-i3-navy hover:text-i3-navy-light transition-colors duration-200 mb-4"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Properties
@@ -116,7 +116,7 @@ export default async function PropertyDetailPage({
         {/* CSV Upload */}
         <div className="bg-white rounded-2xl shadow-sm p-8 mb-8 border border-gray-200">
           <div className="flex items-center gap-2 mb-4">
-            <Upload className="h-5 w-5 text-beagle-orange" />
+            <Upload className="h-5 w-5 text-i3-navy" />
             <h2 className="text-2xl font-semibold text-beagle-dark">Upload Enrollments</h2>
           </div>
           <p className="text-sm text-gray-600 mb-6">
@@ -128,7 +128,7 @@ export default async function PropertyDetailPage({
         {/* View Enrollments */}
         <Link
           href={`/admin/properties/${id}/enrollments`}
-          className="flex items-center justify-center gap-2 bg-beagle-orange text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-accent-orange active:bg-[#e66d00] shadow-sm hover:shadow-md transition-all duration-200"
+          className="flex items-center justify-center gap-2 bg-i3-navy text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-i3-navy-light shadow-sm hover:shadow-md transition-all duration-200"
         >
           <FileText className="h-4 w-4" />
           View All Enrollments

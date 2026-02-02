@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient as createSupabaseClient } from '@supabase/supabase-js'
+import { createClient } from '@/lib/supabase/server'
 
+// DEMO MODE: Get invitation by token
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ token: string }> }
@@ -8,29 +9,25 @@ export async function GET(
   try {
     const { token } = await params
     
-    // Use service role key to read invitations (public operation)
-    const supabase = createSupabaseClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
-      }
-    )
-
+    const supabase = await createClient()
     const { data: invitation, error } = await supabase
       .from('invitations')
       .select('*')
       .eq('token', token)
-      .is('accepted_at', null)
       .single()
 
     if (error || !invitation) {
       return NextResponse.json(
         { error: 'Invitation not found' },
         { status: 404 }
+      )
+    }
+
+    // Check if already accepted
+    if (invitation.accepted_at) {
+      return NextResponse.json(
+        { error: 'Invitation already accepted' },
+        { status: 400 }
       )
     }
 

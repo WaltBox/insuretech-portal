@@ -41,13 +41,13 @@ export function DashboardLayoutClient({ user, children }: DashboardLayoutClientP
     <div className="flex flex-1 overflow-hidden">
       <Sidebar user={user} isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
       
-      <main className="flex-1 overflow-y-auto bg-gray-50">
+      <main className="flex-1 overflow-y-auto bg-i3-bg">
         {/* Mobile menu button */}
         <button
           onClick={() => setSidebarOpen(true)}
-          className="lg:hidden fixed top-4 left-4 z-30 p-2 bg-white rounded-lg shadow-lg border border-gray-200"
+          className="lg:hidden fixed top-4 left-4 z-30 p-2 bg-white rounded-lg shadow-lg border border-i3-border"
         >
-          <Menu className="w-6 h-6 text-gray-600" />
+          <Menu className="w-6 h-6 text-i3-text-muted" />
         </button>
         
         <div className="pt-16 lg:pt-0">
@@ -59,11 +59,11 @@ export function DashboardLayoutClient({ user, children }: DashboardLayoutClientP
       {user.role === 'admin' && (
         <button
           onClick={() => setSupportPanelOpen(true)}
-          className="fixed bottom-6 right-6 z-40 p-4 bg-beagle-dark text-white rounded-full shadow-lg hover:bg-beagle-dark/90 transition-colors"
+          className="fixed bottom-6 right-6 z-40 p-4 bg-i3-navy text-white rounded-full shadow-lg hover:bg-i3-navy-light transition-colors"
         >
           <MessageCircle className="w-6 h-6" />
           {openTicketCount > 0 && (
-            <span className="absolute -top-1 -right-1 w-5 h-5 bg-amber-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+            <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
               {openTicketCount > 9 ? '9+' : openTicketCount}
             </span>
           )}

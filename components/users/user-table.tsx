@@ -70,80 +70,71 @@ export function UserTable({ initialUsers, currentUserId }: UserTableProps) {
 
   const getRoleBadge = (role: string) => {
     const colors = {
-      admin: 'bg-purple-50 text-purple-700',
-      centralized_member: 'bg-blue-50 text-blue-700',
-      property_manager: 'bg-orange-50 text-orange-700',
+      admin: 'bg-purple-100 text-purple-700',
+      centralized_member: 'bg-blue-100 text-blue-700',
+      property_manager: 'bg-blue-100 text-blue-700',
     }
-    return colors[role as keyof typeof colors] || 'bg-gray-50 text-gray-700'
+    return colors[role as keyof typeof colors] || 'bg-gray-100 text-gray-700'
   }
 
   return (
     <>
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-        <div className="p-6 border-b border-gray-200">
+      <div className="bg-white rounded-xl border border-i3-border shadow-sm">
+        <div className="p-6 border-b border-i3-border">
           <div className="flex justify-between items-center">
-            <h2 className="text-lg font-semibold text-beagle-dark">
+            <h2 className="text-lg font-semibold text-i3-navy">
               Users ({users.length})
             </h2>
             <button
               onClick={handleCreate}
-              className="flex items-center gap-2 group transition-colors duration-200"
+              className="flex items-center gap-2 px-4 py-2 bg-i3-navy hover:bg-i3-navy-light text-white rounded-xl transition-colors duration-200"
             >
-              <div className="relative flex items-center justify-center">
-                <svg 
-                  className="h-5 w-5 transition-all duration-200" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle 
-                    cx="12" 
-                    cy="12" 
-                    r="10" 
-                    className="stroke-beagle-orange group-hover:fill-beagle-orange transition-all duration-200" 
-                    strokeWidth="2"
-                  />
-                  <path 
-                    d="M12 8V16M8 12H16" 
-                    className="stroke-beagle-orange group-hover:stroke-white transition-all duration-200" 
-                    strokeWidth="2" 
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </div>
-              <span className="font-semibold text-sm text-beagle-orange group-hover:text-accent-orange transition-colors duration-200">Invite User</span>
+              <svg 
+                className="h-5 w-5" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path 
+                  d="M12 5V19M5 12H19" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round"
+                />
+              </svg>
+              <span className="font-semibold text-sm">Invite User</span>
             </button>
           </div>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="bg-i3-bg border-b border-i3-border">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-i3-text-muted uppercase tracking-wider">
                   Name
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-i3-text-muted uppercase tracking-wider">
                   Email
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-i3-text-muted uppercase tracking-wider">
                   Role
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-i3-text-muted uppercase tracking-wider">
                   Created
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                <th className="px-6 py-3 text-right text-xs font-semibold text-i3-text-muted uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-i3-border">
               {users.map((user) => (
-                <tr key={user.id} className="hover:bg-gray-50 transition-colors duration-150">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-beagle-dark">
+                <tr key={user.id} className="hover:bg-i3-bg-light transition-colors duration-150">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-i3-navy">
                     {user.first_name} {user.last_name}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-i3-text-secondary">
                     {user.email}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -155,7 +146,7 @@ export function UserTable({ initialUsers, currentUserId }: UserTableProps) {
                       {user.role.replace('_', ' ')}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-i3-text-muted">
                     {new Date(user.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -164,7 +155,7 @@ export function UserTable({ initialUsers, currentUserId }: UserTableProps) {
                         <button
                           onClick={() => handleImpersonate(user)}
                           disabled={impersonating}
-                          className="text-beagle-orange hover:text-accent-orange transition-colors duration-200 disabled:opacity-50"
+                          className="text-i3-navy hover:text-i3-navy-light transition-colors duration-200 disabled:opacity-50"
                           title="Impersonate user"
                         >
                           <UserIcon className="h-4 w-4" />
@@ -172,13 +163,13 @@ export function UserTable({ initialUsers, currentUserId }: UserTableProps) {
                       )}
                       <button
                         onClick={() => handleEdit(user)}
-                        className="text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                        className="text-i3-text-muted hover:text-i3-navy transition-colors duration-200"
                       >
                         <Edit className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => handleDelete(user.id)}
-                        className="text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                        className="text-i3-text-muted hover:text-red-500 transition-colors duration-200"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>

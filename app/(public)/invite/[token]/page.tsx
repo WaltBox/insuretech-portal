@@ -126,7 +126,7 @@ export default function InviteAcceptPage({
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-beagle-light relative px-4 py-8">
-        <Loader2 className="h-8 w-8 animate-spin text-beagle-orange" />
+        <Loader2 className="h-8 w-8 animate-spin text-i3-navy" />
       </div>
     )
   }
@@ -174,7 +174,7 @@ export default function InviteAcceptPage({
             </div>
             <a
               href="/login"
-              className="inline-block px-6 py-2.5 bg-beagle-orange text-white rounded-lg font-semibold text-sm hover:bg-accent-orange active:bg-[#e66d00] shadow-sm hover:shadow-md transition-all duration-200"
+              className="inline-block px-6 py-2.5 bg-i3-navy text-white rounded-lg font-semibold text-sm hover:bg-i3-navy-light shadow-sm hover:shadow-md transition-all duration-200"
             >
               Go to Login
             </a>
@@ -245,7 +245,7 @@ export default function InviteAcceptPage({
                 value={phone}
                 onChange={handlePhoneChange}
                 maxLength={14}
-                className="block w-full px-3 py-2 sm:px-4 sm:py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+                className="block w-full px-3 py-2 sm:px-4 sm:py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200"
                 placeholder="(555) 123-4567"
               />
               <p className="text-xs text-gray-500 mt-1">We'll use this to contact you when needed</p>
@@ -262,7 +262,7 @@ export default function InviteAcceptPage({
                 minLength={8}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="block w-full px-3 py-2 sm:px-4 sm:py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+                className="block w-full px-3 py-2 sm:px-4 sm:py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200"
                 placeholder="At least 8 characters"
               />
             </div>
@@ -277,7 +277,7 @@ export default function InviteAcceptPage({
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="block w-full px-3 py-2 sm:px-4 sm:py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+                className="block w-full px-3 py-2 sm:px-4 sm:py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200"
                 placeholder="Confirm your password"
               />
             </div>
@@ -290,7 +290,7 @@ export default function InviteAcceptPage({
           >
             {accepting ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin text-beagle-orange" />
+                <Loader2 className="h-4 w-4 animate-spin text-i3-navy" />
                 Creating Account...
               </>
             ) : (

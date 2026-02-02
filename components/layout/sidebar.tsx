@@ -129,29 +129,28 @@ export const Sidebar = memo(function Sidebar({ user, isOpen, onToggle }: Sidebar
       {/* Sidebar */}
       <aside className={`
         fixed lg:static inset-y-0 left-0 z-50
-        w-[260px] bg-white border-r border-gray-200 
+        w-[260px] bg-white border-r border-i3-border 
         flex flex-col transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         {/* Close button for mobile */}
         <button
           onClick={onToggle}
-          className="lg:hidden absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-100"
+          className="lg:hidden absolute top-4 right-4 p-2 rounded-lg hover:bg-i3-bg"
         >
-          <X className="w-5 h-5 text-gray-600" />
+          <X className="w-5 h-5 text-i3-text-muted" />
         </button>
 
         {/* Logo Section */}
-        <div className="px-6 py-6 border-b border-gray-200">
+        <div className="px-6 py-6 border-b border-i3-border">
           <Link href="/dashboard" className="block" onClick={() => onToggle()}>
             <Image
-              src="/images/beagle-text-logo.webp"
-              alt="Beagle"
-              width={100}
-              height={32}
+              src="/insur3tech-logo.avif"
+              alt="Insur3Tech"
+              width={140}
+              height={40}
               priority
               className="h-8 w-auto"
-              style={{ width: 'auto', height: 'auto' }}
             />
         </Link>
       </div>
@@ -175,8 +174,8 @@ export const Sidebar = memo(function Sidebar({ user, isOpen, onToggle }: Sidebar
                   text-sm
                   transition-all duration-200
                   ${active 
-                    ? 'bg-gray-100 text-beagle-dark' 
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-beagle-dark'
+                    ? 'bg-i3-bg text-i3-navy font-semibold border-l-4 border-i3-navy' 
+                    : 'text-i3-text-muted hover:bg-i3-bg hover:text-i3-navy'
                   }
                 `}
               >
@@ -199,47 +198,47 @@ export const Sidebar = memo(function Sidebar({ user, isOpen, onToggle }: Sidebar
       </nav>
 
       {/* Bottom User Section with Dropdown */}
-      <div ref={menuRef} className="px-3 py-4 border-t border-gray-200 relative">
+      <div ref={menuRef} className="px-3 py-4 border-t border-i3-border relative">
         <button
           onClick={() => setShowMenu(!showMenu)}
-          className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+          className="w-full flex items-center gap-3 px-3 py-2 hover:bg-i3-bg rounded-lg transition-colors duration-200"
         >
-          <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-sm font-semibold text-gray-600">
+          <div className="w-10 h-10 rounded-full bg-i3-navy flex items-center justify-center text-sm font-semibold text-white">
             {user.first_name[0]}{user.last_name[0]}
           </div>
           <div className="flex-1 min-w-0 text-left">
-            <p className="text-sm font-semibold text-beagle-dark truncate">
+            <p className="text-sm font-semibold text-i3-navy truncate">
               {user.first_name} {user.last_name}
             </p>
-            <p className="text-xs text-gray-500 truncate capitalize">
+            <p className="text-xs text-i3-text-muted truncate capitalize">
               {user.role.replace('_', ' ')}
             </p>
           </div>
           {showMenu ? (
-            <ChevronUp className="w-4 h-4 text-gray-400" />
+            <ChevronUp className="w-4 h-4 text-i3-text-muted" />
           ) : (
-            <ChevronDown className="w-4 h-4 text-gray-400" />
+            <ChevronDown className="w-4 h-4 text-i3-text-muted" />
           )}
         </button>
 
         {/* Dropdown Menu */}
         {showMenu && (
-          <div className="absolute bottom-full left-3 right-3 mb-2 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+          <div className="absolute bottom-full left-3 right-3 mb-2 bg-white border border-i3-border rounded-lg shadow-lg overflow-hidden">
             <Link
               href="/profile"
-              className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors duration-200"
+              className="flex items-center gap-3 px-4 py-3 hover:bg-i3-bg transition-colors duration-200"
               onClick={() => setShowMenu(false)}
             >
-              <UserIcon className="w-4 h-4 text-gray-600" />
-              <span className="text-sm text-beagle-dark font-medium">Profile</span>
+              <UserIcon className="w-4 h-4 text-i3-text-muted" />
+              <span className="text-sm text-i3-navy font-medium">Profile</span>
             </Link>
             <button
               onClick={handleLogout}
               disabled={loggingOut}
-              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors duration-200 disabled:opacity-50"
+              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-i3-bg transition-colors duration-200 disabled:opacity-50"
             >
-              <LogOut className="w-4 h-4 text-gray-600" />
-              <span className="text-sm text-beagle-dark font-medium">
+              <LogOut className="w-4 h-4 text-i3-text-muted" />
+              <span className="text-sm text-i3-navy font-medium">
                 {loggingOut ? 'Signing out...' : 'Sign out'}
               </span>
             </button>

@@ -169,7 +169,7 @@ export function UserFormModal({ user, onClose, onSuccess }: UserFormModalProps) 
             <div className="flex gap-3">
               <button
                 onClick={handleCopyLink}
-                className="flex-1 bg-beagle-orange text-white px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-accent-orange active:bg-[#e66d00] shadow-sm hover:shadow-md transition-all duration-200"
+                className="flex-1 bg-i3-navy text-white px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-i3-navy-light shadow-sm hover:shadow-md transition-all duration-200"
               >
                 Copy Link
               </button>
@@ -195,7 +195,7 @@ export function UserFormModal({ user, onClose, onSuccess }: UserFormModalProps) 
               required
               value={formData.first_name}
               onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
-              className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+              className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200"
               placeholder="John"
             />
           </div>
@@ -207,7 +207,7 @@ export function UserFormModal({ user, onClose, onSuccess }: UserFormModalProps) 
               required
               value={formData.last_name}
               onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
-              className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+              className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200"
               placeholder="Doe"
             />
           </div>
@@ -220,7 +220,7 @@ export function UserFormModal({ user, onClose, onSuccess }: UserFormModalProps) 
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200"
+                className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark placeholder:text-gray-400 focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200"
                 placeholder="john.doe@example.com"
               />
             </div>
@@ -231,7 +231,7 @@ export function UserFormModal({ user, onClose, onSuccess }: UserFormModalProps) 
             <select
               value={formData.role}
               onChange={(e) => setFormData({ ...formData, role: e.target.value as UserRole })}
-              className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark focus:outline-none focus:border-beagle-orange focus:ring-2 focus:ring-beagle-orange/10 transition-all duration-200 cursor-pointer"
+              className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-beagle-dark focus:outline-none focus:border-i3-navy focus:ring-2 focus:ring-i3-navy/10 transition-all duration-200 cursor-pointer"
             >
               <option value="property_manager">Property Manager</option>
               <option value="centralized_member">Centralized Member</option>
@@ -255,7 +255,7 @@ export function UserFormModal({ user, onClose, onSuccess }: UserFormModalProps) 
                         type="checkbox"
                         checked={selectedProperties.includes(property.id)}
                         onChange={() => handlePropertyToggle(property.id)}
-                        className="rounded border-gray-300 text-beagle-orange focus:ring-beagle-orange"
+                        className="rounded border-gray-300 text-i3-navy focus:ring-i3-navy"
                       />
                       <span className="text-sm text-beagle-dark">{property.name}</span>
                     </label>
@@ -263,7 +263,7 @@ export function UserFormModal({ user, onClose, onSuccess }: UserFormModalProps) 
                 )}
               </div>
               {selectedProperties.length > 0 && (
-                <p className="text-xs text-beagle-orange font-medium mt-1.5">
+                <p className="text-xs text-i3-navy font-medium mt-1.5">
                   {selectedProperties.length} {selectedProperties.length === 1 ? 'property' : 'properties'} selected
                 </p>
               )}
@@ -274,7 +274,7 @@ export function UserFormModal({ user, onClose, onSuccess }: UserFormModalProps) 
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-beagle-orange text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-accent-orange active:bg-[#e66d00] disabled:bg-gray-300 disabled:cursor-not-allowed shadow-sm hover:shadow-md transition-all duration-200"
+              className="flex-1 bg-i3-navy text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-i3-navy-light disabled:bg-gray-300 disabled:cursor-not-allowed shadow-sm hover:shadow-md transition-all duration-200"
             >
               {loading ? 'Sending...' : user ? 'Update User' : 'Send Invitation'}
             </button>
