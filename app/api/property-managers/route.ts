@@ -31,7 +31,7 @@ export async function GET() {
     // Group by user
     const managerMap = new Map()
     
-    data?.forEach((pm) => {
+    data?.forEach((pm: { user_id: string; user: unknown; property: unknown }) => {
       const userId = pm.user_id
       if (!managerMap.has(userId)) {
         managerMap.set(userId, {

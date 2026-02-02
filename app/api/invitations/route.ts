@@ -35,7 +35,7 @@ export async function GET() {
 
     // Mark which invitations are expired
     const now = new Date()
-    const invitationsWithStatus = invitations?.map(inv => ({
+    const invitationsWithStatus = invitations?.map((inv: { expires_at: string; metadata?: { first_name?: string; last_name?: string } }) => ({
       ...inv,
       is_expired: new Date(inv.expires_at) < now,
       first_name: inv.metadata?.first_name || '',

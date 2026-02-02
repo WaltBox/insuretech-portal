@@ -46,7 +46,7 @@ export async function GET() {
     }
 
     // Sort messages by created_at for each ticket
-    const ticketsWithSortedMessages = tickets?.map(ticket => ({
+    const ticketsWithSortedMessages = tickets?.map((ticket: { messages?: { created_at: string }[] }) => ({
       ...ticket,
       messages: ticket.messages?.sort((a: { created_at: string }, b: { created_at: string }) => 
         new Date(a.created_at).getTime() - new Date(b.created_at).getTime()

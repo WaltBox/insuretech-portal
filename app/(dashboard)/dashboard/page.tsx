@@ -66,7 +66,7 @@ export default async function DashboardPage() {
     const tllCount = tllRpcResultAdmin ?? tllResultAdmin?.count ?? 0
 
     // Calculate total doors from door_count field
-    const totalDoors = allProperties?.reduce((sum, property) => {
+    const totalDoors = allProperties?.reduce((sum: number, property: { door_count?: number }) => {
       return sum + (property.door_count || 0)
     }, 0) || 0
 
@@ -196,7 +196,7 @@ export default async function DashboardPage() {
     const tllCount = tllRpcResult ?? tllResult?.count ?? 0
 
     // Calculate total doors from door_count field
-    const totalDoors = allProperties?.reduce((sum, property) => {
+    const totalDoors = allProperties?.reduce((sum: number, property: { door_count?: number }) => {
       return sum + (property.door_count || 0)
     }, 0) || 0
 
