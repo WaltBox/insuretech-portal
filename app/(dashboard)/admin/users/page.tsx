@@ -40,7 +40,18 @@ export default async function UsersPage() {
   
   // Process invitations to add computed fields
   const now = new Date()
-  const invitations = (invitationsResult.data || []).map(inv => {
+  const invitations = (invitationsResult.data || []).map((inv: {
+    id: string
+    email: string
+    role: string
+    token: string
+    expires_at: string
+    created_at: string
+    last_resent_at: string | null
+    metadata: unknown
+    invited_by: string
+    inviter: { first_name: string; last_name: string } | { first_name: string; last_name: string }[] | null
+  }) => {
     // Supabase returns inviter as an array due to foreign key, get first item
     const inviterData = Array.isArray(inv.inviter) ? inv.inviter[0] : inv.inviter
     return {
