@@ -18,7 +18,7 @@ interface DashboardShellProps {
 }
 
 const REIMBURSEMENT_URL = 'https://claims.yourrenterskit.com/reimbursement'
-const PROGRAM_URL = 'https://tools.yourrenterskit.com/renter-benefits/m2cw6o7lb9wa6zom1j'
+const PROGRAM_URL = 'https://tools.yourrenterskit.com/renter-benefits/pqpunmu4vrj5haad84'
 const LEASE_ADDENDUM_PDF = '/Combined_TLW_SDA_Lease_Addendum.pdf'
 
 export function DashboardShell({
